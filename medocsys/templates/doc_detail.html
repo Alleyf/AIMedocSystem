@@ -1,0 +1,396 @@
+{% extends 'layout.html' %}
+{% block mytitle %}
+    <title>医学文献-易管理</title>
+{% endblock %}
+{% block mystyle %}
+    <style>
+        .scrollspy-example-2 {
+            position: relative;
+            height: 800px;
+        {#height: 100%;#} overflow: auto;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+{% endblock %}
+
+{% block info %}
+    <div class="container-fluid">
+        <div class="clearfix">
+            <div style="float: left">
+                <i class="fa fa-list">结果详情</i>
+            </div>
+            <div style="float: right">
+                <a href="/doc/query/?keyword={{ keyword|safe }}" class="btn btn-default btn-sm">
+                    <i class="fa-solid fa-rotate-right">返回</i>
+                </a>
+                {#                    <a href="/doc/list/?n={{ keyword }}"><i class="fa-solid fa-rotate-right">返回</i></a>#}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-8  text-center" style="color: #007bbb;margin: 20px auto;font-size: 20px">
+                <a href="#{{ id }}" class="list-group-item active" id={{ id }}>
+                    {{ title }}
+                    <span style="color: #a592c4">[共{{ total_page }}页含有关键词]</span>
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <div class="accordion" id="accordionExample">
+                    <nav id="mynavbar" class="h-100 flex-column align-items-stretch pe-4 border-end">
+                        {#                    <nav class="nav nav-pills flex-column">#}
+                        <nav class="nav nav-pills flex-column">
+
+                            {% for page_id,abstract in key_page_info.items %}
+                                <div id="info" class="accordion-item">
+                                    <h2 class="accordion-header" id="head-{{ page_id }}"
+                                        style="width: 100%;font-size: 20px;font-weight: 600;">
+                                        <button class="accordion-button nav-link" type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#page-{{ page_id }}" aria-expanded="true"
+                                                aria-controls="page-{{ page_id }}" href="#item-{{ page_id }}">
+                                            第{{ page_id }}页
+                                        </button>
+                                    </h2>
+                                    <div id="page-{{ page_id }}" class="accordion-collapse collapse show"
+                                         aria-labelledby="head-{{ page_id }}" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            <nav class="nav nav-pills flex-column">
+                                                {% for item in abstract %}
+                                                    <a class="nav-link ms-3 my-1"
+                                                       href="#item-{{ page_id }}-{{ forloop.counter }}">
+                                                        摘要{{ page_id }}-{{ forloop.counter }}
+                                                    </a>
+                                                {% endfor %}
+                                            </nav>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </nav>
+                        {#                </nav>#}
+                    </nav>
+                </div>
+
+            </div>
+            <div class="col-8">
+                <div data-bs-spy="scroll" data-bs-target="#mynavbar" data-bs-smooth-scroll="true"
+                     class="scrollspy-example-2" tabindex="0">
+                    {% for page_id,abstract in key_page_info.items %}
+                        <div id="item-{{ page_id }}">
+                            <h5 class="text-center">第{{ page_id }}页</h5>
+                            <p style="display: flex;justify-content: space-between;align-items: center">
+                                <span class="facetnum" style="color: #028760"></span>
+                                <input style="" uid="{{ id }}" page="{{ page_id }}" type="button"
+                                       class="btn btn-primary btn-sm btn_view"
+                                       value="查看PDF">
+                            </p>
+                        </div>
+                        {% for item in abstract %}
+                            <div id="item-{{ page_id }}-{{ forloop.counter }}" class="clearfix">
+                                <h5>摘要{{ page_id }}-{{ forloop.counter }}</h5>
+                                <p style=" word-break: break-all; word-wrap:break-word;" id="abstract">
+                                    {{ item.abstract|safe }}
+                                </p>
+                                <a style="color: red" class="btn_view" page="{{ page_id }}"
+                                   uid="{{ id }}" keyword="{{ item.keyword }}">详细内容
+                                </a>
+                                <div style="float: right;color: dodgerblue;font-size: 15px;line-height: 28px;">
+                                    来源于{{ item.source }}
+                                </div>
+                            </div>
+                            <hr>
+                        {% endfor %}
+                        <div class="text-white bg-primary"
+                             style="width: auto">当前为第{{ page_id }}页，为方便您的阅览，上面将同一页中所有含有关键词的部分摘要展示在一起。
+                        </div>
+                        <hr>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="btn-group set" style="position: fixed;">
+            <button type="button" data-bs-toggle="dropdown" aria-expanded="false"
+                    class="btn btn-info btn-sm dropdown-toggle">
+                <i class="fa-brands fa-airbnb"></i>
+            </button>
+            <ul class="dropdown-menu" style="min-width: auto;">
+                <li>
+                    <button type="button" id="back"
+                            class="dropdown-item btn btn-warning btn-sm">
+                        <a href="#top">
+                            <i class="fa-solid fa-caret-up"></i>
+                        </a>
+                    </button>
+                </li>
+                <li>
+                    <button type="button" id="thumb_up" class="dropdown-item btn btn-success btn-sm"
+                            data-container="body" data-toggle="popover" data-placement="left">
+                        <i class="fa-solid fa-thumbs-up"></i>
+                    </button>
+                </li>
+                <li>
+                    <button type="button" id="thumb_down" class="dropdown-item btn btn-danger btn-sm">
+                        <i class="fa-solid fa-thumbs-down"></i>
+                    </button>
+                </li>
+                <li>
+                    <button class="dropdown-item btn btn-default btn-sm">
+                        <a href="/doc/query/?keyword={{ keyword|safe }}">
+                            <i class="fa-solid fa-rotate-right"></i>
+                        </a>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div id="liveToast" class="toast fade hide" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <svg class="bd-placeholder-img rounded me-2" width="20" height="20"
+                         xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice"
+                         focusable="false">
+                        <rect width="100%" height="100%" fill="#007aff"></rect>
+                    </svg>
+                    <strong class="me-auto" id="tip_title"></strong>
+                    <small>1 second ago</small>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body" id="tip_body">
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block myscript %}
+    <script type="text/javascript">
+        var VIEW_ID;
+        var PAGE_ID;
+        var KEYWORD;
+        $(function () {
+            bindbtnview();
+            get_info();
+            thumbup();
+            thumbdown();
+            add_facet_num();
+            {#info();#}
+            {#            {% for page_id,abstract in key_page_info.items %}#}
+            {#                {% for item in abstract %}#}
+            {#                    console.log("渲染")#}
+            {#                    $("#abstract").html("{{ item|safe }}")#}
+            {#                {% endfor %}#}
+            {#            {% endfor %}#}
+
+        })
+
+        function fed_tips(status) {
+            console.log(status)
+            const toastlive_tips = document.getElementById('liveToast')
+            const toast = new bootstrap.Toast(toastlive_tips)
+            if (status === "up") {
+                $("#tip_title").text("点赞提示")
+                $("#tip_body").text("谢谢您的点赞，系统会根据您的反馈动态更新搜索的排序结果！")
+            } else {
+                $("#tip_title").text("点踩提示")
+                $("#tip_body").text("很抱歉该结果不能给您提供良好的帮助，系统会根据您的反馈动态更新搜索的排序结果！")
+            }
+            toast.show()
+        }
+
+
+        function add_facet_num() {
+            let all_facetnum = $(".facetnum")
+            {#console.log(all_facetnum)#}
+            let facetnum = []
+            {% for item in facet_num%}
+                facetnum.push({{item}})
+            {% endfor %}
+            for (let i = 0; i < all_facetnum.length; i++) {
+                all_facetnum[i].innerText = "本页共有" + facetnum[i] + "处摘要"
+            }
+        }
+
+        function bindbtnview() {
+            $(".btn_view").click(function () {
+                VIEW_ID = $(this).attr('uid')
+                PAGE_ID = $(this).attr('page')
+                let keytxt = $(this).attr('keyword')
+                console.log(VIEW_ID, PAGE_ID, $(this).attr('keyword'))
+                $.ajax({
+                    url: "/doc/view/",
+                    type: 'post',
+                    data: {
+                        uid: VIEW_ID
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.status) {
+                            localStorage.setItem('docname', res.docname)
+                            localStorage.setItem('key', keytxt)
+                            localStorage.setItem('pageid', PAGE_ID)
+                            window.open('/doc/view/', '_blank')
+                            {#window.location.href = '/doc/view/';#}
+                            console.log(res.docname)
+                        } else {
+                            console.log(res)
+                        }
+
+                    }
+                })
+            })
+        }
+
+        function get_info() {
+            $("#search").click(function () {
+                    var keyword = "{{ keyword|safe }}";
+                    window.location.href = '/doc/search/'
+                    $.ajax({
+                        url: "/search/?text=" + keyword,
+                        type: 'get',
+                        dataType: 'json',
+                        success: function (res) {
+                            if (res) {
+                                var id_list = []
+                                for (let i = 0; i < res.count; i++) {
+                                    let id = res.results[i].object.id;
+                                    id_list.push(id)
+                                }
+                                var id_array = new Int8Array(id_list)
+                                console.log(id_array)
+                                $.ajax({
+                                    url: "/doc/search/",
+                                    type: 'post',
+                                    data: id_array,
+                                    dataType: 'json',
+                                    {#async: false,  //同步#}
+                                    success: function (res) {
+                                        console.log(res)
+                                        console.log('发送请求成功')
+                                        {#$("#tb").show()#}
+                                        $("#tb").attr('style', 'display:block')
+                                        $(".page_str").html(res.page_str)
+                                        var page_info = res.page_queryset
+                                        console.log(page_info.length)
+                                        for (let item in page_info) {
+                                            console.log(page_info[item])
+                                            let id = page_info[item].pk
+                                            let uid = $('<th>').text(id)
+                                            let title = $('<td>').text(page_info[item].fields.name)
+                                            let author = $('<td>').text(page_info[item].fields.author)
+                                            let details = $('<a>').attr({
+                                                "href": "/doc/details/?text=" + keyword + "&uid=" + id,
+                                                "uid": id,
+                                                "class": "btn btn-info btn-xs"
+                                            })
+                                            details.text("查看详情")
+                                            let details_td = $("<td>").append(details)
+                                            let tr = $('<tr>').attr('uid', id)
+                                            tr.append(uid)
+                                            tr.append(title)
+                                            tr.append(author)
+                                            tr.append(details_td)
+                                            $(".info").append(tr)
+                                        }
+                                        {#for (let i = 0; i < res.page_queryset.length; i++) {#}
+
+                                        {#console.log(res.page_queryset.pk)#}
+                                        {#id = item.pk#}
+                                        {#$(".info")#}
+
+                                        {#document.querySelector('html').innerHTML = res#}
+                                    }
+                                });
+                            } else {
+                                console.log(res.error)
+                            }
+
+                        }
+                    })
+                }
+            )
+        }
+
+        function info() {
+            var keyword = encodeURI("{{ keyword }}");
+            var id = {{ id }};
+            $.ajax({
+                url: "/search/?text=" + keyword,
+                type: 'get',
+                dataType: 'json',
+                success: function (res) {
+                    if (res) {
+                        {#var results = res;#}
+                        {#console.log(results)#}
+                        for (var i = 0; i < res.count; i++) {
+                            if (res.results[i].object.id === id) {
+                                let title = res.results[i].object.name;
+                                let abstract = res.results[i].highlighted;
+                                $("#title").text(title);
+                                $("#abstract").html(abstract);
+                            }
+                        }
+
+                        {#let title = res.results[0].object.name;#}
+                        {#let abstract = res.results[0].highlighted;#}
+                        {#$.ajax({#}
+                        {#    url: "/doc/details/",#}
+                        {#    type: 'post',#}
+                        {#    data: results,#}
+                        {#    dataType: 'json',#}
+                        {#    success: function (res) {#}
+                        {#        console.log('发送请求成功')#}
+                        {#    }#}
+                        {#);#}
+                        {#$("#title").text(title);#}
+                        {#$("#abstract").html(abstract);#}
+                    } else {
+                        console.log(res)
+                    }
+
+                }
+            })
+        }
+
+        function thumbup() {
+            $('#thumb_up').click(function () {
+                $.ajax({
+                    url: "/doc/" + "{{ id }}" + "/thumbup/",
+                    type: "get",
+                    dataType: 'json',
+                    success: function (res) {
+                        $("#thumb_up").attr('data-content', res.fedbakscore)
+                        console.log(res)
+                        const status = "up"
+                        fed_tips(status);
+                    }
+                })
+            })
+        }
+
+        function thumbdown() {
+            $('#thumb_down').click(function () {
+                $.ajax({
+                    url: "/doc/" + "{{ id }}" + "/thumbdown/",
+                    type: "get",
+                    dataType: 'json',
+                    success: function (res) {
+                        $("#thumb_down").attr('data-content', res.fedbakscore)
+                        console.log(res)
+                        const status = "down"
+                        fed_tips(status);
+                    }
+                })
+            })
+        }
+    </script>
+{% endblock %}

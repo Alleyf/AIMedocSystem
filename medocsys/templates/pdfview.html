@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title id="title"></title>
+    {#    <link rel="stylesheet" href="/static/plugins/bootstrap-5.2.3/css/bootstrap.css">#}
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        .pdfjs {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="pdfjs">
+    <iframe id="content" style="width:100%;height:100%"
+            {#            src={% static  "plugins/PDF.js/web/viewer.html" %}>#}
+            src="">
+    </iframe>
+
+</div>
+<script>
+    {#var url = decodeURI(window.location.href);#}
+    {#var argsIndex = url.split("?fileid=");#}
+    {#var arg = argsIndex[1];#}
+    const keytxt = localStorage.getItem("key"); //获取指定key本地存储的值
+    const docname = localStorage.getItem("docname")
+    const pageid = localStorage.getItem("pageid")
+    const content = document.getElementById("content");
+    {#var filepath = "/static/plugins/PDF.js/web/viewer.html?file=/static/doc/Filter.pdf";#}
+    {#var filepath = "/static/plugins/PDF.js/web/viewer.html?file=https://vkceyugu.cdn.bspapp.com/VKCEYUGU-24bfcec2-0b23-4547-a957-73ffab276534/cf9562b2-4be1-4efc-a5c7-c08d4565dac4.pdf" + '&keyword=' + keytxt;#}
+    const filepath = "/static/plugins/PDF.js/web/viewer.html?" + "file=/media/docs/" + docname + ".pdf&page=" + pageid + "&top=150&zoom=0.75" + "&keyword=" + keytxt;
+    document.getElementById("title").innerText = docname
+    console.log(keytxt, pageid)
+    content.setAttribute("src", filepath)
+    console.log(filepath);
+</script>
+</body>
+</html>

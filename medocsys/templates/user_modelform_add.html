@@ -1,0 +1,71 @@
+{% extends 'user_add.html' %} # 继承父模块的标识
+{% block mytitle %}
+    <title>新建用户</title>
+{% endblock %}
+{% block mystyle %}
+    <style>
+        .input {
+            display: inline-block;
+            margin: 10px auto;
+            min-height: 50px;
+            width: 300px;
+            padding: 0 1rem;
+            color: #1e2732;
+            font-size: 15px;
+            border: 1px solid #5e4dcd;
+            border-radius: 6px;
+            background-color: transparent;
+        }
+
+        .button--submit {
+            display: block;
+            margin: 10px auto;
+            min-height: 50px;
+            padding: .5em 1em;
+            border: none;
+            border-radius: 6px;
+            background-color: #5e4dcd;
+            color: #fff;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background-color .3s ease-in-out;
+        }
+
+        .button--submit:hover {
+            background-color: #5e5dcd;
+        }
+
+        .input:focus, .input:focus-visible {
+            border-color: #3898EC;
+            outline: none;
+        }
+    </style>
+{% endblock %}
+{% block info %}
+    <div>
+        <div class="container">
+            <div class="panel panel-info">
+                {% block actiontitle %}
+                    <div class="panel-heading">新建用户</div>
+                {% endblock %}
+                <div class="panel-body">
+                    {% block userform %}
+                        <form class="input-group" method="post" novalidate>
+                            {% csrf_token %}
+                            {% for item in form %}
+                                <div class="form-group col-md-6">
+                                    <label>{{ item.label }}</label>
+                                    {{ item }}
+                                    <span style="color: #c12c1f"><strong>{{ item.errors.0 }}</strong></span>
+                                </div>
+                            {% endfor %}
+                            <div class="form-group col-md-6">
+                                <input class="button--submit " value="Subscribe" type="submit">
+                            </div>
+                        </form>
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

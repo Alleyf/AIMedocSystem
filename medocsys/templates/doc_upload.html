@@ -1,0 +1,378 @@
+{% extends 'layout.html' %}
+{% block mytitle %}
+    <title>医学文献-易管理</title>
+{% endblock %}
+{% block mystyle %}
+    <style>
+        .input {
+            display: none;
+            margin: 10px auto;
+            min-height: 50px;
+            width: 300px;
+            padding: 0 1rem;
+            color: #1e2732;
+            font-size: 15px;
+            border: 1px solid #5e4dcd;
+            border-radius: 6px;
+            background-color: transparent;
+        }
+
+        .button--submit {
+            display: block;
+            margin: 10px auto;
+            min-height: 50px;
+            padding: .5em 1em;
+            border: none;
+            border-radius: 6px;
+            background-color: #5e4dcd;
+            color: #fff;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background-color .3s ease-in-out;
+        }
+
+        .button--submit:hover {
+            background-color: #5e5dcd;
+        }
+
+        .upload {
+            cursor: pointer;
+        }
+
+        .input:focus, .input:focus-visible {
+            border-color: #3898EC;
+            outline: none;
+        }
+    </style>
+{% endblock %}
+
+{% block info %}
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">添加文献</h4>
+                </div>
+                <div class="modal-body">
+                    {#                    <form method="post" class="input-group col-md-12" id="formadd" enctype="multipart/form-data">#}
+                    {% for item in form %}
+                        {% csrf_token %}
+                        {{ item }}
+                        <div class="form-group upload"
+                             style="text-align: center;margin: 0 auto;border: 1px dashed blue;height: 100%;width: 100%;line-height: 20px;">
+                            <span class="err_msg" style="color: #c12c1f"></span>
+                            <div onclick="$('input[id=id_docfile]').click();" style="font-size: 15px;">
+                                <i class="fa-solid fa-cloud-arrow-up" style="font-size: 40px;margin-top: 10px"></i>
+                                <div id="docCovers" style="color:#c0d695;line-height: 20px;margin: 10px auto">
+                                    点击选择文件进行上传
+                                </div>
+                                <p style="line-height: 20px;">可以选择多个文件，不支持上传文件夹</p>
+                            </div>
+                            <div class="progress" style="display: none">
+                                <div class="progress-bar-success progress-bar-striped active"
+                                     role="progressbar"
+                                     aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0">
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <input type="submit" class="btn btn-info" id="submitbtn" value="提交">
+
+                    </div>
+                    {#                    </form>#}
+                </div>
+            </div>
+        </div>
+    </div>
+    <button type="button" id="adddoc" class="btn btn-primary"><i class="fa fa-plus"></i>
+        添加文献
+    </button>
+
+{% endblock %}
+
+{% block myscript %}
+    <script type="text/javascript">
+        var DELETE_ID;
+        var EDIT_ID;
+        var VIEW_ID;
+        $(function () {
+            bindbtnadd();
+            bindbtnsave();
+            bindbtndel();
+            bindbtnedit();
+            bindbtnview();
+            bindbtndetail();
+            bindupload();
+            {#get_info();#}
+        })
+
+        //公共函数
+        function set_progress(num, other = '') {
+            let progress = $(".progress")
+            progress.attr({
+                'style': 'display:block',
+            })
+            progress.children().attr({
+                'style': 'width:' + num + '%',
+                'aria-valuenow': num,
+            })
+            progress.children().html("<span class=\"sr-only\">" + num + "%Complete(success)</span>" + num + "%" + other)
+        }
+
+        function bindupload() {
+            $('input[id=id_docfile]').change(function () {
+                if ($(this).val() !== '') {
+                    $('#docCovers').text($(this).val());
+                } else {
+                    $('#docCovers').text("点击选择文件进行上传")
+                }
+            });
+        }
+
+        {#function get_info() {#}
+        {#    var keyword = encodeURI("{{ keyword }}");#}
+        {#    var id = {{ id }};#}
+        {#    $.ajax({#}
+        {#        url: "/search/?text=" + keyword,#}
+        {#        type: 'get',#}
+        {#        dataType: 'json',#}
+        {#        success: function (res) {#}
+        {#            if (res) {#}
+        {#var results = res;#}
+        {#console.log(results)#}
+        {#                for (var i = 0; i < res.count; i++) {#}
+        {#                    if (res.results[i].object.id === id) {#}
+        {#                        let title = res.results[i].object.name;#}
+        {#                        let abstract = res.results[i].highlighted;#}
+        {#                        $("#title").text(title);#}
+        {#                        $("#abstract").html(abstract);#}
+        {#                    }#}
+        {#                }#}
+        {##}
+        {#let title = res.results[0].object.name;#}
+        {#let abstract = res.results[0].highlighted;#}
+        {#$.ajax({#}
+        {#    url: "/doc/details/",#}
+        {#    type: 'post',#}
+        {#    data: results,#}
+        {#    dataType: 'json',#}
+        {#    success: function (res) {#}
+        {#        console.log('发送请求成功')#}
+        {#    }#}
+        {#);#}
+        {#$("#title").text(title);#}
+        {#$("#abstract").html(abstract);#}
+        {#            } else {#}
+        {#                console.log(res)#}
+        {#            }#}
+        {##}
+        {#        }#}
+        {#    })#}
+        {#\}#}
+
+
+        function bindbtnadd() {
+            $("#adddoc").click(function () {
+                $(".err_msg").empty();
+                {#将当前编辑ID置空#}
+                EDIT_ID = undefined;
+                {#清空已有的数据#}
+                $("#id_docfile").empty();
+                $('#addModal').modal('show');
+            })
+        }
+
+        function bindbtnsave() {
+            $("#submitbtn").click(function () {
+                if (EDIT_ID) {
+                    {#发送编辑请求#}
+                    doedit();
+                } else {
+                    {#发送天加请求#}
+                    doadd();
+                }
+            })
+
+        }
+
+        function doadd() {
+            console.log("发送添加请求")
+            $(".err_msg").empty();
+            {#添加文献#}
+            let formData = new FormData();
+            // 添加文件对象
+            let files = $('#id_docfile')[0].files;
+            set_progress(30)
+            console.log(files)
+            for (let i = 0; i < files.length; i++) {
+                formData.append("docfile", files[i]);
+            }
+            //formdata类型的变量需要get方法键值，直接打印为空
+            console.log(formData.getAll('docfile'))
+            set_progress(40)
+            $.ajax({
+                url: "/doc/add/",
+                type: "post",
+                {#data: $("#formadd").serialize(),#}
+                data: formData,
+                {#dataType: "json",#}
+                cache: false,         //不设置缓存
+                processData: false,  // 不处理数据
+                contentType: false,   // 不设置内容类型
+                success: function (res) {
+                    if (res.status === 200) {
+                        {#$("#formadd")为jquery对象，$("#formadd")[0]为dom对象#}
+                        console.log("发送添加请求成功")
+                        set_progress(100, "上传完成")
+                        {#$("#formadd")[0].reset();#}
+                        {#$('#myModal').modal('hide');#}
+                        console.log(res)
+                        {#window.location.href = '/doc/list/'#}
+                        {#location.reload();#}
+                    } else {
+                        console.log("添加失败")
+                        console.log(res)
+                        set_progress(0, "上传失败")
+                        $.each(res.err, function (name, errmsglist) {
+                            $("#id_" + name).prev().text(errmsglist[0])
+                        })
+                    }
+                }
+            })
+        }
+
+        function doedit() {
+            console.log("发送编辑请求")
+            $(".err_msg").empty();
+            {#编辑文献#}
+            $.ajax({
+                url: "/doc/edit/" + "?uid=" + EDIT_ID,
+                type: "post",
+                data: $("#formadd").serialize(),
+                dataType: "json",
+                success: function (res) {
+                    if (res.status) {
+                        {#$("#formadd")为jquery对象，$("#formadd")[0]为dom对象#}
+                        {#$("#formadd")[0].reset();#}
+                        {#$('#myModal').modal('hide');#}
+                        location.reload();
+                    } else {
+                        if (res.tips) {
+                            {#文献不存在错误#}
+                            alert(res.tips)
+                            $('#myModal').modal('hide');
+                        } else {
+                            {#文献信息编辑填写错误#}
+                            $.each(res.err, function (name, errmsglist) {
+                                $("#id_" + name).prev().text(errmsglist[0])
+                            })
+                        }
+                    }
+                }
+            })
+        }
+
+        function bindbtndel() {
+            $(".btn_del").click(function () {
+                {#显示删除对话框#}
+                $('#delModal').modal('show');
+                {#获取当前行id并保存到全局变量中#}
+                DELETE_ID = $(this).attr('uid');
+            })
+            $(".btn_del_yes").click(function () {
+                $.ajax({
+                    url: "/doc/del/",
+                    type: 'get',
+                    data: {
+                        uid: DELETE_ID
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.status) {
+                            $('#delModal').modal('hide');
+                            $("tr[uid=" + DELETE_ID + "]").remove();
+                            {#location.reload();#}
+                        } else {
+                            alert(res.err)
+                            $('#delModal').modal('hide');
+                            console.log(res)
+                        }
+
+                    }
+                })
+            })
+        }
+
+        function bindbtnedit() {
+            $(".btn_edit").click(function () {
+                $(".err_msg").empty();
+                {#清空原有值#}
+                $("#formadd")[0].reset();
+                {#获取当前行id#}
+                let uid = $(this).attr('uid')
+                EDIT_ID = uid
+                {#发送Ajax请求去后端获取当前行的数据#}
+                $.ajax({
+                    url: '/doc/edit/details',
+                    type: 'get',
+                    data: {
+                        uid: uid
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.status) {
+                            console.log(res)
+                            {#获取到的后端信息填充到表单中#}
+                            $.each(res.data, function (name, value) {
+                                $("#id_" + name).val(value)
+                            })
+                            {#修改对话框标题#}
+                            $('#myModalLabel').text('编辑');
+                            {#显示对话框#}
+                            $('#addModal').modal('show');
+                        } else {
+                            alert(res.err)
+                        }
+                    }
+                })
+            })
+        }
+
+        function bindbtnview() {
+            $(".btn_view").click(function () {
+                VIEW_ID = $(this).attr('uid')
+                console.log(VIEW_ID)
+                $.ajax({
+                    url: "/doc/view/",
+                    type: 'post',
+                    data: {
+                        uid: VIEW_ID
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.status) {
+                            let keytxt = "{{ search_data }}"
+                            localStorage.setItem('docname', res.docname)
+                            localStorage.setItem('key', keytxt)
+                            window.location.href = '/doc/view/';
+                            console.log(res.docname)
+                        } else {
+                            console.log(res)
+                        }
+
+                    }
+                })
+            })
+        }
+
+        function bindbtndetail() {
+            $(".btn_detail").click(function () {
+                window.location.href = "/doc/details/"
+            })
+        }
+    </script>
+{% endblock %}

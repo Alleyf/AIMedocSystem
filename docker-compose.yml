@@ -1,0 +1,10 @@
+version: "3"
+services:
+  AiMeDocSys:
+    restart: always
+    build: .  # '点'代表当前目录
+    command: "python3 manage.py runserver 0.0.0.0:8210"
+    volumes:
+      - .:/code
+    ports:
+      - "8210:8210"

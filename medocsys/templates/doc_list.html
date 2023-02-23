@@ -1,0 +1,519 @@
+{% extends 'layout.html' %}
+{% block mytitle %}
+    <title>医学文献-易管理</title>
+{% endblock %}
+{% block mystyle %}
+    <style>
+
+        .upload {
+            cursor: pointer;
+        }
+
+        #upload_info {
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 20px
+        }
+
+        .wrapper:hover p {
+            color: #1e50a2;
+        }
+
+        .wrapper > p {
+            margin: 4px auto;
+            font-size: 12px;
+        }
+
+
+    </style>
+{% endblock %}
+
+{% block info %}
+    <!-- 添加/编辑文献【对话框】 -->
+    <div class="modal fade show" aria-modal="true" id="addModal" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="display: flex;align-items: center;justify-content: space-between">
+                    <h4 class="modal-title text-nowrap" id="upload_title">
+                        添加文献</h4>
+                    <div class="clearfix" id="upload_info" style="margin-top: 20px;display: none;align-items: center">
+                        <p style="color: #0f2350;">
+                            上传任务：
+                            <span id="task_num">1/1</span>
+                        </p>
+                        <p style="color: #2a6e3f;">
+                            成功：
+                            <span id="success_num">1</span>
+                        </p>
+                        <p style="color: #c12c1f;">
+                            失败：
+                            <span id="fail_num">0</span>
+                        </p>
+                        <p>
+                            <button class="btn btn-danger btn-sm" type="button" id="clear_upload_info">清空列表</button>
+                        </p>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div id="upload_after"></div>
+                    <div id="upload_before">
+                        {% for item in form %}
+                            {% csrf_token %}
+                            {{ item }}
+                            <div class="form-group upload"
+                                 style="text-align: center;margin: 0 auto;border: 1px dashed #2a6e3f;height: 100%;width: 100%;line-height: 20px;">
+                                <span class="err_msg" style="color: #c12c1f"></span>
+                                <div onclick="$('input[id=id_docfile]').click();" style="font-size: 15px;">
+                                    <i class="fa-solid fa-cloud-arrow-up" style="font-size: 40px;margin-top: 10px"></i>
+                                    <div id="docCovers" style="color:#c0d695;line-height: 20px;margin: 10px auto">
+                                        点击选择文件进行上传
+                                    </div>
+                                    <p style="line-height: 20px;">可以选择多个文件，不支持上传文件夹</p>
+                                </div>
+                                <div class="progress" style="display: none">
+                                    <div class="progress-bar-success progress-bar-striped active"
+                                         role="progressbar"
+                                         aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0">
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {#                    </form>#}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="bindbtnclear_upload_info()"
+                            data-bs-dismiss="modal">关闭
+                    </button>
+                    <input type="submit" class="btn btn-info" id="submitbtn" value="提交">
+                </div>
+            </div>
+        </div>
+    </div>
+    {#    删除对话框#}
+    <div class="modal fade show" aria-modal="true" id="delModal" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title text-nowrap">
+                        删除文献</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger" role="alert">
+                        <h4 class="alert-heading">是否确定删除？</h4>
+                        <p style="margin: 10px 0;">一旦删除，所有关联的相关数据都会被删除！</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取 消</button>
+                    <button type="button" class="btn btn-danger btn_del_yes">确 定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div style="margin-bottom: 10px;display: flex;align-items: center;justify-content: space-between"
+             class="">
+            <button type="button" id="adddoc" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i>
+                添加文献
+            </button>
+            <div>
+                <form method="get">
+                    <div class="input-group">
+                        <input type="text" name="n" placeholder="Search for keyword" class="form-control"
+                               value={{ search_data }}>
+                        <span class="input-group-btn">
+                        <button class="btn btn-outline-primary"><i class="fa fa-search"></i> </button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="container-fluid table-responsive">
+            <div class="table-responsive"><i class="fa fa-list"></i>文献列表</div>
+            <table class="table table-hover table-condensed">
+                <thead class="text-center">
+                <tr>
+                    <th>ID</th>
+                    <th>文献名</th>
+                    {#                    <th>作者</th>#}
+                    <th>点击量得分</th>
+                    <th>用户反馈得分</th>
+                    {#                    <th>归档</th>#}
+                    {#                    <th>来源</th>#}
+                    {#                    <th>管理员</th>#}
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody class="text-center">
+                {% for pninfo in page_queryset %}
+                    <tr uid="{{ pninfo.id }}">
+                        <th scope="row">{{ pninfo.id }}</th>
+                        <td>{{ pninfo.name }}</td>
+                        {#                        <td>{{ pninfo.author }}</td>#}
+                        <td>{{ pninfo.clkscore }}</td>
+                        <td>{{ pninfo.fedbakscore }}</td>
+                        {#                        <td>{{ pninfo.get_status_display }}</td>#}
+                        {#                        <td>{{ pninfo.get_source_display }}</td>#}
+                        {#                        <td>{{ pninfo.user.username }}</td>#}
+                        <td>
+                            {#                            <a href="/doc/details/?text={{ search_data }}&uid={{ pninfo.id }}" uid="{{ pninfo.id }}"#}
+                            {#                               class="btn btn-info btn-xs">查看详情</a>#}
+                            {#                            <input uid="{{ pninfo.id }}" type="button" class="btn btn-default btn-xs btn_edit"#}
+                            {#                                   value="编辑">#}
+                            <input uid="{{ pninfo.id }}" type="button" class="btn btn-primary btn-sm btn_view"
+                                   value="查看">
+                            <input uid="{{ pninfo.id }}" type="button" class="btn btn-danger btn-sm btn_del" value="删除">
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <nav class="text-center" aria-label="Page navigation">
+            <ul class="pagination pagination-sm justify-content-center"
+                style="justify-content: center;align-items: center;flex-wrap: nowrap;margin:20px 0">
+                {{ page_str }}
+            </ul>
+        </nav>
+    </div>
+
+{% endblock %}
+
+{% block myscript %}
+    <script type="text/javascript">
+        var DELETE_ID;
+        var EDIT_ID;
+        var VIEW_ID;
+        $(function () {
+            bindbtnadd();
+            bindbtnsave();
+            bindbtndel();
+            bindbtnedit();
+            bindbtnview();
+            bindbtndetail();
+            bindbtnupload();
+            bindbtnclear_upload_info();
+            {#get_info();#}
+        })
+
+        //公共函数
+        {#function set_progress(progress, num, other = '') {#}
+        {#    progress.attr({#}
+        {#        'style': 'display:block',#}
+        {#    })#}
+        {#    progress.children().attr({#}
+        {#        'style': 'width:' + num + '%',#}
+        {#        'aria-valuenow': num,#}
+        {#    })#}
+        {#    progress.children().html("<span class=\"sr-only\">" + num + "%Complete(success)</span>" + num + "%" + other)#}
+
+        function bindbtnclear_upload_info() {
+            $("#clear_upload_info").click(function () {
+                clear_upload_info()
+            })
+        }
+
+        function clear_upload_info() {
+            $("#upload_info").attr("style", "display:none")
+            $('#docCovers').text("点击选择文件进行上传")
+            $("#upload_after").children().remove()
+            $("#upload_title").text("添加文献")
+            $("#upload_before").show()
+        }
+
+        function bindbtnupload() {
+            $('input[id=id_docfile]').change(function () {
+                if ($(this).val() !== '') {
+                    {#$('#docCovers').text($(this).val());#}
+                    $("#upload_before").hide()
+                    let upload_after = $("#upload_after")
+                    $("#upload_title").text("上传列表")
+                    upload_after.children().remove()
+                    let files = $('#id_docfile')[0].files;
+                    create_upload_ls(upload_after, files)
+                } else {
+                    $('#docCovers').text("点击选择文件进行上传")
+                }
+            });
+        }
+
+        function bindbtnadd() {
+            $("#adddoc").click(function () {
+                $(".err_msg").empty();
+                {#将当前编辑ID置空#}
+                EDIT_ID = undefined;
+                {#清空已有的数据#}
+                clear_upload_info()
+                $('#addModal').modal('show');
+            })
+        }
+
+        function bindbtnsave() {
+            $("#submitbtn").click(function () {
+                if (EDIT_ID) {
+                    {#发送编辑请求#}
+                    doedit();
+                } else {
+                    {#发送天加请求#}
+                    doadd();
+                }
+            })
+
+        }
+
+        function create_upload_ls(upload_after, files) {
+            for (let index = 0; index < files.length; index++) {
+                const doc_name = files[index].name;
+                let doc_size = (files[index].size / 2 ** 10).toFixed(2).toString() + "KB"
+                if ((files[index].size / 2 ** 20).toFixed(1) >= 1) {
+                    doc_size = (files[index].size / 2 ** 20).toFixed(2).toString() + "MB"
+                }
+                const doc_status = "准备上传"
+                {#console.log(doc_status, doc_name, doc_size)#}
+                div_wrapper = $("<div>").attr("class", "wrapper")
+                p1 = $("<p>").text(doc_name)
+                div_progress = $("<div>").attr({
+                    "class": "progress",
+                    "role": "progressbar",
+                    "style": "height:6px;margin:2px auto;",
+                    "aria-label": "Animated striped ",
+                    "aria-valuenow": "0",
+                    "aria-valuemin": "0",
+                    "aria-valuemax": "100"
+                })
+                div_progress_child = $("<div>").attr({
+                    "class": "progress-bar bg-success progress-bar-striped progress-bar-animated w-0",
+                    "style": "width: 0;height:6px;font-size:12px",
+                    "fid": index,
+                })
+                div_progress.append(div_progress_child)
+                {#set_progress(div_progress, 30)#}
+                p2 = $("<p>").attr("class", "clearfix")
+                span_size = $("<span>").text(doc_size)
+                span_size.attr({
+                    "style": "float:right;color:#9aa7b1",
+                    "class": "doc_size",
+                    "font-size": "12px"
+                })
+                span_status = $("<span>").text(doc_status)
+                span_status.attr({
+                    "style": "float:left;color:#9aa7b1",
+                    "class": "doc_status",
+                    "font-size": "12px"
+                })
+                p2.append(span_size, span_status)
+                div_wrapper.append(p1)
+                div_wrapper.append(div_progress)
+                div_wrapper.append(p2)
+                upload_after.append(div_wrapper)
+                $("#upload_before").hide();
+                upload_after.show()
+            }
+        }
+
+        function doadd() {
+            console.log("发送添加请求")
+            $(".err_msg").empty();
+            let formData = new FormData();
+            // 添加文件对象
+            let files = $('#id_docfile')[0].files;
+            for (let i = 0; i < files.length; i++) {
+                formData.append("docfile", files[i]);
+                $(".doc_status")[i].innerText = "上传中"
+            }
+            //formdata类型的变量需要get方法键值，直接打印为空
+            console.log(formData.getAll('docfile'))
+            $.ajax({
+                url: "/doc/add/",
+                type: "post",
+                {#data: $("#formadd").serialize(),#}
+                data: formData,
+                {#dataType: "json",#}
+                cache: false,         //不设置缓存
+                processData: false,  // 不处理数据
+                contentType: false,   // 不设置内容类型
+                xhr: function () {
+                    const xhr = new XMLHttpRequest();
+                    //使用XMLHttpRequest.upload监听上传过程，注册progress事件，打印回调函数中的event事件
+                    xhr.upload.addEventListener('progress', function (e) {
+                        console.log(e);
+                        //loaded代表上传了多少
+                        //total代表总数为多少
+                        const progressRate = (e.loaded / e.total) * 100 + '%';
+
+                        //通过设置进度条的宽度达到效果
+                        $('.progress > div').css('width', progressRate);
+                    })
+
+                    return xhr;
+                },
+                success: function (res) {
+                    if (res.status === 200) {
+                        {#$("#formadd")为jquery对象，$("#formadd")[0]为dom对象#}
+                        console.log("发送添加请求成功")
+                        console.log(res)
+                        res.info.forEach(function (item, index) {
+                            {#const doc_name = files[index].name;#}
+                            {#let doc_size = (files[index].size / 2 ** 10).toFixed(2).toString() + "KB"#}
+                            {#if ((files[index].size / 2 ** 20).toFixed(1) >= 1) {#}
+                            {#    doc_size = (files[index].size / 2 ** 20).toFixed(2).toString() + "MB"}#}
+                            doc_status = item.substr(-2, 2)
+                            $(".doc_status")[index].innerText = item.replace(/.+:/, '')
+
+                            if (doc_status === "失败") {
+                                progress_bar = $(".progress>div[fid]")[index]
+                                progress_bar.setAttribute("class", "progress-bar bg-danger progress-bar-striped progress-bar-animated")
+                                console.log("设置后的样式", progress_bar.getAttribute("class"))
+                            }
+                        })
+                        $("#task_num").text(res.upload_num.success.toString() + "/" + res.upload_num.all.toString())
+                        $("#success_num").text(res.upload_num.success.toString())
+                        $("#fail_num").text(res.upload_num.fail.toString())
+                        $("#upload_info").attr("style", "display: flex")
+
+                    } else {
+                        console.log("添加失败")
+                        console.log(res)
+                        {#set_progress(0, "上传失败")#}
+                        $.each(res.err, function (name, errmsglist) {
+                            $("#id_" + name).prev().text(errmsglist[0])
+                        })
+                    }
+                }
+            })
+        }
+
+        function doedit() {
+            console.log("发送编辑请求")
+            $(".err_msg").empty();
+            {#编辑文献#}
+            $.ajax({
+                url: "/doc/edit/" + "?uid=" + EDIT_ID,
+                type: "post",
+                data: $("#formadd").serialize(),
+                dataType: "json",
+                success: function (res) {
+                    if (res.status) {
+                        {#$("#formadd")为jquery对象，$("#formadd")[0]为dom对象#}
+                        {#$("#formadd")[0].reset();#}
+                        {#$('#myModal').modal('hide');#}
+                        location.reload();
+                    } else {
+                        if (res.tips) {
+                            {#文献不存在错误#}
+                            alert(res.tips)
+                            $('#myModal').modal('hide');
+                        } else {
+                            {#文献信息编辑填写错误#}
+                            $.each(res.err, function (name, errmsglist) {
+                                $("#id_" + name).prev().text(errmsglist[0])
+                            })
+                        }
+                    }
+                }
+            })
+        }
+
+        function bindbtndel() {
+            $(".btn_del").click(function () {
+                {#显示删除对话框#}
+                $('#delModal').modal('show');
+                {#获取当前行id并保存到全局变量中#}
+                DELETE_ID = $(this).attr('uid');
+            })
+            $(".btn_del_yes").click(function () {
+                $.ajax({
+                    url: "/doc/del/",
+                    type: 'get',
+                    data: {
+                        uid: DELETE_ID
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.status) {
+                            $('#delModal').modal('hide');
+                            $("tr[uid=" + DELETE_ID + "]").remove();
+                            {#location.reload();#}
+                        } else {
+                            alert(res.err)
+                            $('#delModal').modal('hide');
+                            console.log(res)
+                        }
+
+                    }
+                })
+            })
+        }
+
+        function bindbtnedit() {
+            $(".btn_edit").click(function () {
+                $(".err_msg").empty();
+                {#清空原有值#}
+                $("#formadd")[0].reset();
+                {#获取当前行id#}
+                let uid = $(this).attr('uid')
+                EDIT_ID = uid
+                {#发送Ajax请求去后端获取当前行的数据#}
+                $.ajax({
+                    url: '/doc/edit/details',
+                    type: 'get',
+                    data: {
+                        uid: uid
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.status) {
+                            console.log(res)
+                            {#获取到的后端信息填充到表单中#}
+                            $.each(res.data, function (name, value) {
+                                $("#id_" + name).val(value)
+                            })
+                            {#修改对话框标题#}
+                            $('#myModalLabel').text('编辑');
+                            {#显示对话框#}
+                            $('#addModal').modal('show');
+                        } else {
+                            alert(res.err)
+                        }
+                    }
+                })
+            })
+        }
+
+        function bindbtnview() {
+            $(".btn_view").click(function () {
+                VIEW_ID = $(this).attr('uid')
+                console.log(VIEW_ID)
+                $.ajax({
+                    url: "/doc/view/",
+                    type: 'post',
+                    data: {
+                        uid: VIEW_ID
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.status) {
+                            let keytxt = "{{ search_data }}"
+                            localStorage.setItem('docname', res.docname)
+                            localStorage.setItem('key', keytxt)
+                            window.open('/doc/view/', res.docname);
+                            console.log(res.docname)
+                        } else {
+                            console.log(res)
+                        }
+
+                    }
+                })
+            })
+        }
+
+        function bindbtndetail() {
+            $(".btn_detail").click(function () {
+                window.location.href = "/doc/details/"
+            })
+        }
+    </script>
+{% endblock %}

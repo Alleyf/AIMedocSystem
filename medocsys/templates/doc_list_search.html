@@ -1,0 +1,312 @@
+{% extends 'layout.html' %}
+{% block mytitle %}
+    <title>医学文献-易管理</title>
+{% endblock %}
+{% block mystyle %}
+    <style>
+        .input {
+            display: inline-block;
+            margin: 10px auto;
+            min-height: 50px;
+            width: 300px;
+            padding: 0 1rem;
+            color: #1e2732;
+            font-size: 15px;
+            border: 1px solid #5e4dcd;
+            border-radius: 6px;
+            background-color: transparent;
+        }
+
+        .button--submit {
+            display: block;
+            margin: 10px auto;
+            min-height: 50px;
+            padding: .5em 1em;
+            border: none;
+            border-radius: 6px;
+            background-color: #5e4dcd;
+            color: #fff;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background-color .3s ease-in-out;
+        }
+
+        .button--submit:hover {
+            background-color: #5e5dcd;
+        }
+
+        .input:focus, .input:focus-visible {
+            border-color: #3898EC;
+            outline: none;
+        }
+    </style>
+{% endblock %}
+
+{% block info %}
+    <div class="container-fluid">
+        <div style="margin-bottom: 10px" class="clearfix">
+            <div style="float: right;width: 300px">
+                <form action="/search/" method="get" class="form-group">
+                    <div class="input-group">
+                        <input type="text" name="q" placeholder="Search for keyword" class="form-control"
+                               value={{ context.query }}>
+                        <span class="input-group-btn">
+                                <button class="btn btn-default"><i class="fa fa-search"></i> </button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading"><i class="fa fa-list"></i>文献列表</div>
+            <table class="table table-hover table-condensed ">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>文献名</th>
+                    <th>作者</th>
+                    <th>点击量得分</th>
+                    <th>用户反馈得分</th>
+                    <th>归档</th>
+                    <th>来源</th>
+                    <th>管理员</th>
+                    <th>内容</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody class="text-center">
+                {% for pninfo in content.data %}
+                    <tr uid="{{ pninfo.id }}">
+                        <th scope="row">{{ pninfo.id }}</th>
+                        <td>{{ pninfo.name }}</td>
+                        <td>{{ pninfo.author }}</td>
+                        <td>{{ pninfo.clkscore }}</td>
+                        <td>{{ pninfo.fedbakscore }}</td>
+                        <td>{{ pninfo.status }}</td>
+                        <td>{{ pninfo.source }}</td>
+                        <td>{{ pninfo.user.username }}</td>
+                        <td>{{ pninfo.content }}</td>
+                        <td>
+                            <input uid="{{ pninfo.id }}" type="button" class="btn btn-default btn-xs btn_edit"
+                                   value="编辑">
+                            <input uid="{{ pninfo.id }}" type="button" class="btn btn-primary btn-xs btn_view"
+                                   value="查看">
+                            <input uid="{{ pninfo.id }}" type="button" class="btn btn-danger btn-xs btn_del" value="删除">
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="text-center">
+            {% if context.page.has_previous %}
+                <li class="previous"><a
+                        href="?q={{ context.query }}&amp;page={{ context.page.previous_page_number }}">上一页</a>
+                </li>
+            {% else %}
+                <li class="previous disabled"><a href="#">上一页</a></li>
+            {% endif %}
+            第 {{ context.page.number }} / {{ context.page.paginator.num_pages }}页
+            {% if context.page.has_next %}
+                <li class="next"><a
+                        href="?q={{ context.query }}&amp;page={{ context.page.next_page_number }}">下一页</a>
+                </li>
+            {% else %}
+                <li class="next disabled"><a href="#">下一页</a></li>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block myscript %}
+    <script type="text/javascript">
+        var DELETE_ID;
+        var EDIT_ID;
+        var VIEW_ID;
+        $(function () {
+            bindbtnadd();
+            {#bindbtnsave();#}
+            bindbtndel();
+            bindbtnedit();
+            bindbtnview();
+        })
+
+        function bindbtnadd() {
+            $("#adddoc").click(function () {
+                $(".err_msg").empty();
+                {#将当前编辑ID置空#}
+                EDIT_ID = undefined;
+                {#清空已有的数据#}
+                $("#formadd")[0].reset();
+                $('#addModal').modal('show');
+            })
+        }
+
+        function bindbtnsave() {
+            $("#submitbtn").click(function () {
+                if (EDIT_ID) {
+                    {#发送编辑请求#}
+                    doedit();
+                } else {
+                    {#发送天加请求#}
+                    doadd();
+                }
+            })
+
+        }
+
+        function doadd() {
+            console.log("发送添加请求")
+            $(".err_msg").empty();
+            {#添加文献#}
+            $.ajax({
+                url: "/doc/add/",
+                type: "post",
+                data: $("#formadd").serialize(),
+                dataType: "json",
+                success: function (res) {
+                    if (res.status) {
+                        {#$("#formadd")为jquery对象，$("#formadd")[0]为dom对象#}
+                        {#$("#formadd")[0].reset();#}
+                        {#$('#myModal').modal('hide');#}
+                        location.reload();
+                    } else {
+                        $.each(res.err, function (name, errmsglist) {
+                            $("#id_" + name).prev().text(errmsglist[0])
+                        })
+                    }
+                }
+            })
+        }
+
+        function doedit() {
+            console.log("发送编辑请求")
+            $(".err_msg").empty();
+            {#编辑文献#}
+            $.ajax({
+                url: "/doc/edit/" + "?uid=" + EDIT_ID,
+                type: "post",
+                data: $("#formadd").serialize(),
+                dataType: "json",
+                success: function (res) {
+                    if (res.status) {
+                        {#$("#formadd")为jquery对象，$("#formadd")[0]为dom对象#}
+                        {#$("#formadd")[0].reset();#}
+                        {#$('#myModal').modal('hide');#}
+                        location.reload();
+                    } else {
+                        if (res.tips) {
+                            {#文献不存在错误#}
+                            alert(res.tips)
+                            $('#myModal').modal('hide');
+                        } else {
+                            {#文献信息编辑填写错误#}
+                            $.each(res.err, function (name, errmsglist) {
+                                $("#id_" + name).prev().text(errmsglist[0])
+                            })
+                        }
+                    }
+                }
+            })
+        }
+
+        function bindbtndel() {
+            $(".btn_del").click(function () {
+                {#显示删除对话框#}
+                $('#delModal').modal('show');
+                {#获取当前行id并保存到全局变量中#}
+                DELETE_ID = $(this).attr('uid');
+            })
+            $(".btn_del_yes").click(function () {
+                $.ajax({
+                    url: "/doc/del/",
+                    type: 'get',
+                    data: {
+                        uid: DELETE_ID
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.status) {
+                            $('#delModal').modal('hide');
+                            $("tr[uid=" + DELETE_ID + "]").remove();
+                            {#location.reload();#}
+                        } else {
+                            alert(res.err)
+                            $('#delModal').modal('hide');
+                            console.log(res)
+                        }
+
+                    }
+                })
+            })
+        }
+
+        function bindbtnedit() {
+            $(".btn_edit").click(function () {
+                $(".err_msg").empty();
+                {#清空原有值#}
+                $("#formadd")[0].reset();
+                {#获取当前行id#}
+                let uid = $(this).attr('uid')
+                EDIT_ID = uid
+                {#发送Ajax请求去后端获取当前行的数据#}
+                $.ajax({
+                    url: '/doc/edit/details',
+                    type: 'get',
+                    data: {
+                        uid: uid
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.status) {
+                            console.log(res)
+                            {#获取到的后端信息填充到表单中#}
+                            $.each(res.data, function (name, value) {
+                                $("#id_" + name).val(value)
+                            })
+                            {#修改对话框标题#}
+                            $('#myModalLabel').text('编辑');
+                            {#显示对话框#}
+                            $('#addModal').modal('show');
+                        } else {
+                            alert(res.err)
+                        }
+                    }
+                })
+            })
+        }
+
+        function bindbtnview() {
+            $(".btn_view").click(function () {
+                VIEW_ID = $(this).attr('uid')
+                console.log(VIEW_ID)
+                $.ajax({
+                    url: "/doc/view/",
+                    type: 'post',
+                    data: {
+                        uid: VIEW_ID
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.status) {
+                            let keytxt = "{{ search_data }}"
+                            localStorage.setItem('docname', res.docname)
+                            localStorage.setItem('key', keytxt)
+                            window.location.href = '/doc/view/';
+                            console.log(res.docname)
+                        } else {
+                            console.log(res)
+                        }
+
+                    }
+                })
+            })
+        }
+    </script>
+{% endblock %}
+
+
+
+
+

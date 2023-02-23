@@ -1,0 +1,142 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block mytitle %}
+        <title>用户登录</title>
+    {% endblock %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'plugins/fontawesome-free-6.2.1-web/css/fontawesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-5.2.3/css/bootstrap.min.css' %}">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: url("{% static 'images/background_default.jpg' %}") no-repeat 0 0 transparent;
+        }
+
+        .size {
+            width: 100%;
+            height: 100%;
+        }
+
+        #vcode {
+            height: 35px;
+            width: 50%;
+            display: inline-block;
+            /*padding-left: 8px;*/
+        }
+
+        #code {
+            color: #ffffff;
+            /*字体颜色白色*/
+            background: linear-gradient(135deg, #83a4d4, #b6fbff);
+            height: 35px;
+            width: 150px;
+            float: right;
+            text-align: center;
+            font-size: 18pt;
+            /*margin: 5px auto;*/
+            /*font-family: "华康娃娃体W5";*/
+            padding: 5px 35px 10px 35px;
+            margin-left: 5%;
+            cursor: pointer;
+        }
+
+        .sub {
+            background: linear-gradient(135deg, #79f1a4, #0e5cad) !important;
+        }
+    </style>
+    {% block mystyle %}
+    {% endblock %}
+</head>
+<body>
+{% block myinfo %}
+    <div class="container size clearfix">
+        <div class="login-wrapper" style="height: 620px;">
+            <form method="post" onsubmit="return check()" novalidate>
+                {% csrf_token %}
+                <div class="header">Login</div>
+                <div class="container-fluid form-wrapper clearfix">
+                    {{ form.username }}
+                    <span style="color: red;">{{ form.username.errors }}</span>
+                    {{ form.password }}
+                    <span style="color: red">{{ form.password.errors }}</span>
+                    {#            <input type="text" autocomplete="false" id="vcode" required="required" placeholder="验证码"#}
+                    {#                   class="input-item col-xs-7"#}
+                    {#            /><span id="code" class="col-xs-5"></span>#}
+                    <div class="row">
+                        <div class="col">
+                            {{ form.code }}
+                            <span style="color: red">{{ form.code.errors }}</span>
+                        </div>
+                        <div class="col">
+                            <a href="/login/">
+                                <img src="/checkcode/" alt="图片加载失败">
+                            </a>
+                        </div>
+                    </div>
+                    <input class="sub" type="submit" value="Login">
+                </div>
+            </form>
+            <div class="msg">
+                Do not have account? <a href="/register">sign up</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+<script type="text/javascript">
+
+    var code; //声明一个变量用于存储生成的验证码
+    changeImg();
+    document.getElementById("id_code").onclick = changeImg;
+
+
+    function changeImg() {
+        var arrays = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
+            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
+            'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+            'u', 'v', 'w', 'x', 'y', 'z',
+            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
+            'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
+            'U', 'V', 'W', 'X', 'Y', 'Z'];
+        code = ''; //重新初始化验证码
+        //alert(arrays.length);
+        //随机从数组中获取四个元素组成验证码
+        for (var i = 0; i < 4; i++) {
+            //随机获取一个数组的下标
+            var r = parseInt(Math.random() * arrays.length);
+            code += arrays[r];
+        }
+        document.getElementById('id_code').innerHTML = code; //将验证码写入指定区域
+    }
+
+    //效验验证码(表单被提交时触发)
+    function check() {
+
+        //获取用户输入的验证码
+        let input_code = document.getElementById('vcode').value;
+        if (input_code.toLowerCase() === code.toLowerCase()) {
+            return true
+        } else {
+            alert("请输入正确的验证码!");
+            return false;
+        }
+    }
+
+</script>
+<script src="https://kit.fontawesome.com/2503dce09a.js" crossorigin="anonymous"></script>
+<script src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-5.2.3/js/bootstrap.bundle.min.js' %}"></script>
+
+</body>
+</html>

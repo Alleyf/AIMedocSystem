@@ -1,0 +1,422 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block mytitle %}
+    <title>医学文献-易管理</title>
+{% endblock %}
+{% block mystyle %}
+    <link rel="stylesheet" href="{% static 'css/query.css' %}">
+{% endblock %}
+
+{% block info %}
+    <div class="container-fluid">
+        <div id='PleaseWait' class='watiting-div'
+             style='justify-content: center;z-index: 999;opacity: 0.7;position: absolute;display: none;width: 100%;height: 100%;background: #111010'></div>
+        <div class="container-fluid" id="wrapper">
+            <div class="container" style="margin: 50px auto">
+                <form method="get" onsubmit="return bindsubmit()">
+                    <div style="width: 80%;margin: auto;">
+                        {% csrf_token %}
+                        <div class="input-group mb-3 has-validation set">
+                            <button id="cur_way" class="btn btn-outline-primary dropdown-toggle" type="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">本地
+                            </button>
+                            <ul class="dropdown-menu text-center" style="min-width: auto;">
+                                {#                                <li><a class="dropdown-item" target="_blank"#}
+                                {#                                       href="https://kns.cnki.net/kns8/defaultresult/index">知网</a></li>#}
+                                {#                                <li><a class="dropdown-item" target="_blank"#}
+                                {#                                       href="https://s.wanfangdata.com.cn/paper?q={{ search_data }}">万方</a></li>#}
+                                {#                                <li><a class="dropdown-item" target="_blank"#}
+                                {#                                       href="https://scholar.google.com/scholar?q={{ search_data }}">谷歌</a></li>#}
+                                <li>
+                                    <button id="zhiwang" class="btn" type="button">知网</button>
+                                </li>
+                                <li id="wanfang"><a class="dropdown-item" target="_blank"
+                                                    href="https://s.wanfangdata.com.cn/paper?q={{ search_data }}">万方</a>
+                                </li>
+                            </ul>
+                            <div class="form-floating btn-outline-info">
+                                <input type="text" name="keyword" class="form-control"
+                                       aria-label="Text input with dropdown button" placeholder="Search for Keyword"
+                                       id="keyword" autocomplete="off" value="{{ search_data }}"
+                                >
+                                <label for="keyword">Search for Keyword</label>
+                            </div>
+                            <button class="btn btn-outline-primary" type="submit" id="search"
+                                    value="Go!" onsubmit="return bindsubmit()">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                            <div class="text-center text-danger valid-feedback" id="fedback" style="display: block">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <section class="loader" style="display: none">
+
+                <div style="--i:0" class="slider">
+                </div>
+                <div style="--i:1" class="slider">
+                </div>
+                <div style="--i:2" class="slider">
+                </div>
+                <div style="--i:3" class="slider">
+                </div>
+                <div style="--i:4" class="slider">
+                </div>
+            </section>
+
+            {% if code == 404 %}
+                <div id="restip">
+                    {% if  search_data == '' %}
+                        <div class="text-center" style="margin: 100px auto;font-size: 20px">
+                            您当前输入的关键词为空，请重新输入，谢谢！
+                        </div>
+                    {% else %}
+                        <div class="text-center" style="margin: 100px auto;font-size: 20px">
+                            抱歉本地数据库未检索到含有
+                            <span style="color: red">{{ search_data }}</span>
+                            的关键词文献
+                        </div>
+                    {% endif %}
+                </div>
+            {% elif code == 200 %}
+                {% for pninfo in page_info %}
+                    {% if pninfo.num == 1 %}
+                        <div class="container-fluid table-responsive" id="tb" style="display: block">
+                        <div class="table-responsive"><i class="fa fa-list"></i>文献列表</div>
+                        <table class="table table-hover table-condensed ">
+                        <thead class="text-center">
+                        <tr>
+                            <th>ID</th>
+                            <th>文献名</th>
+                            <th>点击量得分</th>
+                            <th>用户反馈得分</th>
+                            <th>相关度得分</th>
+                            <th>总分</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody class="text-center info">
+                    {% endif %}
+
+                    {#                        {% for pninfo in page_info %}#}
+                    <tr uid="{{ pninfo.id }}" class="tr">
+                        <th scope="row" style="display: none">{{ pninfo.id }}</th>
+                        <th scope="row">{{ pninfo.num }}</th>
+                        <td>{{ pninfo.name }}</td>
+                        <td class="clkscore" uid="{{ pninfo.id }}">{{ pninfo.clkscore }}</td>
+                        <td>{{ pninfo.fedbakscore }}</td>
+                        <td>{{ pninfo.relscore }}</td>
+                        <td>{{ pninfo.allscore }}</td>
+                        <td>
+                            <button uid="{{ pninfo.id }}" class="btn btn-default btn-sm clk"
+                                    type="button">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                            {#                                <input uid="{{ pninfo.id }}" type="button" class="btn btn-danger btn-xs btn_del"#}
+                            {#                                       value="删除">#}
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+            </tbody>
+            </table>
+            {#            </div>#}
+            {#        </div>#}
+            </div>
+            <a href="#top" id="back" class="set btn btn-info btn-sm back">
+                <i class="fa-solid fa-caret-up"></i>
+            </a>
+            <div id="tb_container"></div>
+            <div class="text-center" style="width: 100%;height: 60px;margin:0 auto">
+                <ul class="list-unstyled" style="margin-top: 30px;line-height: 30px;">
+                    <li>
+                        <h5 class="text-center"
+                            style="display: none;margin: 10px auto;font-size: 14px;color: #b5b5b5;" id="slogan">
+                            猜你想搜:
+                        </h5>
+                        <p class="text-center" id="relsearch"
+                           style="display: inline-block;vertical-align: top; width: 100%;font-size: 14px;"></p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block myscript %}
+    <script type="text/javascript">
+        let SEARCHWAY = "本地";
+        $(function () {
+            {#bindbtndel();#}
+            bindclk();
+            bindsettb();
+            bindsubmit();
+            change_search_way();
+        })
+
+        function change_search_way() {
+            $("#zhiwang").click(function () {
+                if (SEARCHWAY === "本地") {
+                    $("#zhiwang").text(SEARCHWAY)
+                    SEARCHWAY = "知网";
+                    $("#cur_way").text(SEARCHWAY)
+                } else {
+                    $("#zhiwang").text(SEARCHWAY)
+                    SEARCHWAY = "本地";
+                    $("#cur_way").text(SEARCHWAY)
+                }
+            });
+
+        }
+
+        function bindsettb() {
+            if ($("tbody")) {
+                tb = $("tbody").children()
+                {#console.log(tb)#}
+                trcss = ['table-primary', 'table-secondary', 'table-success', 'table-danger', 'table-warning', 'table-light']
+                for (let i = 0; i < tb.length; i++) {
+                    {#$(".tr")[i].setAttribute("class", "tr " + trcss[(i % 6)])#}
+                    {#console.log(tb[i])#}
+                    tb[i].setAttribute("class", "tr " + trcss[(i % 6)])
+                }
+            }
+        }
+
+        function loading() {
+            {#console.log(document.getElementById('PleaseWait'))#}
+            document.getElementById('PleaseWait').innerHTML =
+                '<section class="loader" style="display: flex;align-items: center;justify-content:center"><div style="--i:0" class="slider"></div><div style="--i:1" class="slider"></div><div style="--i:2" class="slider"></div><div style="--i:3" class="slider"></div><div style="--i:4" class="slider"></div></section>';   // 解决在ie加载时gif图片freeze问题
+            if ($("#keyword").val() !== "") {
+                $("#PleaseWait").show();
+                window.addEventListener('load', completeLoading);
+            }
+
+            function completeLoading() {
+                if (document.readyState === "complete") {
+                    $("#PleaseWait").hide();
+                }
+            }
+        }
+
+
+        function bindsubmit() {
+            addloader();
+            if (!$("#relsearch").text()) {
+                rel_search();
+            }
+            ikw = $("#keyword")
+            console.log(SEARCHWAY)
+            let keywords = ikw.val()
+            if (keywords !== "") {
+                ikw.removeClass("is-invalid")
+                ikw.addClass("is-valid")
+                $("#fedback").text("")
+                if (SEARCHWAY === "知网") {
+                    $("span").detach();
+                    $("#tb").detach();
+                    $.ajax({
+                        url: '/doc/external/',
+                        type: 'GET',
+                        data: {
+                            'keywords': keywords,
+                        },
+                        dataType: 'json',
+                        success: function (res) {
+                            console.log(res);
+                            $("#PleaseWait").css('display', "none")
+                            console.log("修改成功")
+                            $(".loader").remove();
+                            divcf = $("<div>");
+                            divcf.attr({
+                                'class': "container-fluid table-responsive",
+                                'id': "tb",
+                                'style': "display: block"
+                            })
+                            table = $("<table>")
+                            table.attr({
+                                'class': "table table-hover table-condensed"
+                            })
+                            thead = $("<thead>")
+                            thead.attr({
+                                'class': "text-center"
+                            })
+                            tr = $("<tr>")
+                            th1 = $("<th>")
+                            th2 = $("<th>")
+                            th1.text("文献名")
+                            th2.text("操作")
+                            tr.append(th1)
+                            tr.append(th2)
+                            thead.append(tr)
+                            table.append(thead)
+                            tbody = $("<tbody>")
+                            tbody.attr('class', 'text-center')
+                            for (let i = 0; i < res.data.length; i++) {
+                                trby = $("<tr>")
+                                td1 = $("<td>")
+                                td2 = $("<td>")
+                                a = $("<a>")
+                                td1.text(res.data[i].name)
+                                a.attr({
+                                    'href': res.data[i].href,
+                                    'target': '_blank',
+                                    'style': 'text-decoration: none'
+                                })
+                                a.text("浏览")
+                                td2.append(a)
+                                trby.append(td1)
+                                trby.append(td2)
+                                tbody.append(trby)
+                            }
+                            table.append(tbody)
+                            divcf.append(table)
+                            $("#tb_container").prepend(divcf)
+                            {#$("#wrapper").append(divcf)#}
+                            console.log("添加表格")
+                            rel_search()
+                            bindsettb()
+                        }
+                    })
+                    return false
+                } else {
+                    ikw = $("#keyword")
+                    ikw.removeClass("is-invalid")
+                    ikw.addClass("is-valid")
+                    console.log("输入不为空")
+                    return true
+                }
+            } else {
+                $("#tb").empty();
+                $("#restip").empty();
+                $("#keyword").addClass("is-invalid")
+                $("#fedback").text("Please input keywords!")
+                $(".loader").css('display', "flex")
+                console.log("输入为空")
+                return false
+            }
+        }
+
+        function addloader() {
+            console.log(document.readyState)
+            if ("{{page_info.0.id}}" === "") {
+                loading();
+                {#$(".loader").css('display', "flex")#}
+            } else {
+                $(".loader").css('display', "none")
+                {#console.log(document.readyState)#}
+
+            }
+        }
+
+        function rel_search() {
+            $("#slogan").show();
+            {#$("#relsearch").removeTag('span')#}
+            let keyword = $("#keyword").val()
+            $.ajax({
+                url: 'https://recom.cnki.net/api/recommendations/words/union',
+                type: 'GET',
+                data: {
+                    'w': keyword,
+                    'top': 10
+                },
+                dataType: 'json',
+                success: function (res) {
+                    const relwords = res.wordres;
+                    if (relwords) {
+                        relwords.forEach(function (key, index) {
+                            if (index === 5) {
+                                $("#relsearch").append($("</br>"))
+                            }
+                            let a = $("<a>").attr({
+                                'href': '/doc/query/?keyword=' + key,
+                                'style': 'color:#0095d9;text-decoration: none;padding:10px;cursor: pointer;',
+                            })
+                            a.text(key)
+                            let span = $("<span>").append(a)
+                            span.attr({
+                                'style': 'display: inline-block;width: 105px;margin-left:10px;font-size:14px;white-space:nowrap;overflow: hidden;text-overflow:ellipsis;'
+                            })
+                            $("#relsearch").append(span)
+                            a.hover(function () {
+                                a.css("color", "#b44c97");
+                            }, function () {
+                                a.css("color", "#0095d9");
+                            });
+                        })
+                    } else {
+                        $("#slogan").text("未搜索到相关词语")
+                    }
+
+                }
+            })
+            console.log()
+        }
+
+        function keydown_enter() {
+            $("#keyword").keydown(function (event) {
+                if (event.keyCode === 13) {
+                    console.log("按下了回车键")
+                    $("#search").click();
+                    return true;
+                }
+            });
+        }
+
+        function bindbtndel() {
+            $(".btn_del").click(function () {
+                {#显示删除对话框#}
+                $('#delModal').modal('show');
+                {#获取当前行id并保存到全局变量中#}
+                DELETE_ID = $(this).attr('uid');
+            })
+            $(".btn_del_yes").click(function () {
+                $.ajax({
+                    url: "/doc/del/",
+                    type: 'get',
+                    data: {
+                        uid: DELETE_ID
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.status) {
+                            $('#delModal').modal('hide');
+                            $("tr[uid=" + DELETE_ID + "]").remove();
+                        } else {
+                            alert(res.err)
+                            $('#delModal').modal('hide');
+                            console.log(res)
+                        }
+
+                    }
+                })
+            })
+        }
+
+        function bindclk() {
+            $('.clk').click(function () {
+                let id = $(this).attr('uid')
+                $.ajax({
+                    url: "/doc/" + id + "/clk/",
+                    type: "get",
+                    dataType: 'json',
+                    success: function (res) {
+                        console.log(res)
+                        obj = $(".clkscore")
+                        let uid = obj.attr("uid")
+                        for (let i = 0; i < obj['length']; i++) {
+                            if (obj[i].getAttribute('uid') === id) {
+                                obj[i].textContent = res.clkscore
+                            }
+                        }
+                        window.location.href = '/doc/details/?text={{ search_data }}&uid=' + res.doc_id
+                    }
+                })
+            })
+        }
+
+    </script>
+{% endblock %}

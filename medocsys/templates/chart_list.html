@@ -1,0 +1,264 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>医学文献智能检索平台数据可视化</title>
+    <link rel="stylesheet" href="{% static 'icon/iconfont.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/fontawesome-free-6.2.1-web/css/fontawesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-5.2.3/css/bootstrap.min.css' %}">
+    <style>
+        li > div {
+            overflow: hidden; /*内容超出后隐藏*/
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            text-align: center !important;
+        }
+
+        dl > dd {
+            text-align: center !important;
+        }
+
+        .use-data > li > p {
+            font-size: 30px !important;
+            color: yellow !important;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container-header container-fluid" id="wrapper">
+    <ul class="nowTime">
+        <li></li>
+        <li></li>
+    </ul>
+    <div class="location">
+        <i class="fas fa-expand-arrows-alt" onclick="fullScreen()"
+           style="margin-right: 10px;font-size: 25px;color: white"></i>
+        <a href="../../doc/query">
+            <i class="fa-solid fa-rotate-left" style="font-size: 25px;color: white"></i>
+        </a>
+    </div>
+    <h4 style="margin-top: 15px;color: white">医道有易——医学文献智能检索平台</h4>
+</div>
+<div class="container-content container-fluid">
+    <div class="top container-fluid" style="margin-bottom: 20px">
+        <div class="count-base">
+            <div class="com-count-title">资源总量构成</div>
+            <div class="com-screen-content">
+
+                <div id="main1" style="width:100%;height:300px;"></div>
+            </div>
+            <span class="left-top"></span>
+            <span class="right-top"></span>
+            <span class="left-bottom"></span>
+            <span class="right-bottom"></span>
+        </div>
+        <div class="count-resource q1">
+            <div class="com-count-title">资源总量统计</div>
+            <div class="com-screen-content2">
+                <ul class="use-data">
+                    <li>
+                        <p class="data-count">{{ num.0 }} </p>
+                        <span class="data-name">文献总量</span>
+                    </li>
+                    <li>
+                        <p class="data-count">{{ num.1 }}</p>
+                        <span class="data-name">中文文献量</span>
+                    </li>
+                    <li>
+                        <p class="data-count">{{ num.2 }}</p>
+                        <span class="data-name">英文文献量</span>
+                    </li>
+                </ul>
+                <div class="com-screen-content">
+                    <div id="main2" style="margin-top:10px;width:100%;height:240px;"></div>
+                </div>
+                <span class="left-top"></span>
+                <span class="right-top"></span>
+                <span class="left-bottom"></span>
+                <span class="right-bottom"></span>
+            </div>
+        </div>
+        <div class="count-resource q2">
+            <div class="com-count-title">关键词词云</div>
+            <div class="com-screen-content">
+                <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel" data-interval="1000">
+                    <div class="carousel-inner">
+                        {% for item in word_cloud_ls %}
+                            {% if forloop.first %}
+                                <div class="carousel-item active">
+                            {% else %}
+                                <div class="carousel-item">
+                            {% endif %}
+                        <img style="margin-top: 3%;" src="{{ item.word_cloud_path }}" width=300px
+                             height=240px
+                             class="d-block w-100"
+                             alt="...">
+                        <div class="d-none d-md-block text-center" style="margin-top: 9px">
+                            <h6 style="color: white">{{ item.doc_name }}</h6>
+                        </div>
+                        </div>
+                        {% endfor %}
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+                                data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+                                data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+
+                    </div>
+                    {#                <img src="{{ word_cloud_path }}" style="margin-top: 3%;" width=100% height=100% alt="未检索关键词，图片不存在，加载失败">#}
+                </div>
+                <span class="left-top"></span>
+                <span class="right-top"></span>
+                <span class="left-bottom"></span>
+                <span class="right-bottom"></span>
+            </div>
+        </div>
+
+        <div class="mid container-fluid">
+            <div class="count-share w1" style="margin-top: 60px">
+                <div class="com-count-title">热门文献</div>
+                <div class="com-screen-content">
+                    <div class="topRec_List">
+                        <dl>
+                            <dd>文献名称</dd>
+                            <dd>点击量</dd>
+                            <dd>点赞量</dd>
+                        </dl>
+                        <div class="maquee">
+                            <ul>
+                                {% for item in data %}
+                                    <li>
+                                        <div uid="{{ item.id }}" class="btn_view" style="">{{ item.name }}</div>
+                                        <div>{{ item.fedbakscore }}</div>
+                                        <div>{{ item.clkscore }}</div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <span class="left-top"></span>
+                <span class="right-top"></span>
+                <span class="left-bottom"></span>
+                <span class="right-bottom"></span>
+            </div>
+            <div class="count-share w2" style="margin-top: 60px">
+                <div class="com-count-title">文献上传时间</div>
+                <div class="com-screen-content">
+                    <div id="main5" style="width:100%;height:300px;"></div>
+                </div>
+                <span class="left-top"></span>
+                <span class="right-top"></span>
+                <span class="left-bottom"></span>
+                <span class="right-bottom"></span>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{% static 'js/echarts.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+<script src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
+<script src="https://kit.fontawesome.com/2503dce09a.js" crossorigin="anonymous"></script>
+<script src="{% static 'plugins/bootstrap-5.2.3/js/bootstrap.bundle.min.js' %}"></script>
+
+<script type="text/javascript">
+    //根据不同的分辨率调用不同的css和js
+    if (window.screen.width >= 1600) {
+        document.write("<link href='.{% static 'css/visualization_1920.css' %}' rel='stylesheet' type='text/css'>");
+
+        document.writeln("<script type=\"text/javascript\" src=\"{% static 'js/visualization_1920.js' %}\"><\/script>");
+    } else if (window.screen.width < 1600 && window.screen.width >= 1280) {
+        document.write("<link href='{% static 'css/visualization_1280.css' %}' rel='stylesheet' type='text/css'>");
+
+        document.writeln("<script type=\"text/javascript\" src=\"{% static 'js/visualization_1280.js' %}\"><\/script>");
+    } else {
+        document.write("<link href='{% static 'css/visualization_1024.css' %}' rel='stylesheet' type='text/css'>");
+
+        document.writeln("<script type=\"text/javascript\" src=\"{% static 'js/visualization_1024.js' %}\"><\/script>");
+    }
+</script>
+
+<script type="text/javascript">
+    let VIEW_ID;
+    $(function () {
+        bindbtnview();
+        listenKey();
+        setInterval('autoScroll(".maquee")', 2000);
+    })
+
+    <!--大屏-->
+    function listenKey() {
+        document.addEventListener("keydown", function (e) {
+            if (e.keyCode === 13) {
+                toggleFullScreen();
+            }
+        }, false);
+    }
+
+    function toggleFullScreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen();
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+    }
+
+    //实现全屏
+    function fullScreen() {
+        toggleFullScreen()
+    }
+
+    function bindbtnview() {
+        $(".btn_view").click(function () {
+            VIEW_ID = $(this).attr('uid')
+            console.log(VIEW_ID)
+            $.ajax({
+                url: "/doc/view/",
+                type: 'post',
+                data: {
+                    uid: VIEW_ID
+                },
+                dataType: 'json',
+                success: function (res) {
+                    if (res.status) {
+                        localStorage.setItem('docname', res.docname)
+                        localStorage.setItem('key', "")
+                        localStorage.setItem('pageid', "1")
+                        window.open('/doc/view/', '_blank')
+                        {#window.location.href = '/doc/view/';#}
+                        console.log(res.docname)
+                    } else {
+                        console.log(res)
+                    }
+
+                }
+            })
+        })
+    }
+
+
+    function autoScroll(obj) {
+        $(obj).find("ul").animate({
+            marginTop: "-39px"
+        }, 500, function () {
+            $(this).css({
+                marginTop: "0px"
+            }).find("li:first").appendTo(this);
+        })
+    }
+
+</script>
+</body>
+
+{#    <script src="http://cdn.highcharts.com.cn/highcharts/highcharts.js"></script>#}

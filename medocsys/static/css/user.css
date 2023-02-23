@@ -1,0 +1,69 @@
+/*幕布*/
+.mask {
+    position: fixed;
+    background-color: #1e1b1b;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    opacity: 0.7;
+    z-index: 999;
+    display: none;
+}
+
+.dialog {
+    position: fixed;
+    width: 500px;
+    height: 300px;
+    left: 0;
+    right: 0;
+    top: 100px;
+    margin: 0 auto;
+    z-index: 1000;
+    display: none;
+}
+
+/*添加*/
+.login-wrapper {
+    background-color: #fff;
+    width: 500px;
+    height: 650px;
+    border-radius: 15px;
+    padding: 0 50px;
+    margin: 2px auto;
+    /*box-shadow: 4px 4px 5px #b8d2e0;*/
+
+}
+
+.login-wrapper .header {
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 200px;
+}
+
+.login-wrapper .form-wrapper .input-item {
+    display: block;
+    width: 100%;
+    margin-bottom: 20px;
+    border: 0;
+    padding: 10px;
+    border-bottom: 1px solid rgb(128, 125, 125);
+    font-size: 15px;
+    outline: none;
+}
+
+.login-wrapper .form-wrapper .input-item::placeholder {
+    text-transform: uppercase;
+}
+
+.login-wrapper .form-wrapper .sub {
+    text-align: center;
+    padding: 10px;
+    width: 100%;
+    border: 0;
+    border-radius: 5px;
+    margin-top: 40px;
+    background-image: linear-gradient(to right, #a6c1ee, #fbc2eb);
+    color: #fff;
+}

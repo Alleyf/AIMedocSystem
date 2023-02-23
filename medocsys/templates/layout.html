@@ -1,0 +1,166 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block mytitle %}
+        <title>标题</title>
+    {% endblock %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet"
+          href="{% static 'plugins/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/fontawesome-free-6.2.1-web/css/fontawesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-5.2.3/css/bootstrap.min.css' %}">
+    {% block mystyle %}
+    {% endblock %}
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+        {#background: url("{% static 'images/background_default.jpg' %}") no-repeat 0 0 transparent;#}
+        }
+    </style>
+</head>
+<body>
+{% block mynav %}
+    <nav class="navbar bg-body-tertiary bg-default fixed-layout">
+        <div class="container" style="justify-content: flex-end">
+            <a class="navbar-brand" href="#" style="position: relative;right: 900px">医道有易</a>
+            <div class="" style="justify-items: right;justify-content: space-between;display: flex">
+                <div>
+                    <a href="#">
+                        <img alt="50x50" id="avatar" src="/media/avatars/{{ request.session.info.avatar }}"
+                             width="50px" height="50px" class="rounded img-fluid"/>
+                    </a>
+                </div>
+                <div class="dropdown" style="padding: 5px;">
+                    <button class=" btn btn-default dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                        {{ request.session.info.name }}
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/user/{{ request.session.info.id }}/edit/">个人中心</a></li>
+                        <li><a class="dropdown-item" href="#">消息通知</a></li>
+                        <li><a class="dropdown-item" href="/logout/">注销</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+                    aria-controls="offcanvasNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            {#        侧边导航栏#}
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
+                 aria-labelledby="offcanvasNavbarLabel" style="width: 40%">
+                <div class="offcanvas-header" style="width: 100%;">
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">医道有易，为您导航</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3" style="width: 100%;">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/doc/query/"><i
+                                    class="fa-solid fa-magnifying-glass"></i>文献检索
+                            </a>
+                        </li>
+                        {#                        <li class="nav-item">#}
+                        {#                            <a class="nav-link" href="/doc/search/">#}
+                        {#                                <i class="fa-solid fa-magnifying-glass"></i>文献检索（基于ajax）#}
+                        {#                            </a>#}
+                        {#                        </li>#}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/chart/list/">
+                                <i class="fa-solid fa-chart-simple"></i>数据统计
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                                <i class="fa-solid fa-grid-2"></i>资源管理
+                            </a>
+                            <ul class="dropdown-menu" style="width: 100%;">
+                                <li><a class="dropdown-item" href="/doc/list/">
+                                    <i class="fa-solid fa-file"></i>文献管理
+                                </a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="/admin/">
+                                    <i class="fa-solid fa-user"></i>后台管理
+                                </a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+<div>
+    {% block info %}{% endblock %}
+</div>
+<script src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
+<script src="https://kit.fontawesome.com/2503dce09a.js" crossorigin="anonymous"></script>
+<script src="{% static 'plugins/bootstrap-5.2.3/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datepicker/bootstrap-datepicker.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        thememode();
+    })
+
+    function thememode() {
+        const options = {
+            bottom: 'unset', // default: '32px'
+            right: 'unset', // default: '32px'
+            left: '15px', // default: 'unset'
+            time: '0.5s', // default: '0.3s'
+            mixColor: '#fff', // default: '#fff'
+            backgroundColor: '#fff', // default: '#fff'
+            buttonColorDark: '#100f2c', // default: '#100f2c'
+            buttonColorLight: '#fff', // default: '#fff'
+            saveInCookies: true, // default: true,
+            label: '🌓', // default: ''
+            autoMatchOsTheme: true// default: true
+        }
+
+        function addDarkmodeWidget() {
+            let darkmode = new Darkmode(options);
+            darkmode.showWidget();
+            $(".darkmode-toggle").on('click', function () {
+                if (darkmode.isActivated()) {
+                    $(".panel").attr('class', 'panel panel-success')
+                    $(".list-group-item[id]").css({
+                        "color": "#3c763d",
+                        "background-color": "#a5d29a",
+                        "border-color": "#d6e9c6"
+                    });
+                    console.log('设置面板样式', darkmode.isActivated())
+                } else {
+                    $(".panel").attr('class', 'panel panel-info')
+                    $(".list-group-item[id]").css({
+                        "color": "#3c763d",
+                        "background-color": "#dff0d8",
+                        "border-color": "#d6e9c6"
+                    });
+                    console.log('恢复面板样式', darkmode.isActivated())
+                }
+            })
+
+        }
+
+        window.addEventListener('load', addDarkmodeWidget);
+    }
+
+    {#const darkmode = new Darkmode(options);#}
+    {#darkmode.showWidget();#}
+
+
+</script>
+
+{% block myscript %}
+{% endblock %}
+</body>

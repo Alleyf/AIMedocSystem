@@ -1,0 +1,153 @@
+{% extends 'layout.html' %}
+{% block mytitle %}
+    <title>医学文献-易管理</title>
+{% endblock %}
+{% block mystyle %}
+{% endblock %}
+
+{% block info %}
+    <div class="container" style="margin-bottom: 20px">
+        <div class="" style="width: 50%;margin: auto;">
+            <div class="input-group">
+                <input style="height: 50px" type="text" class="form-control"
+                       placeholder="Search for Keyword" id="keyword" autocomplete="off">
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" style="height: 50px" type="button" id="search">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" id="tb" style="display: none">
+        <div class="panel panel-info">
+            <div class="panel-heading"><i class="fa fa-list"></i>文献列表</div>
+            <div class="panel-body">
+                <table class="table table-hover table-condensed ">
+                    <thead class="text-center">
+                    <tr>
+                        <th>ID</th>
+                        <th>文献名</th>
+                        <th>作者</th>
+                        {#                        <th>点击量得分</th>#}
+                        {#                        <th>用户反馈得分</th>#}
+                        {#                        <th>归档</th>#}
+                        {#                        <th>来源</th>#}
+                        {#                        <th>管理员</th>#}
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody class="text-center info">
+                    {% for pninfo in page_queryset %}
+                        <tr uid="{{ pninfo.id }}">
+                            <th scope="row">{{ pninfo.id }}</th>
+                            <td>{{ pninfo.name }}</td>
+                            <td>{{ pninfo.clkscore }}</td>
+                            <td>{{ pninfo.fedbakscore }}</td>
+                            <td>
+                                <a href="/doc/details/?text={{ search_data }}&uid={{ pninfo.id }}" uid="{{ pninfo.id }}"
+                                   class="btn btn-info btn-xs">查看详情</a>
+                                <input uid="{{ pninfo.id }}" type="button" class="btn btn-default btn-xs btn_edit"
+                                       value="编辑">
+                                <input uid="{{ pninfo.id }}" type="button" class="btn btn-primary btn-xs btn_view"
+                                       value="查看">
+                                <input uid="{{ pninfo.id }}" type="button" class="btn btn-danger btn-xs btn_del"
+                                       value="删除">
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="text-center">
+            <ul class="pagination pagination-xs page_str">
+                {{ page_str }}
+            </ul>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block myscript %}
+    <script type="text/javascript">
+        var KEYWORD
+        $(function () {
+            {#$("#tb").hide()#}
+            get_info();
+        })
+
+        function get_info() {
+            $("#search").click(function () {
+                    $(".info").children().remove()
+                    var keyword = $("#keyword").val();
+                    $.ajax({
+                        url: "/search/?text=" + keyword,
+                        type: 'get',
+                        dataType: 'json',
+                        success: function (res) {
+                            if (res) {
+                                var id_list = []
+                                let data_length = res.count
+                                if (data_length >= 10) {
+
+                                }
+                                for (let i = 0; i < res.count; i++) {
+                                    console.log(res.results[i].object.id)
+                                    let id = res.results[i].object.id;
+                                    id_list.push(id)
+                                }
+                                var id_array = new Int8Array(id_list)
+                                console.log(id_array)
+                                $.ajax({
+                                    url: "/doc/search/",
+                                    type: 'post',
+                                    data: id_array,
+                                    dataType: 'json',
+                                    {#async: false,  //同步#}
+                                    success: function (res) {
+                                        console.log('发送请求成功')
+                                        {#$("#tb").show()#}
+                                        $("#tb").attr('style', 'display:block')
+                                        $(".page_str").html(res.page_str)
+                                        var page_info = res.page_queryset
+                                        for (let item in page_info) {
+                                            console.log(page_info[item])
+                                            let id = page_info[item].pk
+                                            let uid = $('<th>').text(id)
+                                            let title = $('<td>').text(page_info[item].fields.name)
+                                            let author = $('<td>').text(page_info[item].fields.author)
+                                            let details = $('<a>').attr({
+                                                "href": "/doc/details/?text=" + keyword + "&uid=" + id,
+                                                "uid": id,
+                                                "class": "btn btn-info btn-xs"
+                                            })
+                                            details.text("查看详情")
+                                            let details_td = $("<td>").append(details)
+                                            let tr = $('<tr>').attr('uid', id)
+                                            tr.append(uid)
+                                            tr.append(title)
+                                            tr.append(author)
+                                            tr.append(details_td)
+                                            $(".info").append(tr)
+                                        }
+                                        {#for (let i = 0; i < res.page_queryset.length; i++) {#}
+
+                                        {#console.log(res.page_queryset.pk)#}
+                                        {#id = item.pk#}
+                                        {#$(".info")#}
+
+                                        {#document.querySelector('html').innerHTML = res#}
+                                    }
+                                });
+                            } else {
+                                console.log(res.error)
+                            }
+
+                        }
+                    })
+                }
+            )
+        }
+    </script>
+{% endblock %}

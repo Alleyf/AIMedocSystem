@@ -1,0 +1,89 @@
+{% extends 'user_modelform_add.html' %} # 继承父模块的标识
+{% block mytitle %}
+    <title>用户信息</title>
+{% endblock %}
+{% block info %}
+    <div>
+        <div class="container-fluid">
+            <div class="container text-center">
+                {% block actiontitle %}
+                    <h4 class="text-success">编辑用户</h4>
+                {% endblock %}
+                <div class="container">
+                    {% block userform %}
+                        <form class="input-group" method="post" novalidate enctype="multipart/form-data"
+                              style="justify-content: center;align-items: center;flex-direction: column">
+                            {% csrf_token %}
+                            {% for item in form %}
+                                {% if item.label != "验证码" %}
+                                    <div class="row g-3">
+                                        <label>{{ item.label }}</label>
+                                        {{ item }}
+                                        <span style="color: #c12c1f;float: bottom"><strong>{{ item.errors.0 }}</strong></span>
+                                    </div>
+                                {% endif %}
+                                {% if item.label == "头像" %}
+                                    <div class="rounded-circle row g-3" id="avatar_wrapper"
+                                         style="width: 100px; height: 100px;text-align: center;margin: 0;border: #8050c9 dashed 1px;">
+                                        <span class="err_msg" style="color: #c12c1f"></span>
+                                        <div id="avatar_container" onclick="$('input[id=id_avatar]').click();"
+                                             style="font-size: 15px;padding: 0;margin-left: 0;margin-top: -17px!important">
+                                            <i class="fa-solid fa-user"
+                                               style="font-size: 40px;margin-top: 0">
+                                            </i>
+                                            <span id="avatar_value"></span>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                            <div class="g-3 col-md-12">
+                                <input class="button--submit " value="Subscribe" type="submit">
+                            </div>
+                        </form>
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block myscript %}
+    <script type="text/javascript">
+        $(function () {
+            add_avatar_value();
+        })
+
+        function add_avatar_value() {
+            $('input[id=id_avatar]').change(function () {
+                if ($(this).val() !== '') {
+                    console.log($(this).val())
+                    showImg($(this)[0]);
+                    $("#avatar_value").text($(this).val())
+                } else {
+
+                }
+            });
+        }
+
+        function showImg(obj) {
+            var objUrl = getObjectURL(obj.files[0]);
+            if (objUrl) {
+                {#$(div > i).remove()#}
+                $("#avatar_wrapper").css('border', 'medium')
+                {#$(obj).after('<img class="rounded-circle" src="' + objUrl + '" alt="" style="width:50px;height:50px"> &nbsp;&nbsp;');#}
+                $("#avatar_container").html('<img class="rounded-circle" src="' + objUrl + '" alt="" style="width:100px;height:100px;margin: auto">')
+            }
+        }
+
+        function getObjectURL(file) {
+            var url = null;
+            if (window.createObjectURL !== undefined) {
+                url = window.createObjectURL(file);
+            } else if (window.URL !== undefined) {
+                url = window.URL.createObjectURL(file);
+            } else if (window.webkitURL !== undefined) {
+                url = window.webkitURL.createObjectURL(file);
+            }
+            return url;
+        }
+    </script>
+{% endblock %}

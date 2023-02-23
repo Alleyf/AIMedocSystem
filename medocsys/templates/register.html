@@ -1,0 +1,43 @@
+{% extends 'login.html' %}
+{% block mytitle %}
+    <title>用户注册</title>
+{% endblock %}
+{% block myinfo %}
+    <div class="container size">
+        <div class="login-wrapper" style="height: 720px;">
+            <form method="post" onsubmit="return check()" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="header">Register</div>
+                <div class="container-fluid form-wrapper clearfix">
+                    {{ form.username }}
+                    <span style="color: red">{{ form.username.errors }}</span>
+                    {{ form.email }}
+                    <span style="color: red">{{ form.email.errors }}</span>
+                    {{ form.password }}
+                    <span style="color: red">{{ form.password.errors }}</span>
+                    {{ form.confirm_password }}
+                    <span style="color: red">{{ form.confirm_password.errors }}</span>
+                    {{ form.avatar }}
+                    <span style="color: red">{{ form.avatar.errors }}</span>
+                    <div class="row">
+                        <div class="col">
+                            {{ form.code }}
+                            <span style="color: red">{{ form.code.errors }}</span>
+                        </div>
+                        <div class="col">
+                            <a href="/checkcode/">
+                                <img src="/checkcode/" alt="图片加载失败">
+                            </a>
+                        </div>
+                    </div>
+                    <input class="sub" type="submit" value="Register">
+                </div>
+            </form>
+            <div class="msg">
+                Do have account? <a href="/login/">sign in</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+

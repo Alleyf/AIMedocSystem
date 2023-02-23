@@ -1,0 +1,125 @@
+{% extends 'user_list.html' %} # 继承父模块的标识
+{% block mytitle %}
+    <title>新建用户</title>
+{% endblock %}
+{% block mystyle %}
+    <style>
+        .input {
+            display: inline-block;
+            margin: 10px auto;
+            min-height: 50px;
+            width: 300px;
+            padding: 0 1rem;
+            color: #1e2732;
+            font-size: 15px;
+            border: 1px solid #5e4dcd;
+            border-radius: 10px;
+            background-color: transparent;
+        }
+
+        .button--submit {
+            display: block;
+            margin: 10px auto;
+            min-height: 50px;
+            padding: .5em 1em;
+            border: none;
+            border-radius: 10px;
+            background-color: #5e4dcd;
+            color: #fff;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background-color .3s ease-in-out;
+        }
+
+        .button--submit:hover {
+            background-color: #5e5dcd;
+        }
+
+        .input:focus, .input:focus-visible {
+            border-color: #3898EC;
+            outline: none;
+        }
+    </style>
+{% endblock %}
+{% block info %}
+    <div>
+        <div class="container">
+            <div class="panel panel-info">
+                {% block actiontitle %}
+                    <div class="panel-heading">新建用户</div>
+                {% endblock %}
+                <div class="panel-body">
+                    {% block userform %}
+                        <form class="input-group" method="post">
+                            {% csrf_token %}
+                            <div class="form-group col-md-6">
+                                <label>用户名</label>
+                                <input type="text"
+                                       class="input form-control"
+                                       id="name"
+                                       name="name"
+                                       placeholder="name"
+                                       autocomplete="off">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>密 码</label>
+                                <input type="password"
+                                       class="input form-control"
+                                       id="pwd"
+                                       name="pwd"
+                                       placeholder="password"
+                                       autocomplete="off">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>年 龄</label>
+                                <input type="text"
+                                       class="input form-control"
+                                       id="age"
+                                       name="age"
+                                       placeholder="age"
+                                       autocomplete="off">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>账户余额</label>
+                                <input type="text"
+                                       class="input form-control"
+                                       id="account"
+                                       name="account"
+                                       placeholder="balance"
+                                       autocomplete="off">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>入职时间</label>
+                                <input type="datetime-local"
+                                       class="input form-control"
+                                       id="createtime"
+                                       name="ctime"
+                                       placeholder="createtime"
+                                       autocomplete="off">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>性 别</label>
+                                <select name="gender" id="gender" class="input form-control">
+                                    {% for gender in gender_choices %}
+                                        <option value="{{ gender.0 }}">{{ gender.1 }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>部 门</label>
+                                <select name="depart" id="depart" class="input form-control">
+                                    {% for depart in departs %}
+                                        <option value="{{ depart.id }}">{{ depart.title }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input class="button--submit " value="Subscribe" type="submit">
+                            </div>
+                        </form>
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

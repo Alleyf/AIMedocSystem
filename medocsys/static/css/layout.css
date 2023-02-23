@@ -1,0 +1,137 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-family: 微软雅黑, serif;
+    letter-spacing: .05em;
+}
+
+.table > td, th {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.input {
+    display: inline-block;
+    margin: 10px auto;
+    min-height: 50px;
+    width: 300px;
+    padding: 0 1rem;
+    color: #1e2732;
+    font-size: 15px;
+    border: 1px solid #5e4dcd;
+    border-radius: 6px;
+    background-color: transparent;
+}
+
+.button--submit {
+    display: block;
+    margin: 10px auto;
+    min-height: 50px;
+    padding: .5em 1em;
+    border: none;
+    border-radius: 6px;
+    background-color: #5e4dcd;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color .3s ease-in-out;
+}
+
+.button--submit:hover {
+    background-color: #5e5dcd;
+}
+
+.input:focus, .input:focus-visible {
+    border-color: #3898EC;
+    outline: none;
+}
+
+.set {
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    height: 33px;
+}
+
+
+em {
+    color: red;
+}
+
+strong {
+    color: red;
+}
+
+th {
+    text-align: center;
+}
+
+.navbar {
+    border-radius: 0;
+}
+
+.navbar ul a {
+    line-height: 30px;
+}
+
+.lh30 {
+    line-height: 30px;
+}
+
+
+.darkmode-layer, .darkmode-toggle {
+    z-index: 500;
+    top: 15px;
+}
+
+.darkmode--activated .photo-background {
+    /*filter: brightness(60%);*/
+    /*-webkit-filter: brightness(60%);*/
+    isolation: isolate;
+    mix-blend-mode: difference;
+}
+
+.darkmode--activated img {
+    /*filter: brightness(60%);*/
+    /*-webkit-filter: brightness(60%);*/
+    isolation: isolate;
+    mix-blend-mode: difference;
+}
+
+
+.darkmode--activated .photo-background {
+    filter: brightness(60%);
+    -webkit-filter: brightness(60%);
+    isolation: isolate;
+    mix-blend-mode: difference;
+}
+
+.darkmode--activated #comment {
+    filter: brightness(60%);
+    -webkit-filter: brightness(60%);
+    isolation: isolate;
+    mix-blend-mode: difference;
+}
+
+@media screen and (max-width: 760px) {
+    .darkmode-layer, .darkmode-toggle {
+        display: none;
+    }
+}
+
+.darkmode--activated .form-control {
+    color: #ec6800
+}
+
+
+.darkmode-toggle {
+    border-radius: 0;
+    width: 50px;
+    height: 50px;
+    background: #848484;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .05);
+    white-space: nowrap;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+    outline: none;
+}
