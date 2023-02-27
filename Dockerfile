@@ -11,19 +11,19 @@ ENV PYTHONUNBUFFERED 1
 COPY pip.conf /root/.pip/pip.conf
 
 # 在容器内创建mysite文件夹
-RUN mkdir /web/AiMedocSys
+RUN mkdir /aimedocsys
 
 # 设置容器内工作目录
-WORKDIR /web/AiMedocSys
+WORKDIR /aimedocsys
 
 # 更新 pip
 RUN pip install pip -U
 
 # 将 requirements.txt 复制到容器的 code 目录
-ADD requirements.txt /web/AiMedocSys/
+ADD requirements.txt /aimedocsys/
 
 # pip安装依赖
 RUN pip install -r requirements.txt
 
 # 将当前目录文件加入到容器工作目录中（. 表示当前宿主机目录）
-ADD . /web/AiMedocSys/
+ADD . /aimedocsys/

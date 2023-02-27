@@ -4,63 +4,33 @@
 <head>
     <meta charset="UTF-8">
     {% block mytitle %}
-        <title>用户登录</title>
+        <title>医道有易-用户登录</title>
     {% endblock %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'plugins/fontawesome-free-6.2.1-web/css/fontawesome.min.css' %}">
+    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.3.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
     <link rel="stylesheet" href="{% static 'plugins/bootstrap-5.2.3/css/bootstrap.min.css' %}">
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-        }
-
-        html, body {
-            width: 100%;
-            height: 100%;
-            background: url("{% static 'images/background_default.jpg' %}") no-repeat 0 0 transparent;
-        }
-
-        .size {
-            width: 100%;
-            height: 100%;
-        }
-
-        #vcode {
-            height: 35px;
-            width: 50%;
-            display: inline-block;
-            /*padding-left: 8px;*/
-        }
-
-        #code {
-            color: #ffffff;
-            /*字体颜色白色*/
-            background: linear-gradient(135deg, #83a4d4, #b6fbff);
-            height: 35px;
-            width: 150px;
-            float: right;
-            text-align: center;
-            font-size: 18pt;
-            /*margin: 5px auto;*/
-            /*font-family: "华康娃娃体W5";*/
-            padding: 5px 35px 10px 35px;
-            margin-left: 5%;
-            cursor: pointer;
-        }
-
-        .sub {
-            background: linear-gradient(135deg, #79f1a4, #0e5cad) !important;
-        }
-    </style>
     {% block mystyle %}
     {% endblock %}
 </head>
 <body>
 {% block myinfo %}
-    <div class="container size clearfix">
-        <div class="login-wrapper" style="height: 620px;">
+    <div class="container clearfix"
+         style="justify-content: center;display: flex;align-items: center;flex-wrap: wrap;align-content: center;">
+        <div style="margin: 35px auto;display: flex;flex-direction: column;flex-wrap: wrap;align-content: center;justify-content: center;align-items: center;">
+            <h1 class="title" style="font-family: Helvetica;margin: 15px auto">医道有易-智能文献检索系统</h1>
+            <h2 class="text-center">
+                让您检索文献从此变得
+                <div class="mask text-center" style="">
+                    <span data-show>高效</span>
+                    <span>智能</span>
+                    <span>快速</span>
+                    <span>便捷</span>
+                    <span>安全</span>
+                </div>
+            </h2>
+        </div>
+        <div class="login-wrapper">
             <form method="post" onsubmit="return check()" novalidate>
                 {% csrf_token %}
                 <div class="header">Login</div>
@@ -69,17 +39,14 @@
                     <span style="color: red;">{{ form.username.errors }}</span>
                     {{ form.password }}
                     <span style="color: red">{{ form.password.errors }}</span>
-                    {#            <input type="text" autocomplete="false" id="vcode" required="required" placeholder="验证码"#}
-                    {#                   class="input-item col-xs-7"#}
-                    {#            /><span id="code" class="col-xs-5"></span>#}
                     <div class="row">
                         <div class="col">
                             {{ form.code }}
                             <span style="color: red">{{ form.code.errors }}</span>
                         </div>
                         <div class="col">
-                            <a href="/login/">
-                                <img src="/checkcode/" alt="图片加载失败">
+                            <a href="/#/">
+                                <img src="/checkimgcode/" alt="验证码加载失败">
                             </a>
                         </div>
                     </div>
@@ -91,52 +58,82 @@
             </div>
         </div>
     </div>
+    <canvas class="background"></canvas>
 {% endblock %}
 
-
-<script type="text/javascript">
-
-    var code; //声明一个变量用于存储生成的验证码
-    changeImg();
-    document.getElementById("id_code").onclick = changeImg;
-
-
-    function changeImg() {
-        var arrays = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
-            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
-            'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-            'u', 'v', 'w', 'x', 'y', 'z',
-            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
-            'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
-            'U', 'V', 'W', 'X', 'Y', 'Z'];
-        code = ''; //重新初始化验证码
-        //alert(arrays.length);
-        //随机从数组中获取四个元素组成验证码
-        for (var i = 0; i < 4; i++) {
-            //随机获取一个数组的下标
-            var r = parseInt(Math.random() * arrays.length);
-            code += arrays[r];
-        }
-        document.getElementById('id_code').innerHTML = code; //将验证码写入指定区域
-    }
-
-    //效验验证码(表单被提交时触发)
-    function check() {
-
-        //获取用户输入的验证码
-        let input_code = document.getElementById('vcode').value;
-        if (input_code.toLowerCase() === code.toLowerCase()) {
-            return true
-        } else {
-            alert("请输入正确的验证码!");
-            return false;
-        }
-    }
-
-</script>
-<script src="https://kit.fontawesome.com/2503dce09a.js" crossorigin="anonymous"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.3.0/js/all.min.js"></script>
 <script src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
 <script src="{% static 'plugins/bootstrap-5.2.3/js/bootstrap.bundle.min.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/particlesjs/2.2.2/particles.min.js"></script>
+{% block myscript %}
+    <script type="text/javascript">
+        var code; //声明一个变量用于存储生成的验证码
+        changeImg();
+        document.getElementById("id_code").onclick = changeImg;
+
+
+        function changeImg() {
+            var arrays = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
+                'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
+                'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+                'u', 'v', 'w', 'x', 'y', 'z',
+                'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
+                'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
+                'U', 'V', 'W', 'X', 'Y', 'Z'];
+            code = ''; //重新初始化验证码
+            //alert(arrays.length);
+            //随机从数组中获取四个元素组成验证码
+            for (var i = 0; i < 4; i++) {
+                //随机获取一个数组的下标
+                var r = parseInt(Math.random() * arrays.length);
+                code += arrays[r];
+            }
+            document.getElementById('id_code').innerHTML = code; //将验证码写入指定区域
+        }
+
+        //效验验证码(表单被提交时触发)
+        function check() {
+
+            //获取用户输入的验证码
+            let input_code = document.getElementById('vcode').value;
+            if (input_code.toLowerCase() === code.toLowerCase()) {
+                return true
+            } else {
+                alert("请输入正确的验证码!");
+                return false;
+            }
+        }
+
+    </script>
+{% endblock %}
 
 </body>
+<script type="text/javascript">
+    window.onload = function () {
+        Particles.init
+        ({
+            selector:
+                '.background'
+        });
+        turnaudio();
+    };
+
+    function turnaudio() {
+        setInterval(function () {
+            const show = document.querySelector('span[data-show]')
+            const next = show.nextElementSibling || document.querySelector('span:first-child')
+            const up = document.querySelector('span[data-up]')
+
+            if (up) {
+                up.removeAttribute('data-up')
+            }
+
+            show.removeAttribute('data-show')
+            show.setAttribute('data-up', '')
+
+            next.setAttribute('data-show', '')
+        }, 2000)
+    }
+</script>
+
 </html>

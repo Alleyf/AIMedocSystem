@@ -36,7 +36,7 @@ def query_elastics(key):
                 }
             }
         })
-    # print(res)
+    print(res)
     results = []
     old_all_scores = 0
     res = res.get('hits')['hits']
@@ -88,6 +88,6 @@ def query_elastics_fulltext(key):
 
 
 if __name__ == '__main__':
-    # print(query_elastics("Fuzzy"))
-    print(query_elastics_fulltext(key="fuzzy"))
+    print(query_elastics("fast"))
+    # print(query_elastics_fulltext(key="fast"))
 # id,name,page_id,relscore

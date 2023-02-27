@@ -24,7 +24,7 @@ def upload(file_obj, url="./medocsys/static/doc/"):
 def upload_mul(file_list, url="./media/docs/"):
     start_time = time.perf_counter()
     for f in file_list:
-        des = url + f.name
+        des = url + f.name.replace(" ", "_")
         print(des)
         destination = open(des, 'wb')
         for chunk in f.chunks():

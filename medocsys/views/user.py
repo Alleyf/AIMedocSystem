@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from medocsys import models
 from medocsys.models import User
@@ -73,11 +74,16 @@ def user_info(request, nid):
         # 默认保存的是用户输入的所有数据,如果想要再保存用户输入以外的字段的值
         # form.instance.字段名 = 值
         form.save()
-        request.session['info']['avatar'] = request.FILES.get('avatar').name
-        print(form.cleaned_data, request.session['info']['avatar'])
-        request.session.set_expiry(60 * 60 * 24 * 7)
+        avatar_name = request.FILES.get('avatar')
+        if avatar_name:
+            request.session['info']['avatar'] = avatar_name.name
+            print(form.cleaned_data, request.session['info']['avatar'])
+            request.session.set_expiry(60 * 60 * 24 * 7)
         # print(request.session.info.avatar, request.FILES.get('avatar').name)
         # request.session['info']['avatar'] = request.FILES.get('avatar').name
+        # messages.success(request, "用户信息修改成功")
+        # return render(request, 'user_edit.html', {'form': form})
         return redirect('/doc/query/')
     else:
+        messages.success(request, "用户信息修改失败")
         return render(request, 'user_edit.html', {'form': form})

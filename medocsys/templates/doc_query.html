@@ -1,10 +1,17 @@
 {% extends 'layout.html' %}
 {% load static %}
 {% block mytitle %}
-    <title>医学文献-易管理</title>
+    <title>医道有易</title>
 {% endblock %}
 {% block mystyle %}
     <link rel="stylesheet" href="{% static 'css/query.css' %}">
+    <style>
+        tbody > td > div {
+            overflow: hidden !important;
+            white-space: nowrap;
+            text-overflow: ellipsis !important;
+        }
+    </style>
 {% endblock %}
 
 {% block info %}
@@ -85,7 +92,7 @@
                         <div class="container-fluid table-responsive" id="tb" style="display: block">
                         <div class="table-responsive"><i class="fa fa-list"></i>文献列表</div>
                         <table class="table table-hover table-condensed ">
-                        <thead class="text-center">
+                        <thead class="text-center table-default">
                         <tr>
                             <th>ID</th>
                             <th>文献名</th>
@@ -103,7 +110,9 @@
                     <tr uid="{{ pninfo.id }}" class="tr">
                         <th scope="row" style="display: none">{{ pninfo.id }}</th>
                         <th scope="row">{{ pninfo.num }}</th>
-                        <td>{{ pninfo.name }}</td>
+                        <td>
+                            <div>{{ pninfo.name }}</div>
+                        </td>
                         <td class="clkscore" uid="{{ pninfo.id }}">{{ pninfo.clkscore }}</td>
                         <td>{{ pninfo.fedbakscore }}</td>
                         <td>{{ pninfo.relscore }}</td>
@@ -160,6 +169,8 @@
 
         function change_search_way() {
             $("#zhiwang").click(function () {
+                $("#restip").children().remove();
+                $("#tb").hide();
                 if (SEARCHWAY === "本地") {
                     $("#zhiwang").text(SEARCHWAY)
                     SEARCHWAY = "知网";
@@ -209,7 +220,7 @@
                 rel_search();
             }
             ikw = $("#keyword")
-            console.log(SEARCHWAY)
+            {#console.log(SEARCHWAY)#}
             let keywords = ikw.val()
             if (keywords !== "") {
                 ikw.removeClass("is-invalid")
@@ -223,12 +234,14 @@
                         type: 'GET',
                         data: {
                             'keywords': keywords,
+                            'start': 0,
+                            'end': 10
                         },
                         dataType: 'json',
                         success: function (res) {
-                            console.log(res);
+                            {#console.log(res);#}
                             $("#PleaseWait").css('display', "none")
-                            console.log("修改成功")
+                            {#console.log("修改成功")#}
                             $(".loader").remove();
                             divcf = $("<div>");
                             divcf.attr({
@@ -276,7 +289,7 @@
                             divcf.append(table)
                             $("#tb_container").prepend(divcf)
                             {#$("#wrapper").append(divcf)#}
-                            console.log("添加表格")
+                            {#console.log("添加表格")#}
                             rel_search()
                             bindsettb()
                         }
@@ -286,7 +299,7 @@
                     ikw = $("#keyword")
                     ikw.removeClass("is-invalid")
                     ikw.addClass("is-valid")
-                    console.log("输入不为空")
+                    {#console.log("输入不为空")#}
                     return true
                 }
             } else {
@@ -295,13 +308,13 @@
                 $("#keyword").addClass("is-invalid")
                 $("#fedback").text("Please input keywords!")
                 $(".loader").css('display', "flex")
-                console.log("输入为空")
+                {#console.log("输入为空")#}
                 return false
             }
         }
 
         function addloader() {
-            console.log(document.readyState)
+            {#console.log(document.readyState)#}
             if ("{{page_info.0.id}}" === "") {
                 loading();
                 {#$(".loader").css('display', "flex")#}
@@ -353,13 +366,12 @@
 
                 }
             })
-            console.log()
         }
 
         function keydown_enter() {
             $("#keyword").keydown(function (event) {
                 if (event.keyCode === 13) {
-                    console.log("按下了回车键")
+                    {#console.log("按下了回车键")#}
                     $("#search").click();
                     return true;
                 }
@@ -388,7 +400,7 @@
                         } else {
                             alert(res.err)
                             $('#delModal').modal('hide');
-                            console.log(res)
+                            {#console.log(res)#}
                         }
 
                     }
@@ -404,7 +416,7 @@
                     type: "get",
                     dataType: 'json',
                     success: function (res) {
-                        console.log(res)
+                        {#console.log(res)#}
                         obj = $(".clkscore")
                         let uid = obj.attr("uid")
                         for (let i = 0; i < obj['length']; i++) {

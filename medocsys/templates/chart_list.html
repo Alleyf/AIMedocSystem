@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>医学文献智能检索平台数据可视化</title>
     <link rel="stylesheet" href="{% static 'icon/iconfont.css' %}">
-    <link rel="stylesheet" href="{% static 'plugins/fontawesome-free-6.2.1-web/css/fontawesome.min.css' %}">
+    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.3.0/css/all.min.css" rel="stylesheet">
+    {#    <link rel="stylesheet" href="{% static 'plugins/fontawesome-free-6.2.1-web/css/fontawesome.min.css' %}">#}
     <link rel="stylesheet" href="{% static 'plugins/bootstrap-5.2.3/css/bootstrap.min.css' %}">
     <style>
         li > div {
@@ -23,6 +24,14 @@
         .use-data > li > p {
             font-size: 30px !important;
             color: yellow !important;
+        }
+
+        .btn_view:hover {
+            color: #8050c9;
+        }
+
+        canvas {
+            width: 100%;
         }
 
     </style>
@@ -42,12 +51,11 @@
     </div>
     <h4 style="margin-top: 15px;color: white">医道有易——医学文献智能检索平台</h4>
 </div>
-<div class="container-content container-fluid">
-    <div class="top container-fluid" style="margin-bottom: 20px">
-        <div class="count-base">
+<div class="container-content container-fluid text-center">
+    <div class="top container-fluid clearfix" style="margin-bottom: 20px">
+        <div class="count-base container-fluid">
             <div class="com-count-title">资源总量构成</div>
             <div class="com-screen-content">
-
                 <div id="main1" style="width:100%;height:300px;"></div>
             </div>
             <span class="left-top"></span>
@@ -55,9 +63,9 @@
             <span class="left-bottom"></span>
             <span class="right-bottom"></span>
         </div>
-        <div class="count-resource q1">
+        <div class="count-resource  container-fluid">
             <div class="com-count-title">资源总量统计</div>
-            <div class="com-screen-content2">
+            <div class="com-screen-content">
                 <ul class="use-data">
                     <li>
                         <p class="data-count">{{ num.0 }} </p>
@@ -81,7 +89,7 @@
                 <span class="right-bottom"></span>
             </div>
         </div>
-        <div class="count-resource q2">
+        <div class="count-resource  container-fluid">
             <div class="com-count-title">关键词词云</div>
             <div class="com-screen-content">
                 <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel" data-interval="1000">
@@ -123,8 +131,8 @@
             </div>
         </div>
 
-        <div class="mid container-fluid">
-            <div class="count-share w1" style="margin-top: 60px">
+        <div class="mid container-fluid clearfix">
+            <div class="count-share w1 container-fluid" style="margin-top: 30px">
                 <div class="com-count-title">热门文献</div>
                 <div class="com-screen-content">
                     <div class="topRec_List">
@@ -137,7 +145,8 @@
                             <ul>
                                 {% for item in data %}
                                     <li>
-                                        <div uid="{{ item.id }}" class="btn_view" style="">{{ item.name }}</div>
+                                        <div uid="{{ item.id }}" class="btn_view"
+                                             style="cursor:pointer;">{{ item.name }}</div>
                                         <div>{{ item.fedbakscore }}</div>
                                         <div>{{ item.clkscore }}</div>
                                     </li>
@@ -151,7 +160,7 @@
                 <span class="left-bottom"></span>
                 <span class="right-bottom"></span>
             </div>
-            <div class="count-share w2" style="margin-top: 60px">
+            <div class="count-share w2 container-fluid" style="margin-top: 30px">
                 <div class="com-count-title">文献上传时间</div>
                 <div class="com-screen-content">
                     <div id="main5" style="width:100%;height:300px;"></div>
@@ -165,25 +174,27 @@
     </div>
 </div>
 <script src="{% static 'js/echarts.min.js' %}"></script>
-<script src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
 <script src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
-<script src="https://kit.fontawesome.com/2503dce09a.js" crossorigin="anonymous"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.3.0/js/all.min.js"></script>
+{#<script src="https://kit.fontawesome.com/2503dce09a.js" crossorigin="anonymous"></script>#}
 <script src="{% static 'plugins/bootstrap-5.2.3/js/bootstrap.bundle.min.js' %}"></script>
 
 <script type="text/javascript">
     //根据不同的分辨率调用不同的css和js
+    {#document.write("<link href='{% static 'css/visualization_1280.css' %}' rel='stylesheet' type='text/css'>");#}
+
+    {#document.writeln("<script type=\"text/javascript\" src=\"{% static 'js/visualization_1280.js' %}\"><\/script>");#}
+
     if (window.screen.width >= 1600) {
         document.write("<link href='.{% static 'css/visualization_1920.css' %}' rel='stylesheet' type='text/css'>");
-
         document.writeln("<script type=\"text/javascript\" src=\"{% static 'js/visualization_1920.js' %}\"><\/script>");
     } else if (window.screen.width < 1600 && window.screen.width >= 1280) {
         document.write("<link href='{% static 'css/visualization_1280.css' %}' rel='stylesheet' type='text/css'>");
-
         document.writeln("<script type=\"text/javascript\" src=\"{% static 'js/visualization_1280.js' %}\"><\/script>");
     } else {
         document.write("<link href='{% static 'css/visualization_1024.css' %}' rel='stylesheet' type='text/css'>");
-
         document.writeln("<script type=\"text/javascript\" src=\"{% static 'js/visualization_1024.js' %}\"><\/script>");
+
     }
 </script>
 

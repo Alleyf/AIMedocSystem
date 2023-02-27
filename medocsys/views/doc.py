@@ -14,6 +14,7 @@ from medocsys.utils import pagination, upload
 from medocsys.utils.form import MeDocsModelForm, DocTxtModelForm, DocImgTxtModelForm
 from medocsys.utils.upload import extract_img_info, extract_txt_info
 from ..models import MeDocs
+from ..utils.get_doc_title import get_pdf_title
 from ..utils.query import query_elastics
 from ..utils.search import spdfmkeyword, div_word
 from ..utils.get_language_type import is_contains_chinese
@@ -76,18 +77,20 @@ def doc_list(request):
     form = MeDocsModelForm()
     # 1.搜索参数初始化
     search_dict = {}
+    user_id = models.User.objects.filter(username=request.session['info']['name']).first().pk
+    print(request.session['info']['name'], user_id)
     # 获取号码搜索参数
     search_data = request.GET.get(key="n", default='')
     if search_data:
         search_dict['name__contains'] = search_data
+    search_dict['user_id__exact'] = user_id
     # 2.页码参数初始化
     pagesize = 10
     pageplus = 2
     # 3.筛选符合条件的数据
-    start = time.perf_counter()
     queryset = models.MeDocs.objects.filter(**search_dict).order_by('-allscore')
-    end = time.perf_counter()
-    print("{}秒".format(end - start))
+    print(queryset)
+    # print("{}秒".format(end - start))
     # 4.实例化页面对象
     page_obj = pagination.Pagination(request, query_set=queryset, page_size=pagesize, page_plus=pageplus)
     # 5.获取页面数据
@@ -102,7 +105,7 @@ def doc_list(request):
         #     分页html字符串组件
         'page_str': page_str
     }
-    print(datetime.now().strftime('%Y%m%d%H%M%S'))
+    # print(datetime.now().strftime('%Y%m%d%H%M%S'))
     return render(request, "doc_list.html", context)
 
 
@@ -116,7 +119,7 @@ def doc_add(request):
     fail_num = 0
     success_num = 0
     file_list = request.FILES.getlist("docfile")
-    print("可以上传的文档包括：" + str(file_list))
+    # print("可以上传的文档包括：" + str(file_list))
     if len(file_list) == 0:
         context = {
             'status': 402,
@@ -128,12 +131,15 @@ def doc_add(request):
         form = MeDocsModelForm(data=request.POST, files=None)
         # 设置文件名
         item.name = item.name.replace(" ", "_")
-        print(item, form.files, item.name)
+        # print(item, item.name)
         form.instance.name = item.name[:-4]
         form.instance.date = time.strftime("%Y-%m-%d", time.localtime())
         # 单独设置表单数据：将当前登录的用户作为该条信息的作者
         form.instance.user_id = request.session['info'].get("id")
         # 设置文档语言
+        print("当前名字：" + form.instance.name)
+        # tika获取文献标题
+        # if is_contains_chinese(get_pdf_title(form.instance.name)):
         if is_contains_chinese(form.instance.name):
             form.instance.language = 1
         else:
@@ -159,7 +165,7 @@ def doc_add(request):
         item.name = item.name[:-4].replace(" ", "_")
         txt_exist = models.DocTxt.objects.filter(doc_name=item.name).exists()
         img_txt_exist = models.DocImgTxt.objects.filter(doc_name=item.name).exists()
-        print(item.name, txt_exist, img_txt_exist)
+        # print(item.name, txt_exist, img_txt_exist)
         if txt_exist:
             upload_info.append(item.name + ':文本数据已存在,上传失败')
             pop_doc.append(file_list.index(item))
@@ -180,11 +186,11 @@ def doc_add(request):
             doc_txt_form.instance.doc_name = item.name
             doc_txt_form.instance.page_id = page_id
             doc_txt_form.instance.txt_content = txt_ls[index]
-            print("成功写入文本内容")
+            # print("成功写入文本内容")
             if doc_txt_form.is_valid():
                 doc_txt_form.save()
             else:
-                print(doc_txt_form.errors)
+                # print(doc_txt_form.errors)
                 context = {
                     'status': 403,
                     'err': doc_txt_form.errors
@@ -197,11 +203,11 @@ def doc_add(request):
                 doc_img_txt_form.instance.page_id = txt_dict['filepage']
                 doc_img_txt_form.instance.img_content = txt_dict['content']
                 doc_img_txt_form.instance.page_img_num = txt_dict['filepageimgnumber']
-                print("成功添加图片内容")
+                # print("成功添加图片内容")
                 if doc_img_txt_form.is_valid():
                     doc_img_txt_form.save()
                 else:
-                    print(doc_img_txt_form.errors)
+                    # print(doc_img_txt_form.errors)
                     context = {
                         'status': 403,
                         'err': doc_img_txt_form.errors
@@ -235,7 +241,7 @@ def doc_del(request):
         content_obj = models.DocTxt.objects.filter(doc_name=obj.name).all()
         img_content_obj = models.DocImgTxt.objects.filter(doc_name=obj.name).all()
         url = "./media/docs/" + obj.name + ".pdf"
-        print(url, os.path.exists(url))
+        # print(url, os.path.exists(url))
         if os.path.exists(url):
             os.remove(url)
         if content_obj:
@@ -355,7 +361,7 @@ def doc_details(request):
                 new_page_info.append(item)
         # 我们需要使用匿名函数，使用sort函数中的key这个参数，来指定字典比大小的方法
         new_page_info.sort(key=lambda x: x['page_id'])
-        print(new_page_info)
+        # print(new_page_info)
         key_page_info = {}
         facetnum = []
         for item_dict in new_page_info:
@@ -368,8 +374,9 @@ def doc_details(request):
                 facetnum.append(len(key_page_info[item_dict["page_id"]]))
             else:
                 key_page_info[item_dict["page_id"]] += page_abstract
-                print("当前页码为：" + str(item_dict["page_id"]), len(facetnum))
+                # print("当前页码为：" + str(item_dict["page_id"]), len(facetnum))
                 facetnum[len(facetnum) - 1] = len(key_page_info[item_dict["page_id"]])
+        # title = get_pdf_title(title=title)
         page_info = {'total_page': len(key_page_info), 'key_page_info': key_page_info, 'id': uid, 'title': title,
                      'keyword': keyword, 'facet_num': facetnum}
         # print("总共项数为：" + str(facet_num))
@@ -389,7 +396,7 @@ def doc_search(request):
         start = time.perf_counter()
         querysets = models.MeDocs.objects.filter(id__in=id_ls)
         end = time.perf_counter()
-        print("{}秒".format(end - start))
+        # print("{}秒".format(end - start))
         # 2.页码参数初始化
         pagesize = 10
         pageplus = 2
@@ -431,7 +438,6 @@ def doc_query(request):
     request.session['info']['keyword'] = keyword
     request.session.set_expiry(60 * 60 * 24 * 7)
     # print(request.session['info']['keyword'])
-    start = time.perf_counter()
     page_info = query_elastics(keyword)
     if len(page_info) == 0:
         context = {
@@ -439,10 +445,9 @@ def doc_query(request):
             'page_info': page_info,
             'code': 404
         }
-        print(context['code'])
+        # print(context['code'])
         return render(request, "doc_query.html", context)
-    end = time.perf_counter()
-    print("{}秒".format(end - start))
+    # print("{}秒".format(end - start))
     # print(page_info)
     for i, item in enumerate(page_info):
         # if i < len(page_info) - 1:
@@ -462,8 +467,10 @@ def doc_query(request):
             k -= n
             page_info.pop(k)
             n += 1
-        print(page_info[i]['name'])
+        print("更新前的名字：" + page_info[i]['name'])
         page_info[i]['id'] = models.MeDocs.objects.filter(name=page_info[i]['name']).first().id
+        # page_info[i]['name'] = get_pdf_title(page_info[i]['name'])
+        print('更新后的名字：' + page_info[i]['name'])
         uid = page_info[i]['id']
         rel_score = round(rel_score, 2)
         models.MeDocs.objects.filter(id=uid).update(relscore=rel_score)
@@ -498,7 +505,7 @@ def doc_thumbup(request, nid):
     for item in models.MeDocs.objects.all():
         feedbackscore = item.fedbakscore
         allscore += feedbackscore
-    print(allscore)
+    # print(allscore)
     fedbakscore = models.MeDocs.objects.filter(id=nid).first().fedbakscore
     fedbakscore = round(((fedbakscore + 1) / allscore) * 10, 2)
     models.MeDocs.objects.filter(id=nid).update(fedbakscore=fedbakscore)
@@ -522,7 +529,7 @@ def doc_thumbdown(request, nid):
     for item in models.MeDocs.objects.all():
         feedbackscore = item.fedbakscore
         allscore += feedbackscore
-    print(allscore)
+    # print(allscore)
     fedbakscore = models.MeDocs.objects.filter(id=nid).first().fedbakscore
     if fedbakscore - 1 > 0:
         fedbakscore = round(((fedbakscore - 1) / allscore) * 10, 2)
@@ -551,7 +558,7 @@ def doc_clk(request, nid):
         allscore += clkscore
     clkscore = models.MeDocs.objects.filter(id=nid).first().clkscore
     clkscore = round(((clkscore + 1) / allscore) * 30, 2)
-    print("总分为" + str(allscore) + "点击后的分：" + str(clkscore))
+    # print("总分为" + str(allscore) + "点击后的分：" + str(clkscore))
     models.MeDocs.objects.filter(id=nid).update(clkscore=clkscore)
     res = {
         'status': 200,
@@ -569,9 +576,11 @@ def doc_external(request):
     :return: 知网数据（列表）
     """
     keywords = request.GET.get("keywords")
+    start = int(request.GET.get("start"))
+    end = int(request.GET.get("end"))
     data = ""
     while not data:
-        data = get_zhiwang_data(keywords)
+        data = get_zhiwang_data(keywords, start, end)
     res = {
         'status': 200,
         'data': data

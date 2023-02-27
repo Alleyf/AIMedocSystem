@@ -3,9 +3,9 @@
     <title>用户注册</title>
 {% endblock %}
 {% block myinfo %}
-    <div class="container size">
-        <div class="login-wrapper" style="height: 720px;">
-            <form method="post" onsubmit="return check()" enctype="multipart/form-data">
+    <div class="container" style="flex-wrap: wrap;justify-content: center;display: flex;align-items: center;">
+        <div class="login-wrapper">
+            <form method="post" onsubmit="return check()" novalidate enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="header">Register</div>
                 <div class="container-fluid form-wrapper clearfix">
@@ -19,15 +19,16 @@
                     <span style="color: red">{{ form.confirm_password.errors }}</span>
                     {{ form.avatar }}
                     <span style="color: red">{{ form.avatar.errors }}</span>
-                    <div class="row">
+                    <div class="row" style="align-items: center">
                         <div class="col">
                             {{ form.code }}
                             <span style="color: red">{{ form.code.errors }}</span>
                         </div>
-                        <div class="col">
-                            <a href="/checkcode/">
-                                <img src="/checkcode/" alt="图片加载失败">
-                            </a>
+                        <div class="col text-center">
+                            <input type="button" class="btn btn-outline-info"
+                                   id="send_email_btn" value="发送验证码">
+                            <span id="cnt" class="btn"
+                                  style="color: red;width: 100%;display:flex;align-items: center;justify-content: center"></span>
                         </div>
                     </div>
                     <input class="sub" type="submit" value="Register">
@@ -38,6 +39,51 @@
             </div>
         </div>
     </div>
+    <canvas class="background"></canvas>
 {% endblock %}
+{% block myscript %}
+    <script type="text/javascript">
+        $(function () {
+            send_checkcode();
+        })
 
+        function send_checkcode() {
+            let send_btn = $("#send_email_btn");
+            send_btn.click(function () {
+                let email = $("#id_email").val();
+                {#console.log(email)#}
+                $.ajax({
+                    url: "/checkcode/",
+                    type: "POST",
+                    data: {
+                        'email': email
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        {#console.log(res);#}
+                        if (res.status === "发送成功") {
+                            let cnt = $("#cnt")
+                            let second = 60;
+                            let interval = setInterval(function () {
+                                second--;
+                                cnt.text((second) + "秒后将失效");
+                                send_btn.hide();
+                                cnt.attr('class', 'btn btn-outline-info')
+                                cnt.show();
+                                if (second === -1) {
+                                    send_btn.val("重发验证码");
+                                    clearInterval(interval);
+                                    cnt.hide();
+                                    send_btn.show();
+                                }
+                            }, 1000);
+                        } else {
+                            send_btn.val("发送失败");
+                        }
+                    }
+                })
+            })
+        }
+    </script>
+{% endblock %}
 

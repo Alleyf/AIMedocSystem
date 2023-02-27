@@ -3,7 +3,7 @@ import random
 from PIL import ImageFilter, ImageFont, Image, ImageDraw
 
 
-def check_code(width=150, height=35, char_length=4,
+def check_code(width=150, height=30, char_length=4,
                font_file='medocsys/static/font/Monaco.ttf', font_size=28):
     code = []
     img = Image.new(mode='RGB', size=(width, height), color=(255, 255, 255))

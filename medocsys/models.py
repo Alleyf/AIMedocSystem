@@ -26,7 +26,7 @@ class MeDocs(models.Model):
         (1, "中文"),
         (2, "英文")
     )
-    name = models.CharField(verbose_name="文献名称", max_length=64, db_index=True)
+    name = models.CharField(verbose_name="文献名称", max_length=128, db_index=True)
     # 相关性总分为60
     relscore = models.FloatField(verbose_name="相关性得分", default=0)
     # 点击率总分为30
@@ -49,7 +49,7 @@ class MeDocs(models.Model):
 
 class DocTxt(models.Model):
     """PDF信息"""
-    doc_name = models.CharField(verbose_name="文献名称", max_length=64, default="")
+    doc_name = models.CharField(verbose_name="文献名称", max_length=128, default="")
     page_id = models.SmallIntegerField(verbose_name="页码", default=1)
     txt_content = models.TextField(verbose_name="文本内容", default="", null=True, blank=True)
 
@@ -63,7 +63,7 @@ class DocTxt(models.Model):
 
 class DocImgTxt(models.Model):
     """PDF图片信息"""
-    doc_name = models.CharField(verbose_name="文献名称", max_length=64, default="")
+    doc_name = models.CharField(verbose_name="文献名称", max_length=128, default="")
     page_id = models.SmallIntegerField(verbose_name="页码", default=1)
     page_img_num = models.SmallIntegerField(verbose_name="页面图片数", default=0, null=True, blank=True)
     img_content = models.TextField(verbose_name="图片内容", default="", null=True, blank=True)

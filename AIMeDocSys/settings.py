@@ -22,9 +22,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-ttar_%7b)pane)#$-1ov(9!z!vt16h7*-*!&n!*hg8uw=wy4$f'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# DEBUG = True
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
+# 邮件配置
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.qq.com'  # QQ邮箱的smtp服务器
+EMAIL_PORT = 25  # 端口为465或587
+# EMAIL_USE_SSL = True  # SSL加密方式设置为True
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = '467807892@qq.com'  # 这里是你的邮箱账号
+EMAIL_HOST_PASSWORD = 'jrlrljlzzhgzbhha'  # 注意这里不能用你邮箱账号的密码，而要用申请的设备授权码。
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# FUTURE_MAIL_SENDER = ('Future Admin', os.getenv('MAIL_USERNAME'))
 
 # Application definition
 
@@ -45,6 +58,11 @@ INSTALLED_APPS = [
 
 # simpleui配置
 SIMPLEUI_HOME_TITLE = '医道有易-后台管理'
+# 隐藏右侧SimpleUI广告链接和使用分析
+SIMPLEUI_HOME_INFO = False
+SIMPLEUI_ANALYSIS = True
+# 换成自己Logo链接
+SIMPLEUI_LOGO = '/static/images/logo.png'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -125,7 +143,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')  ## 新增行
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static').replace("\\", "/"),
+# ]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static'),  ##修改地方
+# ]
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 

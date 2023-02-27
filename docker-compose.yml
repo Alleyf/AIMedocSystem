@@ -1,6 +1,6 @@
 version: "3"
 services:
-  AiMeDocSys:
+  aimedocsys:
     restart: always
     build: .  # '点'代表当前目录
     command: "python3 manage.py runserver 0.0.0.0:8210"

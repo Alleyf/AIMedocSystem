@@ -9,7 +9,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 
 
-def get_zhiwang_data(keywords: str) -> list:
+def get_zhiwang_data(keywords: str, start: int = 0, end: int = 10) -> list:
     # 这个是一个用来控制chrome以无界面模式打开的浏览器
     # 创建一个参数对象，用来控制chrome以无界面的方式打开
     chrome_options = Options()
@@ -40,7 +40,6 @@ def get_zhiwang_data(keywords: str) -> list:
 
     # 如果网速慢搜索不到就延长时间
     sleep(0.5)
-
     zhiwang_data = []
     # 数据解析
     page_text = driver.page_source
@@ -49,7 +48,7 @@ def get_zhiwang_data(keywords: str) -> list:
     st = 'recid=&(.*?)&DbName='  # 正则表达式
     all_li = tree.xpath("//a[@class='fz14']")
     for index, li in enumerate(all_li):
-        if index < 10:
+        if start <= index < end:
             all_name = li.xpath("./text() | ./font/text()")
             all_href = li.xpath("./@href")
             for name in all_name:
@@ -62,3 +61,7 @@ def get_zhiwang_data(keywords: str) -> list:
             # print(str(index) + ":", final_name)
             final_name = ""
     return zhiwang_data
+
+
+if __name__ == "__main__":
+    print(len(get_zhiwang_data(keywords="心脏", start=0, end=20)))

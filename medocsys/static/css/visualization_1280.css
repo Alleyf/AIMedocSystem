@@ -14,6 +14,10 @@ div {
     box-sizing: border-box;
 }
 
+.top, .mid {
+    display: flex;
+}
+
 .clearfix {
     clear: both;
 }
@@ -191,8 +195,10 @@ div {
 .count-base {
 
     margin-left: 10px;
-    float: left; /*浮动*/
-    width: 32%;
+    flex-wrap: wrap;
+    justify-content: center;
+    /*float: left; !*浮动*!*/
+    /*width: 32%;*/
     height: 350px;
     background: url('../images/visual/left-top3.jpg') center no-repeat;
     background-size: cover;
@@ -201,8 +207,11 @@ div {
 
 .count-resource {
     margin-left: 10px;
-    float: left;
-    width: 32%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    /*float: left;*/
+    /*width: 32%;*/
     height: 350px;
     background: url('../images/visual/left-top3.jpg') center no-repeat;
     background-size: cover;
@@ -210,8 +219,10 @@ div {
 
 .count-share {
     margin-left: 10px;
-    float: left;
-    width: 48.4%;
+    flex-wrap: wrap;
+    justify-content: center;
+    /*float: left;*/
+    /*width: 48.4%;*/
     height: 350px;
     background: url('../images/visual/left-bottom2.jpg') center no-repeat;
     background-size: cover;
@@ -219,8 +230,10 @@ div {
 
 .count-topic {
     margin-left: 10px;
-    float: left;
-    width: 48.4%;
+    flex-wrap: wrap;
+    justify-content: center;
+    /*float: left;*/
+    /*width: 48.4%;*/
     height: 350px;
     background: url('../images/visual/left-bottom2.jpg') center no-repeat;
     background-size: cover;
@@ -346,11 +359,11 @@ a {
     text-align: center;
     padding: 2px 0;
     margin-top: 3%;
-    height: 5%;
+    /*height: 5%;*/
     background: url(../images/visual/resource-use-data.jpg) center no-repeat;
     background-size: cover;
     border: solid 1px #093552;
-    border-right: 0px;
+    border-right: 0;
     border-left: 0;
 }
 

@@ -194,38 +194,45 @@ div {
 }
 
 .count-base {
-
+    display: block;
     margin-left: 10px;
-    float: left; /*浮动*/
-    width: 31%;
+    /*float: left; !*浮动*!*/
+    /*width: 31%;*/
     height: 350px;
     background: url('../images/visual/left-top3.jpg') center no-repeat;
     background-size: cover;
 
 }
 
+.top, .mid {
+    display: block;
+}
+
 .count-resource {
+    display: block;
     margin-left: 10px;
-    float: left;
-    width: 31%;
+    /*float: left;*/
+    /*width: 31%;*/
     height: 350px;
     background: url('../images/visual/left-top3.jpg') center no-repeat;
     background-size: cover;
 }
 
 .count-share {
+    display: block;
     margin-left: 10px;
-    float: left;
-    width: 47.0%;
+    /*float: left;*/
+    /*width: 47.0%;*/
     height: 350px;
     background: url('../images/visual/left-bottom2.jpg') center no-repeat;
     background-size: cover;
 }
 
 .count-topic {
+    display: block;
     margin-left: 10px;
-    float: left;
-    width: 47.0%;
+    /*float: left;*/
+    /*width: 47.0%;*/
     height: 350px;
     background: url('../images/visual/left-bottom2.jpg') center no-repeat;
     background-size: cover;

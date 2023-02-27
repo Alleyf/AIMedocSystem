@@ -3,23 +3,79 @@ from django.contrib import admin
 from .models import MeDocs, User, DocTxt, DocImgTxt
 
 # Register your models here.
-admin.site.register(MeDocs)
-admin.site.register(User)
-admin.site.register(DocTxt)
-admin.site.register(DocImgTxt)
+from .utils.encrypt import md5
 
+# admin.site.register(MeDocs)
+# admin.site.register(DocTxt)
+# admin.site.register(DocImgTxt)
+from .utils.form import UserModelForm
+
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    empty_value_display = '-empty-'
+    list_per_page = 10
+    list_max_show_all = 10
+    search_fields = ("username",)
+    preserve_filters = True
+
+    # exclude = ("code", "confirm_password")
+    # form = UserModelForm
+
+    def save_model(self, request, obj, form, change):
+        # print(len(obj.password), obj, obj.password)
+        if len(obj.password) != 32:
+            obj.password = md5(obj.password)
+        print(len(obj.password), obj, obj.password)
+        super(UserAdmin, self).save_model(request, obj, form, change)
+
+
+@admin.register(MeDocs)
+class MedocsAdmin(admin.ModelAdmin):
+    empty_value_display = '-empty-'
+    fields = (("clkscore", "fedbakscore"), "user", "language", "date", "docfile")
+    list_per_page = 10
+    list_max_show_all = 10
+    search_fields = ("name",)
+    date_hierarchy = 'date'
+
+    def save_model(self, request, obj, form, change):
+        name = request.FILES.get("docfile").name.replace(" ", "_")
+        # print(self, name, obj.docfile.name)
+        obj.name = name[:-4]
+        print(obj.name)
+        super(MedocsAdmin, self).save_model(request, obj, form, change)
+
+
+@admin.register(DocTxt)
+class DocTxtAdmin(admin.ModelAdmin):
+    empty_value_display = '-empty-'
+    list_per_page = 10
+    list_max_show_all = 10
+    search_fields = ("doc_name",)
+
+    pass
+
+
+@admin.register(DocImgTxt)
+class DocImgTxtAdmin(admin.ModelAdmin):
+    empty_value_display = '-empty-'
+    list_per_page = 10
+    list_max_show_all = 10
+    search_fields = ("doc_name",)
+
+    pass
+
+
+admin.site.site_header = "医道有易——后台管理"
+admin.site.site_title = "医道有易——后台管理"
+admin.site.index_title = "医道有易——后台管理首页"
 # 分页，每页显示条数
 list_per_page = 5
 
 # 分页，显示全部（真实数据<该值时，才会有显示全部）
 list_max_show_all = 10
 
-search_fields = ("username", "password", "name")
-
 list_editable = ("username", "password", "name", "avatar")
-
-date_hierarchy = 'create_time'
-
-preserve_filters = True
 
 save_as_continue = True

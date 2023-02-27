@@ -1,18 +1,20 @@
 """StaffingSystem URL Configuration"""
 from django.conf import settings
-from django.conf.urls import url
+# from django.conf import settings  ##新增
+from django.conf.urls import url  ##新增
 from django.contrib import admin
 from django.urls import path, re_path, include
 from django.views.static import serve
 from rest_framework.routers import SimpleRouter
 
-from medocsys.views import user, account, doc, chart, search
+from medocsys.views import user, account, doc, chart, search, img
 
 router = SimpleRouter()
 router.register('search', search.DocTxtSearchViewSet, basename='search_api')
-
+# router.register('checkcode', account.checkimgcode, basename='checkcode_api')
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^images/(?P<path>(.+))/$', img.images),
     path('api-auth/', include('rest_framework.urls')),
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}, name='media'),
     # *********************用户*********************
@@ -28,7 +30,10 @@ urlpatterns = [
     # 注销
     path("logout/", account.logout),
     # 图片验证码
-    path("checkcode/", account.checkcode),
+    path("checkimgcode/", account.checkimgcode),
+    # 邮箱验证码
+    path("checkcode/", account.checkcode_email),
+    path("beauty/", account.detail),
     # *********************文档管理*********************
     # 文档列表
     path("doc/list/", doc.doc_list),

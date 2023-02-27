@@ -2,12 +2,15 @@ import re
 from datetime import datetime
 from io import BytesIO
 
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
+from django.core.mail import send_mail
+from django.views.decorators.csrf import csrf_exempt
 
 from medocsys.models import User
 from medocsys.utils.code import check_code
 from medocsys.utils.form import LoginForm, RegisterModelForm
+from medocsys.utils.get_random_strs import generate_random_str
 
 
 def login(request):
@@ -21,7 +24,7 @@ def login(request):
         # {'username': 'alleyf', 'password': '123', 'code': 'csfd'}
         # 验证码校验,取出并出栈验证码，防止后面校验多出数据库中没有的验证码
         usr_input_code = form.cleaned_data.pop('code')
-        checkcode = request.session.get('checkcode', '')
+        checkcode = request.session.get('checkimgcode', '')
         if checkcode.lower() != usr_input_code.lower():
             form.add_error('code', '验证码错误')
             return render(request, 'login.html', {'form': form})
@@ -57,8 +60,6 @@ def register(request):
     if request.method == "GET":
         form = RegisterModelForm()
         return render(request, "register.html", {'form': form})
-    now = datetime.now()
-    # avatarname = now.strftime("%Y%m%d%H%M%S")
     # print(type(request.POST), request.POST)
     form = RegisterModelForm(data=request.POST, files=request.FILES)
     if form.is_valid():
@@ -86,15 +87,46 @@ def logout(request):
     return redirect("/login/")
 
 
-def checkcode(request):
+def detail(request):
+    return render(request, "beauty.html")
+
+
+@csrf_exempt
+def checkcode_email(request):
+    if request.method == "POST":
+        print(request.POST)
+        email_des = request.POST.get('email')
+        code = generate_random_str(randomlength=4)
+        request.session['checkcode'] = code
+        request.session.set_expiry(60)
+        title = "医道有易-注册验证码"
+        contents = "您正在请求<strong>注册新账户</strong>的操作验证码, 您的验证码是:\n" + "<strong>" + code + "</strong>" + "\n请不要向其他人提供此验证码, 这可能使您的账户遭受攻击这是系统自动发送的邮件，请不要回复此邮件如果该验证码不是您本人请求的, 请忽略此邮件."
+        email_src = "467807892@qq.com"
+        status_code = send_mail(title, contents, email_src, [email_des])
+        if status_code != 0:
+            status = "发送成功"
+        else:
+            status = "发送失败"
+        print(status)
+        # return JsonResponse({'status': status, 'code': code})
+        return JsonResponse({'status': status})
+    return redirect('/login/')
+
+
+@csrf_exempt
+def checkimgcode(request):
     """图片验证码"""
     # 调用函数生成图片验证码
+    print(request.method)
     img, code = check_code()
     # 将验证码写入到自己的session中(以便于后续校验)
-    request.session['checkcode'] = code
+    request.session['checkimgcode'] = code
     # 给session设置有效时长为60s
     request.session.set_expiry(60)
     # 将图片写入内存
     stream = BytesIO()
     img.save(stream, 'png')
     return HttpResponse(stream.getvalue())
+    # if stream:
+    #     return JsonResponse({'status': 200})
+    # return JsonResponse({'status': 403})

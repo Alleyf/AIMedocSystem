@@ -35,11 +35,13 @@ def chart_list(request):
     word_cloud_ls = []
     # word_cloud_path = ''
     base_path = './media/wordcloud/'
-    keyword = request.session['info']['keyword']
-    status, doc_name, content = query_elastics_fulltext(key=keyword)
-    if status:
-        if not os.path.exists(base_path + doc_name + '.png'):
-            print(get_word_cloud(doc_name=doc_name, content=content))
+    print(type(request.session['info']), request.session['info'])
+    if 'keyword' in request.session['info']:
+        keyword = request.session['info']['keyword']
+        status, doc_name, content = query_elastics_fulltext(key=keyword)
+        if status:
+            if not os.path.exists(base_path + doc_name + '.png'):
+                print(get_word_cloud(doc_name=doc_name, content=content))
     # if keyword:
     #     print("当前关键词为" + keyword)
     #     word_cloud_path, status = get_word_cloud(keyword=keyword)

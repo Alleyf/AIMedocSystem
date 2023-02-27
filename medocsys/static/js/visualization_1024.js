@@ -1,20 +1,12 @@
 // 基于准备好的dom，初始化echarts实例
 const myChart1 = echarts.init(document.getElementById('main1'));
 const myChart2 = echarts.init(document.getElementById('main2'));
-const myChart3 = echarts.init(document.getElementById('main3'));
 const myChart5 = echarts.init(document.getElementById('main5'));
 
 getNowFormatDate();
 init_myChart1();
 init_myChart2();
-init_myChart3();
 init_myChart5();
-
-// 线图1
-function init_myChart3() {
-
-    // myChart3.setOption(option);
-}
 
 // 线图2
 function init_myChart2() {
