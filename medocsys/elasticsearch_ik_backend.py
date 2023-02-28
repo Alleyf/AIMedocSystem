@@ -12,6 +12,7 @@ from haystack.backends.elasticsearch7_backend import Elasticsearch7SearchBackend
 DEFAULT_FIELD_MAPPING = {
     "type": "text",
     "analyzer": "ik_max_word",
+    # "analyzer": "standard",
     # "analyzer": "ik_smart",
     # "search_analyzer": "ik_smart"
     "search_analyzer": "ik_max_word"

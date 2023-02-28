@@ -1,12 +1,14 @@
 import os
 import time
 
+from django.core.management import call_command
 from elasticsearch import Elasticsearch
 
 
 def query_elastics(key: str, start=0, size=1000):
     results = []
     try:
+        rel_num_ls = query_elastics_min_fragment(key=key)
         es = Elasticsearch()  # 默认连接本地elasticsearch
         # 获取关键词相关词
         # union_api = "https://recom.cnki.net/api/recommendations/words/union"
@@ -52,7 +54,7 @@ def query_elastics(key: str, start=0, size=1000):
         # results = []
         old_all_scores = 0
         res = res.get('hits')['hits']
-        print("总共含有关键词的页数", len(res))
+        # print("总共含有关键词的页数", len(res))
         for item in res:
             doc_id = item["_source"]['id']
             rel_score = item["_score"]
@@ -68,13 +70,61 @@ def query_elastics(key: str, start=0, size=1000):
                          "page_id": page_id,
                          "fragments": fragments}
             results.append(item_dict)
-        for item in results:
-            item['rel_score'] = round((item['rel_score'] / old_all_scores) * 60, 2)
+        for i, item in enumerate(rel_num_ls):
+            # item['rel_score'] = round((item['rel_score'] / old_all_scores) * 60, 2)
+            # item['rel_score'] = round((len(item["fragments"]) / all_num) * 60, 2)
+            results[i]['rel_score'] = item
         return results
     except Exception as e:
         print(e)
     finally:
         return results
+
+
+def query_elastics_min_fragment(key: str, start=0, size=1000):
+    all_num = 0
+    rel_score_ls = []
+    try:
+        es = Elasticsearch()  # 默认连接本地elasticsearch
+        res = es.search(
+            # index=['medocsys'],
+            index=['doctxt', 'docimgtxt'],
+            query={
+                "match": {
+                    "text": {
+                        "query": key,
+                        # "analyzer": "ik_max_word"  # 指定搜索时的分词模式
+                    },
+                },
+
+            },
+            track_total_hits=True,
+            from_=start,
+            size=size,
+            highlight=
+            {
+                "fragment_size": 5,
+                "number_of_fragments": 1000,
+                "fields": {
+                    "text": {
+                    }
+                }
+            })
+        res = res.get('hits')['hits']
+        # print("总共含有关键词的页数", len(res))
+        for item in res:
+            fragments = item["highlight"]["text"]
+            all_num += len(fragments)
+        for item in res:
+            print(all_num, len(item["highlight"]["text"]), item["highlight"]["text"])
+            rel_score = round((len(item["highlight"]["text"]) / all_num) * 60, 2)
+            rel_score_ls.append(rel_score)
+            # print(rel_score)
+        return rel_score_ls
+    except Exception as e:
+        print(e)
+    finally:
+        return rel_score_ls
 
 
 def query_elastics_fulltext(key):
@@ -112,20 +162,13 @@ def query_elastics_fulltext(key):
 
 
 if __name__ == '__main__':
-    # query_elastics("细胞培养", start=0, size=100)
-    # print(query_elastics_fulltext(key="fast"))
-    from collections import Counter
+    print(os.system('python ../../manage.py rebuild_index --noinput'))
 
-    a = [{'id': 2}, {'id': 6}, {'id': 6}, {'id': 1}, ]
-    start = time.perf_counter()
-    # a7 = list(Counter(a).keys())
-    # a7 = list({}.fromkeys(a).keys())
-    # a7 = sorted(set(a), key=a.index)
-    a7 = []
-    for dictionary in a:
-        if dictionary not in a7:
-            a7.append(dictionary)
-    end = time.perf_counter()
-    print('a7 =', a7, "耗时" + str(end - start))
-
-# id,name,page_id,relscore
+#     # query_elastics("细胞培养", start=0, size=100)
+#     # print(query_elastics_fulltext(key="fast"))
+#     a = [{'id': 2}, {'id': 6}, {'id': 6}, {'id': 1}, ]
+#     a7 = []
+#     for dictionary in a:
+#         if dictionary not in a7:
+#             a7.append(dictionary)
+#     print('a7 =', a7)

@@ -15,7 +15,7 @@ from medocsys.utils.form import MeDocsModelForm, DocTxtModelForm, DocImgTxtModel
 from medocsys.utils.upload import extract_img_info, extract_txt_info
 from ..models import MeDocs
 from ..utils.get_doc_title import get_pdf_title
-from ..utils.query import query_elastics
+from ..utils.query import query_elastics, query_elastics_min_fragment
 from ..utils.search import spdfmkeyword, div_word
 from ..utils.get_language_type import is_contains_chinese
 from ..utils.wordCloud import get_word_cloud
@@ -354,14 +354,16 @@ def doc_details(request):
         title = models.MeDocs.objects.filter(id=uid).first().name
         url = "./media/docs/" + title + '.pdf'
         # page_info = spdfmkeyword(url=url, keyword=keyword)
-        page_info = query_elastics(key=keyword, start=0, size=10000)
+        page_info = query_elastics(key=keyword, start=0, size=1000)
+        # page_info = query_elastics_min_fragment(key=keyword, start=0, size=1000)
         new_page_info = []
         for item in page_info:
+            print(item['name'])
             if item['name'] == title:
                 new_page_info.append(item)
         # 我们需要使用匿名函数，使用sort函数中的key这个参数，来指定字典比大小的方法
         new_page_info.sort(key=lambda x: x['page_id'])
-        # print(new_page_info)
+        print("打开该文献的含有关键词的信息为", new_page_info)
         key_page_info = {}
         facetnum = []
         for item_dict in new_page_info:
@@ -375,6 +377,7 @@ def doc_details(request):
                 if dictionary not in new_page_abstract:
                     new_page_abstract.append(dictionary)
             page_abstract = new_page_abstract
+            print("新摘要", page_abstract)
             if item_dict["page_id"] not in key_page_info.keys():
                 key_page_info[item_dict["page_id"]] = page_abstract
                 facetnum.append(len(key_page_info[item_dict["page_id"]]))
@@ -450,6 +453,7 @@ def doc_query(request):
     request.session.set_expiry(60 * 60 * 24 * 7)
     # print(request.session['info']['keyword'])
     page_info = query_elastics(key=keyword, start=0, size=1000)
+    print(page_info)
     if len(page_info) == 0:
         context = {
             'search_data': keyword,
@@ -464,7 +468,8 @@ def doc_query(request):
         # if i < len(page_info) - 1:
         repeate_ls = []
         # print("当前的下标为：", i)
-        rel_score = page_info[i]['rel_score']
+        rel_score = item['rel_score']
+        print("每页的分数", rel_score)
         for j, _ in enumerate(page_info):
             # print(j)
             if i >= j:
@@ -472,7 +477,7 @@ def doc_query(request):
             if page_info[i]['name'] == page_info[j]['name']:
                 rel_score += page_info[j]['rel_score']
                 repeate_ls.append(j)
-                # print("剔除了" + str(j) + page_info[i]['name'])
+                print("剔除了" + str(j), page_info[i]['rel_score'])
             continue
         n = 0
         for k in repeate_ls:
@@ -480,6 +485,7 @@ def doc_query(request):
             page_info.pop(k)
             n += 1
         # print("更新前的名字：" + page_info[i]['name'])
+        print("求和后的分数", rel_score)
         page_info[i]['id'] = models.MeDocs.objects.filter(name=page_info[i]['name']).first().id
         # page_info[i]['name'] = get_pdf_title(page_info[i]['name'])
         # print('更新后的名字：' + page_info[i]['name'])
@@ -507,7 +513,7 @@ def doc_query(request):
         # print("行号为", i)
         item['num'] = i + 1
     print("分页后的文献数", len(page_info))
-    print(page_info)
+    # print(page_info)
     context = {
         'search_data': keyword,
         'page_info': page_info,
