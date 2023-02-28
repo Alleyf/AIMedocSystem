@@ -47,6 +47,7 @@
                                        id="keyword" autocomplete="off" value="{{ search_data }}"
                                 >
                                 <label for="keyword">Search for Keyword</label>
+                                <input type="text" name="start" id="start" value="{{ start }}" style="display: none">
                             </div>
                             <button class="btn btn-outline-primary" type="submit" id="search"
                                     value="Go!" onsubmit="return bindsubmit()">
@@ -58,7 +59,7 @@
                     </div>
                 </form>
             </div>
-            <section class="loader" style="display: none">
+            <section class="loader" style="display: none;width: auto;height: auto;">
 
                 <div style="--i:0" class="slider">
                 </div>
@@ -133,6 +134,23 @@
             {#            </div>#}
             {#        </div>#}
             </div>
+            <nav aria-label="Page navigation example" id="pagination" style="display: none">
+                <ul class="pagination" style="justify-content: center">
+                    <li class="page-item">
+                        <button class="page-link" id="prev" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </button>
+                    </li>
+                    {#                    <li class="page-item"><a class="page-link" href="#">1</a></li>#}
+                    {#                    <li class="page-item"><a class="page-link" href="#">2</a></li>#}
+                    {#                    <li class="page-item"><a class="page-link" href="#">3</a></li>#}
+                    <li class="page-item">
+                        <button class="page-link" id="next" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
             <a href="#top" id="back" class="set btn btn-info btn-sm back">
                 <i class="fa-solid fa-caret-up"></i>
             </a>
@@ -159,12 +177,14 @@
 {% block myscript %}
     <script type="text/javascript">
         let SEARCHWAY = "本地";
+        let START = 0;
         $(function () {
             {#bindbtndel();#}
             bindclk();
             bindsettb();
             bindsubmit();
             change_search_way();
+            changepage();
         })
 
         function change_search_way() {
@@ -198,13 +218,10 @@
         }
 
         function loading() {
-            {#console.log(document.getElementById('PleaseWait'))#}
-            document.getElementById('PleaseWait').innerHTML =
+            $('#PleaseWait')[0].innerHTML =
                 '<section class="loader" style="display: flex;align-items: center;justify-content:center"><div style="--i:0" class="slider"></div><div style="--i:1" class="slider"></div><div style="--i:2" class="slider"></div><div style="--i:3" class="slider"></div><div style="--i:4" class="slider"></div></section>';   // 解决在ie加载时gif图片freeze问题
-            if ($("#keyword").val() !== "") {
-                $("#PleaseWait").show();
-                window.addEventListener('load', completeLoading);
-            }
+            $("#PleaseWait").show();
+            window.addEventListener('load', completeLoading);
 
             function completeLoading() {
                 if (document.readyState === "complete") {
@@ -226,6 +243,10 @@
                 ikw.removeClass("is-invalid")
                 ikw.addClass("is-valid")
                 $("#fedback").text("")
+                {#console.log($("#tb").length)#}
+                if ($("#tb").length != 0) {
+                    $("#pagination").show()
+                }
                 if (SEARCHWAY === "知网") {
                     $("span").detach();
                     $("#tb").detach();
@@ -294,12 +315,14 @@
                             bindsettb()
                         }
                     })
+                    console.log("换页失败")
                     return false
                 } else {
                     ikw = $("#keyword")
                     ikw.removeClass("is-invalid")
                     ikw.addClass("is-valid")
                     {#console.log("输入不为空")#}
+                    console.log("修改后的起始页码", $("#start").val())
                     return true
                 }
             } else {
@@ -308,21 +331,42 @@
                 $("#keyword").addClass("is-invalid")
                 $("#fedback").text("Please input keywords!")
                 $(".loader").css('display', "flex")
-                {#console.log("输入为空")#}
+                console.log("输入为空")
+                $("#pagination").hide()
                 return false
             }
         }
 
+        function changepage() {
+            let now_start = $("#start").val()
+            $("#prev").click(function () {
+                console.log("{{ final_page }}", now_start)
+                if (now_start >= 10) {
+                    new_start = parseInt(now_start) - 10;
+                    $("#start").val(new_start);
+                }
+                $("#search").click();
+            });
+            $("#next").click(function () {
+                console.log("{{ final_page }}", now_start)
+                if ('{{ final_page }}' === "False") {
+                    new_start = parseInt(now_start) + 10;
+                    $("#start").val(new_start);
+                }
+                $("#search").click();
+            })
+        }
+
         function addloader() {
             {#console.log(document.readyState)#}
-            if ("{{page_info.0.id}}" === "") {
-                loading();
-                {#$(".loader").css('display', "flex")#}
-            } else {
-                $(".loader").css('display', "none")
-                {#console.log(document.readyState)#}
+            $("#search").click(function () {
+                if ($("#keyword").val() !== "") {
+                    loading();
+                } else {
+                    $(".loader").css('display', "none")
+                }
+            })
 
-            }
         }
 
         function rel_search() {

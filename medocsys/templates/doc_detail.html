@@ -40,10 +40,10 @@
                 结果详情
             </div>
             <div style="float: right">
-                <a href="/doc/query/?keyword={{ keyword|safe }}" class="btn btn-default btn-sm">
+                <button onclick="back_last_page()" class="btn btn-default btn-sm">
                     <i class="fa-solid fa-rotate-right"></i>
                     返回
-                </a>
+                </button>
                 {#                    <a href="/doc/list/?n={{ keyword }}"><i class="fa-solid fa-rotate-right">返回</i></a>#}
             </div>
         </div>
@@ -81,7 +81,7 @@
                                                 {% for item in abstract %}
                                                     <a class="nav-link ms-3 my-1"
                                                        href="#item-{{ page_id }}-{{ forloop.counter }}">
-                                                        摘要{{ page_id }}-{{ forloop.counter }}
+                                                        检索结果{{ page_id }}-{{ forloop.counter }}
                                                     </a>
                                                 {% endfor %}
                                             </nav>
@@ -110,7 +110,7 @@
                         </div>
                         {% for item in abstract %}
                             <div id="item-{{ page_id }}-{{ forloop.counter }}" class="clearfix">
-                                <h5>摘要{{ page_id }}-{{ forloop.counter }}</h5>
+                                <h5>检索结果{{ page_id }}-{{ forloop.counter }}</h5>
                                 <p style=" word-break: break-all; word-wrap:break-word;" id="abstract">
                                     {{ item.abstract|safe }}
                                 </p>
@@ -157,10 +157,10 @@
                     </button>
                 </li>
                 <li>
-                    <button class="dropdown-item btn btn-default btn-sm">
-                        <a href="/doc/query/?keyword={{ keyword|safe }}">
-                            <i class="fa-solid fa-rotate-right"></i>
-                        </a>
+                    <button onclick="back_last_page()" class="dropdown-item btn btn-default btn-sm">
+                        {#                        <a href="/doc/query/?keyword={{ keyword|safe }}">#}
+                        <i class="fa-solid fa-rotate-right"></i>
+                        {#                        </a>#}
                     </button>
                 </li>
             </ul>
@@ -205,6 +205,18 @@
 
         })
 
+        function back_last_page() {
+            if (window.history.length > 1) {
+
+                window.history.back();
+
+            } else {//没有上一页，自行决定跳转去向
+
+                window.location.href = "/doc/query/"
+
+            }
+        }
+
         function fed_tips(status) {
             console.log(status)
             const toastlive_tips = document.getElementById('liveToast')
@@ -236,8 +248,9 @@
             $(".btn_view").click(function () {
                 VIEW_ID = $(this).attr('uid')
                 PAGE_ID = $(this).attr('page')
-                let keytxt = $(this).attr('keyword')
-                console.log(VIEW_ID, PAGE_ID, $(this).attr('keyword'))
+                let p = $(this).prev("p")
+                let keytxt = p.find(':first-child').text()
+                console.log(VIEW_ID, PAGE_ID, keytxt)
                 $.ajax({
                     url: "/doc/view/",
                     type: 'post',
@@ -252,9 +265,9 @@
                             localStorage.setItem('pageid', PAGE_ID)
                             window.open('/doc/view/', '_blank')
                             {#window.location.href = '/doc/view/';#}
-                            console.log(res.docname)
+                            {#console.log(res.docname)#}
                         } else {
-                            console.log(res)
+                            {#console.log(res)#}
                         }
 
                     }

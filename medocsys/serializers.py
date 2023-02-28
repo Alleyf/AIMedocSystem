@@ -49,7 +49,8 @@ class DocTxtIndexSerializer(HaystackSerializer):
     object = DocTxtSerializer(read_only=True)  # 只读,不可以进行反序列化
 
     class Meta:
-        index_classes = [DocTxtIndex, DocImgTxtIndex]  # 索引类的名称,可以有多个
+        index_classes = [DocTxtIndex]  # 索引类的名称,可以有多个
+        # index_classes = [DocTxtIndex]  # 索引类的名称,可以有多个
 
         # text 由索引类进行返回, object 由序列化类进行返回,第一个参数必须是text
         # 返回字段,不写默认全部返回
@@ -62,6 +63,29 @@ class DocTxtIndexSerializer(HaystackSerializer):
         # 排除字段，除了该字段,其他的都返回,
         # exclude = ['title']
 
+
+class DocImgTxtIndexSerializer(HaystackSerializer):
+    """
+    SKU索引结果数据序列化器
+    """
+
+    # 变量名称必须为 object 否则无法返回
+    # 变量名称必须为 object 否则无法返回,
+    # 返回除搜索字段以外的字段,由上面DocTxtSerializer自定义返回字段
+    object = DocImgTxtSerializer(read_only=True)  # 只读,不可以进行反序列化
+
+    class Meta:
+        index_classes = [DocImgTxtIndex]  # 索引类的名称,可以有多个
+        # text 由索引类进行返回, object 由序列化类进行返回,第一个参数必须是text
+        # 返回字段,不写默认全部返回
+        # text字段必须有,不然无法实现搜索
+        # 控制的是建立的索引字段
+        fields = ['text', object]
+        # fields = ['text']
+        # 忽略字段
+        # ignore_fields = ['title']
+        # 排除字段，除了该字段,其他的都返回,
+        # exclude = ['title']
 #
 # # 写法二:自定义高亮,比内置的要慢一点
 # class DocTxtIndexSerializer(HighlighterMixin, HaystackSerializer):

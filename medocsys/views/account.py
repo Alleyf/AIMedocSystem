@@ -49,7 +49,7 @@ def login(request):
             request.session["info"] = {"id": usrobj.id, "name": usrobj.username, "avatar": avatar_name}
             # 设置用户信息保存7天
             request.session.set_expiry(60 * 60 * 24 * 7)
-            return redirect("/doc/query/")
+            return redirect("/chart/list/")
         form.add_error("username", "用户名或密码错误")
         return render(request, "login.html", {'form': form})
     return render(request, "login.html", {'form': form})

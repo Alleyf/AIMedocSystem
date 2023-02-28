@@ -166,7 +166,15 @@ HAYSTACK_CONNECTIONS = {
         # 'ENGINE': 'haystack.backends.elasticsearch7_backend.Elasticsearch7SearchEngine',
         'ENGINE': 'medocsys.elasticsearch_ik_backend.Elasticsearch7IkSearchEngine',
         'URL': 'http://127.0.0.1:9200/',  # 此处为elasticsearch运行的服务器ip地址，端口号固定为9200
-        'INDEX_NAME': 'medocsys',  # 指定elasticsearch建立的索引库的名称
+        'INDEX_NAME': 'doctxt',  # 指定elasticsearch建立的索引库的名称
+        'EXCLUDED_INDEXES': ['medocsys.search_indexes.DocImgTxtIndex'],
+    },
+    'docimgtxt': {
+        # 'ENGINE': 'haystack.backends.elasticsearch7_backend.Elasticsearch7SearchEngine',
+        'ENGINE': 'medocsys.elasticsearch_ik_backend.Elasticsearch7IkSearchEngine',
+        'URL': 'http://127.0.0.1:9200/',  # 此处为elasticsearch运行的服务器ip地址，端口号固定为9200
+        'INDEX_NAME': 'docimgtxt',  # 指定elasticsearch建立的索引库的名称
+        'EXCLUDED_INDEXES': ['medocsys.search_indexes.DocTxtIndex'],
     },
 }
 # 搜索结果每页显示数量

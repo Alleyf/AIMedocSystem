@@ -1,3 +1,1 @@
-{{  object.id }}
-{{  object.doc_name }}
 {{  object.img_content }}

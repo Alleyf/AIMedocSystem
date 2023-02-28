@@ -10,7 +10,8 @@ from rest_framework.routers import SimpleRouter
 from medocsys.views import user, account, doc, chart, search, img
 
 router = SimpleRouter()
-router.register('search', search.DocTxtSearchViewSet, basename='search_api')
+router.register('search/txt', search.DocTxtSearchViewSet, basename='searchtxt_api')
+router.register('search/imgtxt', search.DocImgTxtSearchViewSet, basename='searchimgtxt_api')
 # router.register('checkcode', account.checkimgcode, basename='checkcode_api')
 urlpatterns = [
     url(r'^admin/', admin.site.urls),

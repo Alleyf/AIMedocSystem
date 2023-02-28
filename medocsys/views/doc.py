@@ -185,7 +185,7 @@ def doc_add(request):
             page_id = index + 1
             doc_txt_form.instance.doc_name = item.name
             doc_txt_form.instance.page_id = page_id
-            doc_txt_form.instance.txt_content = txt_ls[index]
+            doc_txt_form.instance.txt_content = txt_ls[index].replace("\n", "")
             # print("成功写入文本内容")
             if doc_txt_form.is_valid():
                 doc_txt_form.save()
@@ -201,7 +201,7 @@ def doc_add(request):
                 doc_img_txt_form = DocImgTxtModelForm(request.POST)
                 doc_img_txt_form.instance.doc_name = item.name
                 doc_img_txt_form.instance.page_id = txt_dict['filepage']
-                doc_img_txt_form.instance.img_content = txt_dict['content']
+                doc_img_txt_form.instance.img_content = txt_dict['content'].replace("\n", "")
                 doc_img_txt_form.instance.page_img_num = txt_dict['filepageimgnumber']
                 # print("成功添加图片内容")
                 if doc_img_txt_form.is_valid():
@@ -354,7 +354,7 @@ def doc_details(request):
         title = models.MeDocs.objects.filter(id=uid).first().name
         url = "./media/docs/" + title + '.pdf'
         # page_info = spdfmkeyword(url=url, keyword=keyword)
-        page_info = query_elastics(key=keyword)
+        page_info = query_elastics(key=keyword, start=0, size=10000)
         new_page_info = []
         for item in page_info:
             if item['name'] == title:
@@ -369,6 +369,12 @@ def doc_details(request):
             for nape in item_dict["fragments"]:
                 abstract = {'abstract': nape, 'source': item_dict['source'], 'keyword': keyword}
                 page_abstract.append(abstract)
+            # 去重同页中重复的摘要
+            new_page_abstract = []
+            for dictionary in page_abstract:
+                if dictionary not in new_page_abstract:
+                    new_page_abstract.append(dictionary)
+            page_abstract = new_page_abstract
             if item_dict["page_id"] not in key_page_info.keys():
                 key_page_info[item_dict["page_id"]] = page_abstract
                 facetnum.append(len(key_page_info[item_dict["page_id"]]))
@@ -432,13 +438,18 @@ def doc_search(request):
 @gzip_page
 def doc_query(request):
     """同步检索"""
+    start = 0
     if request.GET.get("keyword") is None:
         return render(request, "doc_query.html")
     keyword = request.GET.get("keyword")
+    # print(request.GET.get("start"))
+    if request.GET.get('start') not in ['', None]:
+        start = int(request.GET.get('start'))
+    print("起始页为：" + str(start))
     request.session['info']['keyword'] = keyword
     request.session.set_expiry(60 * 60 * 24 * 7)
     # print(request.session['info']['keyword'])
-    page_info = query_elastics(keyword)
+    page_info = query_elastics(key=keyword, start=0, size=1000)
     if len(page_info) == 0:
         context = {
             'search_data': keyword,
@@ -452,6 +463,7 @@ def doc_query(request):
     for i, item in enumerate(page_info):
         # if i < len(page_info) - 1:
         repeate_ls = []
+        # print("当前的下标为：", i)
         rel_score = page_info[i]['rel_score']
         for j, _ in enumerate(page_info):
             # print(j)
@@ -460,17 +472,17 @@ def doc_query(request):
             if page_info[i]['name'] == page_info[j]['name']:
                 rel_score += page_info[j]['rel_score']
                 repeate_ls.append(j)
-                print("剔除了" + str(j) + page_info[i]['name'])
+                # print("剔除了" + str(j) + page_info[i]['name'])
             continue
         n = 0
         for k in repeate_ls:
             k -= n
             page_info.pop(k)
             n += 1
-        print("更新前的名字：" + page_info[i]['name'])
+        # print("更新前的名字：" + page_info[i]['name'])
         page_info[i]['id'] = models.MeDocs.objects.filter(name=page_info[i]['name']).first().id
         # page_info[i]['name'] = get_pdf_title(page_info[i]['name'])
-        print('更新后的名字：' + page_info[i]['name'])
+        # print('更新后的名字：' + page_info[i]['name'])
         uid = page_info[i]['id']
         rel_score = round(rel_score, 2)
         models.MeDocs.objects.filter(id=uid).update(relscore=rel_score)
@@ -482,12 +494,26 @@ def doc_query(request):
         page_info[i]['allscore'] = models.MeDocs.objects.filter(id=uid).first().allscore
     # 对文档结果按照总分进行排序
     page_info = sorted(page_info, key=lambda x: x['allscore'], reverse=True)
+    # for i, item in enumerate(page_info):
+    #     item['num'] = i + 1
+    print("去除重复后的文献数", len(page_info))
+    if start + 10 < len(page_info):
+        page_info = page_info[start:start + 10]
+        page_status = False
+    else:
+        page_info = page_info[start:len(page_info)]
+        page_status = True
     for i, item in enumerate(page_info):
+        # print("行号为", i)
         item['num'] = i + 1
+    print("分页后的文献数", len(page_info))
+    print(page_info)
     context = {
         'search_data': keyword,
         'page_info': page_info,
-        'code': 200
+        'code': 200,
+        'start': start,
+        'final_page': page_status
     }
     return render(request, "doc_query.html", context)
     # return redirect('/admin/list/')
