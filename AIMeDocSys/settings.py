@@ -58,11 +58,13 @@ INSTALLED_APPS = [
 
 # simpleui配置
 SIMPLEUI_HOME_TITLE = '医道有易-后台管理'
+SIMPLEUI_INDEX = '/chart/list/'
 # 隐藏右侧SimpleUI广告链接和使用分析
 SIMPLEUI_HOME_INFO = False
 SIMPLEUI_ANALYSIS = True
+SIMPLEUI_HOME_QUICK = True
 # 换成自己Logo链接
-SIMPLEUI_LOGO = '/static/images/logo.png'
+SIMPLEUI_LOGO = '/static/images/favicon/favicon.png'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

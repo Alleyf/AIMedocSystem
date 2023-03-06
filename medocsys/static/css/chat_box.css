@@ -1,0 +1,347 @@
+/**	01. Chat Application
+*************************************************** 
+http://www.bootstrapmb.com**/
+.pvr_chat_button {
+    z-index: 9999;
+    position: fixed;
+    bottom: 20px;
+    right: 35px;
+    background: linear-gradient(to left, #8f94fb, #4e54c8);
+    box-shadow: 0 2px 30px 0 rgba(78, 84, 200, 0.8);
+    border-radius: 75px;
+    color: #fff;
+    padding: 12px 20px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    vertical-align: middle;
+    font-size: 14px;
+    cursor: pointer;
+    -webkit-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+
+.pvr_chat_button.chat_left {
+    left: 35px;
+    right: unset;
+}
+
+.pvr_chat_button i {
+    vertical-align: middle;
+    display: inline-block;
+    font-size: 15px;
+}
+
+.pvr_chat_button span {
+    vertical-align: middle;
+    display: inline-block;
+    font-weight: 600;
+}
+
+.pvr_chat_button i + span {
+    margin-left: 15px;
+}
+
+.pvr_chat_button:hover {
+    -webkit-transform: scale(1.05);
+    transform: scale(1.05);
+    background: linear-gradient(to left, #8f94fb, #4e54c8);
+    box-shadow: 0 2px 30px 0 rgba(78, 84, 200, 0.8);
+}
+
+#container {
+    position: fixed;
+    right: 50px;
+    z-index: 100 !important;
+}
+
+.pvr_chat_wrapper {
+    z-index: 999 !important;
+    /*position: fixed;*/
+    bottom: 70px;
+    right: 150px;
+    width: 50%;
+    visibility: hidden;
+    margin: 0 auto;
+    opacity: 0;
+    -webkit-transform: translateY(-20px);
+    transform: translateY(-20px);
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.pvr_chat_wrapper.chat_left {
+    left: 35px;
+}
+
+.pvr_chat_wrapper.active {
+    visibility: visible;
+    opacity: 1;
+    -webkit-transform: translateY(0px);
+    transform: translateY(0px);
+}
+
+.pvr_chat_wrapper .pvr_chat_content {
+    background-color: #fff;
+    /* Rectangle: */
+    box-shadow: 0 2px 40px 0 rgba(43, 132, 210, 0.55);
+    border-radius: 10px;
+    /*width: 320px;*/
+    width: 100%;
+    position: relative;
+
+    background-repeat: repeat-x;
+    background-position-x: center;
+    background-size: 675px 835px;
+    background-image: url(../images/header_2.svg);
+    padding: 20px;
+}
+
+.pvr_chat_wrapper .pvr_chat_content .close_chat {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: rgba(0, 0, 0, 0.8);
+    font-size: 10px;
+    cursor: pointer;
+}
+
+.pvr_chat_wrapper .pvr_chat_content {
+    padding: 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.pvr_chat_wrapper .pvr_chat_content .pvr-user-w {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+}
+
+.pvr_chat_wrapper .pvr_chat_content .pvr-user-w .pvr-user-avatar-w {
+    width: 50px;
+}
+
+.pvr_chat_wrapper .pvr_chat_content .pvr-user-w .pvr-user-avatar-w .user-avatar {
+    border-radius: 40px;
+    overflow: hidden;
+}
+
+.pvr_chat_wrapper .pvr_chat_content .pvr-user-w .pvr-user-avatar-w .user-avatar img {
+    max-width: 100%;
+    height: auto;
+}
+
+.pvr_chat_wrapper .pvr_chat_content .pvr-user-w.with-status .pvr-user-avatar-w {
+    position: relative;
+}
+
+.pvr_chat_wrapper .pvr_chat_content .pvr-user-w.with-status .pvr-user-avatar-w:before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 0px 3px #fff;
+}
+
+.pvr_chat_wrapper .pvr_chat_content .pvr-user-w.with-status.status-green .pvr-user-avatar-w:before {
+    background-color: #90be2e;
+}
+
+.pvr_chat_wrapper .pvr_chat_content .pvr-user-w.with-status.status-red .pvr-user-avatar-w:before {
+    background-color: #e65252;
+}
+
+.pvr_chat_wrapper .pvr_chat_content .pvr-user-w .user-name {
+    padding-left: 20px;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+}
+
+.pvr_chat_wrapper .pvr_chat_content .pvr-user-w .user-title {
+    margin-bottom: 2px;
+    color: #0da9ef;
+}
+
+.pvr_chat_wrapper .pvr_chat_content .pvr-user-w .user-role {
+    font-weight: 600;
+    font-size: 0.81rem;
+}
+
+.pvr_chat_wrapper .pvr_chat_content .pvr-user-w .user-action {
+    width: 50px;
+    color: #0da9ef;
+    font-size: 18px;
+}
+
+.pvr_chat_wrapper .chat-messages {
+    padding: 20px;
+    height: calc(100vh - 400px);
+    position: relative;
+    overflow: hidden;
+}
+
+.pvr_chat_wrapper .chat-messages .message {
+    margin-bottom: 12px;
+}
+
+.pvr_chat_wrapper .chat-messages.theme_1 .message .message-content {
+    color: #594939;
+    padding: 10px 20px;
+    background-color: #fcf6ee;
+    border-radius: 20px 20px 20px 0px;
+    max-width: 80%;
+    font-size: 13px;
+    display: inline-block;
+    text-align: left;
+}
+
+.pvr_chat_wrapper .chat-messages.theme_1 .message.self .message-content {
+    border-radius: 20px 20px 0px 20px;
+    background-color: #e2efff;
+    color: #2A4E7F;
+}
+
+.pvr_chat_wrapper .chat-messages.theme_2 .message .message-content {
+    color: #FFFFFF;
+    padding: 10px 20px;
+    background-color: #da8d67;
+    border-radius: 20px 20px 20px 0px;
+    max-width: 80%;
+    font-size: 13px;
+    display: inline-block;
+    text-align: left;
+}
+
+.pvr_chat_wrapper .chat-messages.theme_2 .message.self .message-content {
+    border-radius: 20px 20px 0px 20px;
+    background-color: #9281cf;
+    color: #FFFFFF;
+}
+
+.pvr_chat_wrapper .chat-messages.theme_3 .message .message-content {
+    color: #FFFFFF;
+    padding: 10px 20px;
+    background-color: #616161;
+    border-radius: 20px 20px 20px 0px;
+    max-width: 80%;
+    font-size: 13px;
+    display: inline-block;
+    text-align: left;
+}
+
+.pvr_chat_wrapper .chat-messages.theme_3 .message.self .message-content {
+    border-radius: 20px 20px 0px 20px;
+    background-color: #689f38;
+    color: #FFFFFF;
+}
+
+.pvr_chat_wrapper .chat-messages.theme_4 .message .message-content {
+    color: #FFFFFF;
+    padding: 10px 20px;
+    background-color: #929090;
+    border-radius: 20px 20px 20px 0px;
+    max-width: 80%;
+    font-size: 13px;
+    display: inline-block;
+    text-align: left;
+}
+
+/*http://www.bootstrapmb.com*/
+.pvr_chat_wrapper .chat-messages.theme_4 .message.self .message-content {
+    border-radius: 20px 20px 0px 20px;
+    background-color: #4527a0;
+    color: #FFFFFF;
+}
+
+.pvr_chat_wrapper .chat-messages .message.self {
+    text-align: right;
+}
+
+.pvr_chat_wrapper .chat-messages .date-break {
+    text-align: center;
+    margin-bottom: 10px;
+    color: rgba(0, 0, 0, 0.4);
+    font-size: 13px;
+}
+
+.pvr_chat_wrapper .chat-controls {
+    padding: 10px;
+    padding-top: 0px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.pvr_chat_wrapper .chat-controls .message-input {
+    border: 1px solid transparent;
+    background-color: transparent;
+    padding: 10px;
+    width: 100%;
+    display: block;
+    font-size: 13px;
+    border-radius: 0px;
+}
+
+.pvr_chat_wrapper .chat-controls .message-input:focus {
+    outline: none;
+    border-bottom: 1px solid #0da9ef;
+}
+
+.pvr_chat_wrapper .chat-controls .chat-extra {
+    text-align: left;
+    padding-left: 0px;
+    padding-top: 10px;
+}
+
+.pvr_chat_wrapper .chat-controls .chat-extra a {
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 16px;
+    position: relative;
+    color: #9368b4;
+}
+
+.pvr_chat_wrapper .chat-controls .chat-extra a .extra-tooltip {
+    background-color: rgba(0, 0, 0, 0.9);
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.63rem;
+    text-transform: uppercase;
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 4px;
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    white-space: nowrap;
+    display: none;
+}
+
+.pvr_chat_wrapper .chat-controls .chat-extra a:hover {
+    text-decoration: none;
+}
+
+.pvr_chat_wrapper .chat-controls .chat-extra a:hover .extra-tooltip {
+    display: block;
+}
+
+.change_chat_theme {
+    float: right;
+}
+
+.pvr_chat_wrapper .material-icons {
+    font-size: 18px !important;
+}

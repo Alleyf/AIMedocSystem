@@ -14,7 +14,7 @@ from medocsys.utils import pagination, upload
 from medocsys.utils.form import MeDocsModelForm, DocTxtModelForm, DocImgTxtModelForm
 from medocsys.utils.upload import extract_img_info, extract_txt_info
 from ..models import MeDocs
-from ..utils.get_doc_title import get_pdf_title
+from ..utils.get_doc_title import get_pdf_title, get_doc_title_and_language
 from ..utils.query import query_elastics, query_elastics_min_fragment
 from ..utils.search import spdfmkeyword, div_word
 from ..utils.get_language_type import is_contains_chinese
@@ -78,7 +78,7 @@ def doc_list(request):
     # 1.搜索参数初始化
     search_dict = {}
     user_id = models.User.objects.filter(username=request.session['info']['name']).first().pk
-    print(request.session['info']['name'], user_id)
+    # print(request.session['info']['name'], user_id)
     # 获取号码搜索参数
     search_data = request.GET.get(key="n", default='')
     if search_data:
@@ -89,7 +89,7 @@ def doc_list(request):
     pageplus = 2
     # 3.筛选符合条件的数据
     queryset = models.MeDocs.objects.filter(**search_dict).order_by('-allscore')
-    print(queryset)
+    # print(queryset)
     # print("{}秒".format(end - start))
     # 4.实例化页面对象
     page_obj = pagination.Pagination(request, query_set=queryset, page_size=pagesize, page_plus=pageplus)
@@ -487,7 +487,7 @@ def doc_query(request):
         # print("更新前的名字：" + page_info[i]['name'])
         print("求和后的分数", rel_score)
         page_info[i]['id'] = models.MeDocs.objects.filter(name=page_info[i]['name']).first().id
-        # page_info[i]['name'] = get_pdf_title(page_info[i]['name'])
+        page_info[i]['name'], _ = get_doc_title_and_language(page_info[i]['name'])
         # print('更新后的名字：' + page_info[i]['name'])
         uid = page_info[i]['id']
         rel_score = round(rel_score, 2)

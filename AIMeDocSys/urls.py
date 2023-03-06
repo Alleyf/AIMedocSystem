@@ -7,7 +7,7 @@ from django.urls import path, re_path, include
 from django.views.static import serve
 from rest_framework.routers import SimpleRouter
 
-from medocsys.views import user, account, doc, chart, search, img
+from medocsys.views import user, account, doc, chart, search, img, medocrobot
 
 router = SimpleRouter()
 router.register('search/txt', search.DocTxtSearchViewSet, basename='searchtxt_api')
@@ -35,6 +35,8 @@ urlpatterns = [
     # 邮箱验证码
     path("checkcode/", account.checkcode_email),
     path("beauty/", account.detail),
+    # *********************机器人助手*********************
+    path("chat/", medocrobot.chat),
     # *********************文档管理*********************
     # 文档列表
     path("doc/list/", doc.doc_list),

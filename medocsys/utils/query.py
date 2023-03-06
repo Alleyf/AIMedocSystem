@@ -20,12 +20,15 @@ def query_elastics(key: str, start=0, size=1000):
             # index=['medocsys'],
             index=['doctxt', 'docimgtxt'],
             query={
-                "match": {
-                    "text": {
-                        "query": key,
-                        # "analyzer": "ik_max_word"  # 指定搜索时的分词模式
-                    },
-                },
+                # "match": {
+                #     "text": {
+                #         "query": key,
+                #         # "analyzer": "ik_max_word"  # 指定搜索时的分词模式
+                #     },
+                # },
+                "fuzzy": {
+                    "text": key,
+                }
 
             },
             track_total_hits=True,
