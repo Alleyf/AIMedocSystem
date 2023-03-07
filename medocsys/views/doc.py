@@ -14,7 +14,8 @@ from medocsys.utils import pagination, upload
 from medocsys.utils.form import MeDocsModelForm, DocTxtModelForm, DocImgTxtModelForm
 from medocsys.utils.upload import extract_img_info, extract_txt_info
 from ..models import MeDocs
-from ..utils.get_doc_title import get_pdf_title, get_doc_title_and_language
+from ..utils.doc_get_category import get_category
+from ..utils.get_doc_title import get_doc_title
 from ..utils.query import query_elastics, query_elastics_min_fragment
 from ..utils.search import spdfmkeyword, div_word
 from ..utils.get_language_type import is_contains_chinese
@@ -137,10 +138,14 @@ def doc_add(request):
         # 单独设置表单数据：将当前登录的用户作为该条信息的作者
         form.instance.user_id = request.session['info'].get("id")
         # 设置文档语言
-        print("当前名字：" + form.instance.name)
+        # print("当前名字：" + form.instance.name)
         # tika获取文献标题
-        # if is_contains_chinese(get_pdf_title(form.instance.name)):
-        if is_contains_chinese(form.instance.name):
+        doc_title = get_doc_title(doc_name=form.instance.name)
+        # 设置文献种类
+        form.instance.category = get_category(title=doc_title)
+        # 设置文献语言
+        if is_contains_chinese(doc_title):
+            # if is_contains_chinese(form.instance.name):
             form.instance.language = 1
         else:
             form.instance.language = 2
@@ -487,7 +492,7 @@ def doc_query(request):
         # print("更新前的名字：" + page_info[i]['name'])
         print("求和后的分数", rel_score)
         page_info[i]['id'] = models.MeDocs.objects.filter(name=page_info[i]['name']).first().id
-        page_info[i]['name'], _ = get_doc_title_and_language(page_info[i]['name'])
+        page_info[i]['name'] = get_doc_title(page_info[i]['name'])
         # print('更新后的名字：' + page_info[i]['name'])
         uid = page_info[i]['id']
         rel_score = round(rel_score, 2)

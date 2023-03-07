@@ -58,7 +58,7 @@ class UserAdmin(admin.ModelAdmin):
 @admin.register(MeDocs)
 class MedocsAdmin(admin.ModelAdmin):
     empty_value_display = '-empty-'
-    fields = (("clkscore", "fedbakscore"), "user", "language", "date", "docfile")
+    fields = (("clkscore", "fedbakscore"), "user", "language", "date", "category")
     list_per_page = 10
     list_max_show_all = 10
     search_fields = ("name",)

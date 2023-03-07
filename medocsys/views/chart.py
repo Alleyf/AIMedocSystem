@@ -99,13 +99,13 @@ def chart_pie(request):
         else:
             data[item.user.username] = 1
     print(data)
-    data_list = [
-        {"value": 1048, "name": '研发部'},
-        {"value": 735, "name": '后勤部'},
-        {"value": 580, "name": '运营部'},
-        {"value": 484, "name": '销售部'},
-        {"value": 300, "name": '售后部'}
-    ]
+    # data_list = [
+    #     {"value": 1048, "name": '研发部'},
+    #     {"value": 735, "name": '后勤部'},
+    #     {"value": 580, "name": '运营部'},
+    #     {"value": 484, "name": '销售部'},
+    #     {"value": 300, "name": '售后部'}
+    # ]
     res = {
         'status': True,
         'data': data

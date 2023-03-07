@@ -34,6 +34,7 @@ class MeDocs(models.Model):
     # 反馈总分为10
     fedbakscore = models.FloatField(verbose_name="用户反馈得分", default=0)
     allscore = models.FloatField(verbose_name="总分", default=0)
+    category = models.CharField(verbose_name="文献种类", default="", max_length=128)
     user = models.ForeignKey(verbose_name="贡献者", to='User', null=True, blank=True, on_delete=models.SET_NULL, default=1)
     language = models.SmallIntegerField(verbose_name="语言", default=1, choices=languages_choices)
     date = models.DateField(verbose_name="日期", default=time.strftime("%Y-%m-%d", time.localtime()))

@@ -8,19 +8,19 @@ from medocsys.utils.get_language_type import is_contains_chinese
 from medocsys.utils.search import duplate_rate
 
 
-def get_pdf_title(title: str):
-    url = '../../media/docs/' + title  # 测试
-    # url = './media/docs/' + title + '.pdf'  # 实际
-    print(url)
-    parsedPDF = parser.from_file(url)
-    if "pdf:docinfo:title" in parsedPDF['metadata']:
-        # return parsedPDF['metadata']["pdf:docinfo:title"]
-        return parsedPDF['metadata']  # 测试
-    else:
-        return title
+# def get_pdf_title(title: str):
+#     url = '../../media/docs/' + title  # 测试
+#     # url = './media/docs/' + title + '.pdf'  # 实际
+#     print(url)
+#     parsedPDF = parser.from_file(url)
+#     if "pdf:docinfo:title" in parsedPDF['metadata']:
+#         # return parsedPDF['metadata']["pdf:docinfo:title"]
+#         return parsedPDF['metadata']  # 测试
+#     else:
+#         return title
 
 
-def get_doc_title_and_language(doc_name: str):
+def get_doc_title(doc_name: str):
     # 1.使用PyPDF2库：PyPDF2是用来提取PDF文档内容的库，可以把PDF文档转换成文本，并且可以提取其中的文本，所以可以用它来提取PDF文档中的论文题目：
     # url = '../../media/docs/' + doc_name  # 测试
     url = './media/docs/' + doc_name + '.pdf'  # 实际
@@ -65,14 +65,16 @@ def get_doc_title_and_language(doc_name: str):
         if not title or duplate_rate(title, doc_name) < 70:
             title = doc_name
     # 打印语言
-    language = is_contains_chinese(strs=title)
+    # language_status = is_contains_chinese(strs=title)
+    # language = "中文" if language_status else "英文"
     # print("中文") if language else print("英文")
     # 输出标题和语言
     # print(title)
-    return title, language
+    # return title, language
+    return title
 
 
 if __name__ == '__main__':
     # print(get_pdf_title("isct_a-118.pdf"))
-    get_doc_title_and_language(
-        doc_name="新冠肺炎.pdf")
+    print(get_doc_title(
+        doc_name="新冠肺炎.pdf"))

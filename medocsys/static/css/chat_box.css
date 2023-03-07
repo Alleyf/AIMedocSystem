@@ -4,8 +4,8 @@ http://www.bootstrapmb.com**/
 .pvr_chat_button {
     z-index: 9999;
     position: fixed;
-    bottom: 20px;
-    right: 35px;
+    bottom: 60px;
+    right: 10px;
     background: linear-gradient(to left, #8f94fb, #4e54c8);
     box-shadow: 0 2px 30px 0 rgba(78, 84, 200, 0.8);
     border-radius: 75px;
