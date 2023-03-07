@@ -126,17 +126,17 @@
         </div>
     </nav>
     <canvas id="particles-js" class="background"></canvas>
-    <div class="container perfect_scrollbar" id="container">
-        <div class="pvr_chat_button">
-            <i class="material-icons">chat</i>
-            <span>Assistant</span>
-        </div>
-        <div class="pvr_chat_wrapper">
-            <div class="pvr_chat_content">
-                <div class="close_chat">
+    <div class="pvr_chat_button" data-bs-toggle="modal" data-bs-target="#chat_modal">
+        <i class="material-icons">chat</i>
+        <span>Assistant</span>
+    </div>
+    <div class="modal fade" id="chat_modal" tabindex="-1" style="display: none" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable pvr_chat_wrapper">
+            <div class="pvr_chat_content modal-content">
+                <div class="close_chat" data-bs-dismiss="modal">
                     <i class="material-icons">close</i>
                 </div>
-                <div class="chat_header">
+                <div class="chat_header modal-header">
                     <div class="pvr-user-w with-status status-green">
                         <div class="pvr-user-avatar-w">
                             <div class="user-avatar">
@@ -144,16 +144,13 @@
                             </div>
                         </div>
                         <div class="user-name">
-                            {#                            <h6 class="user-title">#}
-                            {#                                <a href="#">AI Medocsys Assistant</a>#}
-                            {#                            </h6>#}
                             <div class="user-role">
                                 AI Medocsys Assistant
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="chat-messages theme_2">
+                <div class="chat-messages theme_2 modal-body">
                     <div class="date-break">
                         Mon 10:20am
                     </div>
@@ -163,7 +160,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="chat-controls">
+                <div class="chat-controls modal-footer">
                     <input class="message-input" id="message-input" placeholder="Type your question here..."
                            type="text">
                     <div class="chat-extra">
@@ -177,7 +174,7 @@
                         {#                        </a>#}
                         <a href="javascript:void(0)" class="change_chat_theme">
                             <span class="extra-tooltip">Change chat theme</span>
-                            <i class="material-icons">refresh</i>
+                            <i class="material-icons">palette</i>
                         </a>
                     </div>
                 </div>

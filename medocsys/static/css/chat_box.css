@@ -52,21 +52,7 @@ http://www.bootstrapmb.com**/
     box-shadow: 0 2px 30px 0 rgba(78, 84, 200, 0.8);
 }
 
-#container {
-    position: fixed;
-    right: 50px;
-    z-index: 100 !important;
-}
-
 .pvr_chat_wrapper {
-    z-index: 999 !important;
-    /*position: fixed;*/
-    bottom: 70px;
-    right: 150px;
-    width: 50%;
-    visibility: hidden;
-    margin: 0 auto;
-    opacity: 0;
     -webkit-transform: translateY(-20px);
     transform: translateY(-20px);
     -webkit-transition: all 0.3s ease;
@@ -190,6 +176,8 @@ http://www.bootstrapmb.com**/
     padding: 20px;
     height: calc(100vh - 400px);
     position: relative;
+    width: auto;
+    margin: auto;
     overflow: hidden;
 }
 
