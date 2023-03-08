@@ -48,6 +48,8 @@ def get_doc_title(doc_name: str):
             item = item.replace("·", ",")
             item = item.replace("，", ",")
             item = item.replace(":", ",")
+            item = item.replace("　", ",")
+            item = item.replace("＊", ",")
             if "\n" and "\r" and "," not in item:
                 # if not re.search(" ", item):
                 print("满足条件的项", item, len(item))
@@ -77,4 +79,4 @@ def get_doc_title(doc_name: str):
 if __name__ == '__main__':
     # print(get_pdf_title("isct_a-118.pdf"))
     print(get_doc_title(
-        doc_name="新冠肺炎.pdf"))
+        doc_name="高效液相色谱法测定人血浆中百草枯浓度_孙斌.pdf"))

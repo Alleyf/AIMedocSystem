@@ -17,13 +17,10 @@
     {#    <link rel="stylesheet" href="{% static 'plugins/fontawesome-free-6.2.1-web/css/fontawesome.min.css' %}">#}
     <link rel="stylesheet" href="{% static 'css/layout.css' %}">
     <link rel="stylesheet" href="{% static 'plugins/bootstrap-5.2.3/css/bootstrap.min.css' %}">
-    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-
+    {#    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>#}
     <!-- ***** Boostrap Custom / Addons Stylesheets ***** -->
     {#    <link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>#}
-    <link href="{% static '/plugins/material_icon/icon.css' %}" rel="stylesheet"/>
-
-    <!-- Required CSS file for CSS Chat Panels element -->
+    {#    <link href="{% static '/plugins/material_icon/icon.css' %}" rel="stylesheet"/>#}
     <link href="{% static '/plugins/perfect-scrollbar/css/perfect-scrollbar.min.css' %}" rel="stylesheet"/>
     <link rel="stylesheet" href="{% static '/css/chat_box.css' %}" type="text/css" media="all">
     {% block mystyle %}
@@ -127,14 +124,14 @@
     </nav>
     <canvas id="particles-js" class="background"></canvas>
     <div class="pvr_chat_button" data-bs-toggle="modal" data-bs-target="#chat_modal">
-        <i class="material-icons">chat</i>
+        <i class="fa-solid fa-robot "></i>
         <span>Assistant</span>
     </div>
     <div class="modal fade" id="chat_modal" tabindex="-1" style="display: none" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable pvr_chat_wrapper">
             <div class="pvr_chat_content modal-content">
                 <div class="close_chat" data-bs-dismiss="modal">
-                    <i class="material-icons">close</i>
+                    <i style="font-size: 20px">X</i>
                 </div>
                 <div class="chat_header modal-header">
                     <div class="pvr-user-w with-status status-green">
@@ -174,7 +171,7 @@
                         {#                        </a>#}
                         <a href="javascript:void(0)" class="change_chat_theme">
                             <span class="extra-tooltip">Change chat theme</span>
-                            <i class="material-icons">palette</i>
+                            <i class="fa-solid fa-palette "></i>
                         </a>
                     </div>
                 </div>
@@ -189,9 +186,8 @@
 <script src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
 <script src="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.3.0/js/all.min.js"></script>
 <script src="{% static 'plugins/bootstrap-5.2.3/js/bootstrap.bundle.min.js' %}"></script>
-<script src="{% static 'plugins/bootstrap-datepicker/bootstrap-datepicker.min.js' %}"></script>
+{#<script src="{% static 'plugins/bootstrap-datepicker/bootstrap-datepicker.min.js' %}"></script>#}
 <script src="https://cdn.bootcdn.net/ajax/libs/Darkmode.js/1.5.7/darkmode-js.min.js"></script>
-{#<script src="assets/plugins/jquery/jquery-3.2.1.min.js" type="text/javascript"></script>#}
 <script src="{% static '/plugins/perfect-scrollbar/js/perfect-scrollbar.jquery.min.js' %}"
         type="text/javascript"></script>
 <script src="{% static '/plugins/backstretch/backstretch.js' %}" type="text/javascript"></script>
