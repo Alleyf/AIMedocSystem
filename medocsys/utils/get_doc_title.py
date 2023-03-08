@@ -1,23 +1,6 @@
-import re
-
 import fitz
-from tika import parser
-import PyPDF2
 
-from medocsys.utils.get_language_type import is_contains_chinese
 from medocsys.utils.search import duplate_rate
-
-
-# def get_pdf_title(title: str):
-#     url = '../../media/docs/' + title  # 测试
-#     # url = './media/docs/' + title + '.pdf'  # 实际
-#     print(url)
-#     parsedPDF = parser.from_file(url)
-#     if "pdf:docinfo:title" in parsedPDF['metadata']:
-#         # return parsedPDF['metadata']["pdf:docinfo:title"]
-#         return parsedPDF['metadata']  # 测试
-#     else:
-#         return title
 
 
 def get_doc_title(doc_name: str):
