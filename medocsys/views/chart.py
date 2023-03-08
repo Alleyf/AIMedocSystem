@@ -94,10 +94,14 @@ def chart_pie(request):
     queryset = MeDocs.objects.all()
     data = {}
     for item in queryset:
-        if item.user.username in data.keys():
-            data[item.user.username] += 1
+        # if item.user.username in data.keys():
+        #     data[item.user.username] += 1
+        # else:
+        #     data[item.user.username] = 1
+        if item.category in data.keys():
+            data[item.category] += 1
         else:
-            data[item.user.username] = 1
+            data[item.category] = 1
     print(data)
     # data_list = [
     #     {"value": 1048, "name": '研发部'},

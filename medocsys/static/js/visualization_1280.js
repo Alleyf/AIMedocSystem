@@ -117,10 +117,10 @@ function init_myChart1() {
 
     option = {
         legend: {
-            top: 'center',
+            top: 'top',
             left: '0',
             //图例纵向显示
-            orient: 'vertical',
+            // orient: 'vertical',
             textStyle: {
                 fontSize: 12,//图例文字字体大小
                 color: '#8A90A3'//图例文字颜色
