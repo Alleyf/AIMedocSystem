@@ -27,9 +27,9 @@ SECRET_KEY = 'django-insecure-ttar_%7b)pane)#$-1ov(9!z!vt16h7*-*!&n!*hg8uw=wy4$f
 DEBUG = True
 # DEBUG = False
 # 部署环境静态路径配置
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')  # 这里可以根据实际情况来定义，比如可以将static名修改
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')  # 这里可以根据实际情况来定义，比如可以将static名修改
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'medocsys/static')]
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'medocsys/static')]
 
 # ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ["*"]
