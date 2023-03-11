@@ -1,8 +1,12 @@
 * {
     font-family: 'Open Sans Light', serif;
     letter-spacing: .05em;
+
 }
 
+@font-face {
+    font-display: optional
+}
 
 html, body {
     height: 100%;

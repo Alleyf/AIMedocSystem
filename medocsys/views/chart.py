@@ -1,14 +1,13 @@
 import os
-
-from django.core.checks.security import csrf
+import json
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
-from medocsys.utils.upload import upload
 from ..models import MeDocs
 from ..utils.query import query_elastics_fulltext
 from ..utils.wordCloud import get_word_cloud
+from py2neo import *
 
 
 def chart_list(request):
@@ -144,3 +143,291 @@ def chart_line(request):
         }
     }
     return JsonResponse(res)
+
+
+# 连接数据库
+def medicine_search_all():
+    graph = Graph('http://47.120.0.133:7474/', auth=("neo4j", "password"))
+    # 定义data数组，存放节点信息
+    data = []
+    # 定义关系数组，存放节点间的关系
+    links = []
+    # 查询所有节点，并将节点信息取出存放在data数组中
+    for n in graph.nodes:
+        # 将节点信息转化为json格式，否则中文会不显示
+        # print(n)
+        nodesStr = json.dumps(graph.nodes[n], ensure_ascii=False)
+        # 取出节点的name
+        node_name = json.loads(nodesStr)['name']
+
+        # 构造字典，存储单个节点信息
+        dict = {
+            # 'id':str(n), # 防止重复节点
+            'name': node_name,
+            'symbolSize': 50,
+            'category': '对象'
+        }
+        # 将单个节点信息存放在data数组中
+        data.append(dict)
+    # 查询所有关系，并将所有的关系信息存放在links数组中
+    rps = graph.relationships
+    for r in rps:
+        # 取出开始节点的name
+        source = str(rps[r].start_node['name'])
+        # for i in data: #需要使用ID
+        #     if source == i['name']:
+        #         source = i['id']
+        # 取出结束节点的name
+        target = str(rps[r].end_node['name'])
+        # for i in data: #需要使用ID
+        #     if target == i['name']:
+        #         target = i['id']
+        # 取出开始节点的结束节点之间的关系
+        name = str(type(rps[r]).__name__)
+        # 构造字典存储单个关系信息
+        dict = {
+            'source': source,
+            'target': target,
+            'name': name
+        }
+        # 将单个关系信息存放进links数组中
+        links.append(dict)
+    # 输出所有节点信息
+    # for item in data:
+    #     print(item)
+    # 输出所有关系信息
+    # for item in links:
+    #     print(item)
+    # 将所有的节点信息和关系信息存放在一个字典中
+    neo4j_data = {
+        'data': data,
+        'links': links
+    }
+    neo4j_data = json.dumps(neo4j_data)
+    return neo4j_data
+
+
+@csrf_exempt
+# def medicine_search_all(request):
+def medicine_search_all_category():
+    """医学知识图谱"""
+    graph = Graph('http://47.120.0.133:7474/', auth=("neo4j", "password"))
+    data = []  # 定义data数组，存放节点信息
+    links = []  # 定义关系数组，存放节点间的关系
+    # 节点分类
+    node_Disease = graph.run('MATCH (n:Disease) RETURN n').data()
+    node_Check = graph.run('MATCH (n:Check) RETURN n').data()
+    node_Department = graph.run('MATCH (n:Department) RETURN n').data()
+    node_Drug = graph.run('MATCH (n:Drug) RETURN n').data()
+    node_Food = graph.run('MATCH (n:Food) RETURN n').data()
+    node_Producer = graph.run('MATCH (n:Producer) RETURN n').data()
+    node_Symptom = graph.run('MATCH (n:Symptom) RETURN n').data()
+
+    for n in node_Disease:
+        nodesStr = json.dumps(n, ensure_ascii=False)  # 将节点信息转化为json格式，否则中文会不显示
+        node_name = json.loads(nodesStr)
+        node_name = node_name['n']['name']  # 取出节点的name
+        # print(node_name)
+        dict = {
+            'id': str(n),  # 防止重复节点
+            'name': node_name,
+            'symbolSize': 50,
+            'category': 'Disease'
+        }
+        data.append(dict)  # 将单个节点信息存放在data数组中
+    for n in node_Check:
+        nodesStr = json.dumps(n, ensure_ascii=False)  # 将节点信息转化为json格式，否则中文会不显示
+        node_name = json.loads(nodesStr)
+        node_name = node_name['n']['name']  # 取出节点的name
+        # print(node_name)
+        dict = {
+            'id': str(n),  # 防止重复节点
+            'name': node_name,
+            'symbolSize': 50,
+            'category': 'Check'
+        }
+        data.append(dict)  # 将单个节点信息存放在data数组中
+    for n in node_Department:
+        nodesStr = json.dumps(n, ensure_ascii=False)  # 将节点信息转化为json格式，否则中文会不显示
+        node_name = json.loads(nodesStr)
+        node_name = node_name['n']['name']  # 取出节点的name
+        # print(node_name)
+        dict = {
+            'id': str(n),  # 防止重复节点
+            'name': node_name,
+            'symbolSize': 50,
+            'category': 'Department'
+        }
+        data.append(dict)  # 将单个节点信息存放在data数组中
+    for n in node_Drug:
+        nodesStr = json.dumps(n, ensure_ascii=False)  # 将节点信息转化为json格式，否则中文会不显示
+        node_name = json.loads(nodesStr)
+        node_name = node_name['n']['name']  # 取出节点的name
+        # print(node_name)
+        dict = {
+            'id': str(n),  # 防止重复节点
+            'name': node_name,
+            'symbolSize': 50,
+            'category': 'Drug'
+        }
+        data.append(dict)  # 将单个节点信息存放在data数组中
+    for n in node_Food:
+        nodesStr = json.dumps(n, ensure_ascii=False)  # 将节点信息转化为json格式，否则中文会不显示
+        node_name = json.loads(nodesStr)
+        node_name = node_name['n']['name']  # 取出节点的name
+        # print(node_name)
+        dict = {
+            'id': str(n),  # 防止重复节点
+            'name': node_name,
+            'symbolSize': 50,
+            'category': 'Food'
+        }
+        data.append(dict)  # 将单个节点信息存放在data数组中
+    for n in node_Producer:
+        nodesStr = json.dumps(n, ensure_ascii=False)  # 将节点信息转化为json格式，否则中文会不显示
+        node_name = json.loads(nodesStr)
+        node_name = node_name['n']['name']  # 取出节点的name
+        # print(node_name)
+        dict = {
+            'id': str(n),  # 防止重复节点
+            'name': node_name,
+            'symbolSize': 50,
+            'category': 'Producer'
+        }
+        data.append(dict)  # 将单个节点信息存放在data数组中
+    for n in node_Symptom:
+        nodesStr = json.dumps(n, ensure_ascii=False)  # 将节点信息转化为json格式，否则中文会不显示
+        node_name = json.loads(nodesStr)
+        node_name = node_name['n']['name']  # 取出节点的name
+        # print(node_name)
+        dict = {
+            'id': str(n),  # 防止重复节点
+            'name': node_name,
+            'symbolSize': 50,
+            'category': 'Symptom'
+        }
+        data.append(dict)  # 将单个节点信息存放在data数组中
+
+    # 查询所有关系，并将所有的关系信息存放在links数组中
+    rps = graph.relationships
+    for r in rps:
+        source = str(rps[r].start_node['name'])  # 取出开始节点的name
+        target = str(rps[r].end_node['name'])
+        name = str(type(rps[r]).__name__)  # 取出开始节点的结束节点之间的关系
+        # 构造字典存储单个关系信息
+        dict = {
+            'source': source,
+            'target': target,
+            'name': name
+        }
+        links.append(dict)  # 将单个关系信息存放进links数组中
+    neo4j_data = {
+        'data': data,
+        'links': links
+    }
+    neo4j_data = json.dumps(neo4j_data)
+    return neo4j_data
+
+
+@csrf_exempt
+def medicine_search_one(value="百日咳"):
+    graph = Graph('http://47.120.0.133:7474/', auth=("neo4j", "password"))
+    # 定义data数组存储节点信息
+    rel_label = ['Disease', 'Check', 'Department', 'Drug', 'Food', 'Producer', 'Symptom']
+    data = []
+    # 定义links数组存储关系信息
+    links = []
+    # 查询节点是否存在
+    node = graph.run('MATCH(n:Disease{name:"' + value + '"}) return n').data()
+    print(node)
+    # 如果节点存在len(node)的值为1不存在的话len(node)的值为0
+    if len(node):
+        # 如果该节点存在将该节点存入data数组中
+        # 构造字典存放节点信息
+        dict = {
+            # 'id': str(n),  # 防止重复节点
+            'name': value,
+            'symbolSize': 50,
+            'category': 'Disease'
+        }
+        data.append(dict)
+        # 查询与该节点有关的节点，无向，步长为1，并返回这些节点
+        for rel in rel_label:
+            nodes = graph.run('MATCH(n:Disease{name:"' + value + '"})<-->(m:' + rel + ') return m').data()
+            # 处理节点信息
+            for n in nodes:
+                # 将节点信息的格式转化为json
+                node = json.dumps(n, ensure_ascii=False)
+                node = json.loads(node)
+                # 取出节点信息中person的name
+                name = str(node['m']['name'])
+                print(name)
+                # 构造字典存放单个节点信息
+                dict = {
+                    # 'id': str(n),  # 防止重复节点
+                    'id': name,  # 防止重复节点
+                    'name': name,
+                    'symbolSize': 50,
+                    'category': rel
+                }
+                # 将单个节点信息存储进data数组中
+                data.append(dict)
+        # 处理relationship
+        for rel in rel_label:
+            # 查询该节点所涉及的所有relationship，无向，步长为1，并返回这些relationship
+            reps = graph.run('MATCH(n:Disease{name:"' + value + '"})<-[rel]->(m:' + rel + ') return rel').data()
+            for r in reps:
+                source = str(r['rel'].start_node['name'])
+                target = str(r['rel'].end_node['name'])
+                name = str(type(r['rel']).__name__)
+                print(name, str(reps.index(r)), str(r))
+                dict = {
+                    'id': str(r),  # 防止重复节点
+                    # 'id': name,  # 防止重复节点
+                    'source': source,
+                    'target': target,
+                    'name': name
+                }
+                links.append(dict)
+        # 构造字典存储data和links
+        res = {
+            'satus': 200,
+            'data': data,
+            'links': links
+        }
+        # 将dict转化为json格式
+        # search_neo4j_data = json.dumps(search_neo4j_data)
+        # return JsonResponse(res)
+    else:
+        print("查无此人")
+        res = {
+            'status': 404,
+            'error': value + ",疾病不存在"
+        }
+    res = json.dumps(res)
+    return res
+    # return JsonResponse(res)
+
+
+@csrf_exempt
+def index(request):
+    ctx = {}
+    if request.method == 'POST':
+        # 接收前端传过来的查询值
+        node_name = request.POST.get('node')
+        # 查询结果
+        search_neo4j_data = medicine_search_one()
+        # 未查询到该节点
+        if search_neo4j_data == 0:
+            ctx = {'title': '数据库中暂未添加该实体'}
+            neo4j_data = medicine_search_all_category()
+            return render(request, 'medicine_graph.html', {'neo4j_data': neo4j_data, 'ctx': ctx})
+        # 查询到了该节点
+        else:
+            neo4j_data = medicine_search_all_category()
+            return render(request, 'medicine_graph.html',
+                          {'neo4j_data': neo4j_data, 'search_neo4j_data': search_neo4j_data, 'ctx': ctx})
+
+    neo4j_data = medicine_search_one()
+    # neo4j_data = medicine_search_all_category()
+    return render(request, 'medicine_graph.html', {'neo4j_data': neo4j_data, 'ctx': ctx})

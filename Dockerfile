@@ -1,11 +1,14 @@
 # 建立 python3.7 环境
-FROM python:3.7
+FROM python:3.10
 
 # 镜像作者
 MAINTAINER Alleyf
 
 # 设置 python 环境变量
 ENV PYTHONUNBUFFERED 1
+# 添加这两行
+RUN apt-get update
+RUN apt-get install python3-dev default-libmysqlclient-dev -y
 
 # 设置pip源为国内源
 COPY pip.conf /root/.pip/pip.conf

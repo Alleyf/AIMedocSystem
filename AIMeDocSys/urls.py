@@ -1,7 +1,7 @@
 """StaffingSystem URL Configuration"""
 from django.conf import settings
 # from django.conf import settings  ##新增
-from django.conf.urls import url  ##新增
+from django.conf.urls import url  ## 新增
 from django.contrib import admin
 from django.urls import path, re_path, include
 from django.views.static import serve
@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^images/(?P<path>(.+))/$', img.images),
     path('api-auth/', include('rest_framework.urls')),
+    # re_path(r"^static/(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT}, name='static'),  # 新增的路径
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}, name='media'),
     # *********************用户*********************
     # path("user/list/", user.user_list),
@@ -78,8 +79,10 @@ urlpatterns = [
     path("chart/pie/", chart.chart_pie),
     # 折线图接口1
     path("chart/line/", chart.chart_line),
-    # 折线图接口1
-    path("chart/line/", chart.chart_line),
+    # 医学知识图谱
+    path("chart/graph/all/", chart.medicine_search_all),
+    path("chart/graph/<str:value>/", chart.medicine_search_one),
+    path("chart/graph/", chart.index),
 ]
 
 urlpatterns += router.urls

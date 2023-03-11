@@ -7,13 +7,19 @@
         <title>医道有易-用户登录</title>
     {% endblock %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MedocsysTem, We help your doc management.">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <link rel="icon" href="{% static '/images/logo.png' %}" type="image/x-icon"/>
     <link rel="shortcut icon" href="{% static '/images/logo.png' %}" type="image/x-icon"/>
     <link rel="apple-touch-icon" sizes="120x120" href="{% static '/images/logo.png' %}"/>
     <link rel="apple-touch-icon" sizes="152x152" href="{% static '/images/logo.png' %}"/>
-    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.3.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
-    <link rel="stylesheet" href="{% static 'plugins/bootstrap-5.2.3/css/bootstrap.min.css' %}">
+    {#    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.3.0/css/all.min.css" rel="stylesheet">#}
+    {#    <link rel="stylesheet" type="text/css" href="{% static '/css/login.css' %}">#}
+    <style>
+        @import url("{% static '/css/login.css' %}");
+    </style>
+
+    <link rel="stylesheet" type="text/css" href="{% static '/plugins/bootstrap-5.2.3/css/bootstrap.min.css' %}">
     {% block mystyle %}
     {% endblock %}
 </head>
@@ -50,7 +56,7 @@
                         </div>
                         <div class="col">
                             <a href="/#/">
-                                <img src="/checkimgcode/" alt="验证码加载失败">
+                                <img width="150px" height="30px" src="/checkimgcode/" alt="验证码加载失败">
                             </a>
                         </div>
                     </div>
@@ -65,9 +71,9 @@
     <canvas class="background"></canvas>
 {% endblock %}
 
-<script src="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.3.0/js/all.min.js"></script>
+{#<script src="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.3.0/js/fontawesome.min.js"></script>#}
 <script src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
-<script src="{% static 'plugins/bootstrap-5.2.3/js/bootstrap.bundle.min.js' %}"></script>
+{#<script src="{% static 'plugins/bootstrap-5.2.3/js/bootstrap.bundle.min.js' %}"></script>#}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/particlesjs/2.2.2/particles.min.js"></script>
 {% block myscript %}
     <script type="text/javascript">
