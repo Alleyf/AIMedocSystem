@@ -30,22 +30,46 @@
 <body>
 <div class="container-fluid clearfix" style="height: 100%;width: 100%">
     <canvas id="particles-js" class="background"></canvas>
-    <div style="float: left">
-        <h4>医学知识图谱</h4>
-    </div>
-    <div style="float: right">
-        <i class="fas fa-expand-arrows-alt" onclick="fullScreen()"
-           style="margin-right: 10px;font-size: 25px;color: black"></i>
-        <a href="../../doc/query">
-            <i class="fa-solid fa-magnifying-glass" style="font-size: 25px;color: black"></i>
-        </a>
-    </div>
-    <div class="container-fluid" id="chart-panel" style="display: flex;height: 734px;width: 100%;overflow: auto;"></div>
+    <nav class="navbar bg-body-tertiary" style="position: static!important;">
+        <div class="container-fluid">
+            <a class="navbar-brand">医学知识图谱</a>
+            <form class="d-flex" role="search" method="post" action="/chart/graph/">
+                {% csrf_token %}
+                <input class="form-control me-2" name="disease_node" type="text" placeholder="Search for disease"
+                       aria-label="Search">
+                <button class="btn btn-outline-success" type="submit" id="liveToastBtn">Search</button>
+            </form>
+            <div class="d-flex">
+                <i class="fas fa-expand-arrows-alt" onclick="fullScreen()"
+                   style="margin-right: 10px;font-size: 25px;color: black"></i>
+                <a href="../../doc/query">
+                    <i class="fa-solid fa-magnifying-glass" style="font-size: 25px;color: black"></i>
+                </a>
+            </div>
+            <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                <div id="liveToast" class="toast fade show text-bg-primary" role="alert" aria-live="assertive"
+                     aria-atomic="true">
+                    <div class="toast-header">
+                        <img height="20px" width="20px" src="{% static '/images/logo.png' %}" class="rounded me-2"
+                             alt="...">
+                        <strong class="me-auto">医道有易</strong>
+                        <small>{% now "Y-m-d G:i:s" %}</small>
+                        <button type="button" id="closetoast" class="btn-close" data-bs-dismiss="toast"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        {{ ctx }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid" id="chart-panel" style="display: flex;height: 710px;width: 100%;overflow: auto;"></div>
 
 </div>
 <script type="text/javascript" src="{% static 'js/echarts.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
-{#<script src="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.3.0/js/fontawsome.min.js"></script>#}
+<script src="https://cdn.bootcdn.net/ajax/libs/Darkmode.js/1.5.7/darkmode-js.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/particlesjs/2.2.2/particles.min.js"></script>
 <script type="text/javascript">
     window.onload
@@ -59,23 +83,38 @@
 </script>
 <script type="text/javascript">
     $(function () {
-        listenKey();
-        set_chart_panel();
+        {#listen_window_size();#}
+        closetoast();
     })
 
-    function set_chart_panel() {
-        h = $("#particles-js").attr("height")
-        $("#chart-panel").attr("height", h)
+    function closetoast() {
+        $("#liveToast").click(function () {
+            $("#liveToast").attr('class', 'toast fade hide')
+            console.log('关闭提示')
+        })
     }
 
-    <!--大屏-->
-    function listenKey() {
-        document.addEventListener("keydown", function (e) {
-            if (e.keyCode === 13) {
-                toggleFullScreen();
-            }
-        }, false);
+    function listen_window_size() {
+        function set_chart_panel() {
+            let h = '710px'
+            console.log(h)
+            $(window).resize(
+                function () {
+                    $("canvas").attr("style", "height:" + h);
+                    $("canvas").closest('div').attr("style", "height:" + h);
+                    console.log($("#chart-panel").attr("style", "height:" + h));
+                }
+            )
+        }
+
+        window.onload = function () {
+            set_chart_panel();
+        }
+        window.onresize = function () {
+            set_chart_panel();
+        }
     }
+
 
     function toggleFullScreen() {
         if (!document.fullscreenElement) {
@@ -150,6 +189,9 @@
             }
         },
         legend: [{
+            x: 'right',      //可设定图例在左、右、居中
+            y: 'center',     //可设定图例在上、下、居中
+            itemGap: 50,//图例图标与文字间的间距
             data: categories1.map(function (a) {
                 return a.name;
             }),
@@ -162,7 +204,7 @@
             //图例滚动显示
             type: 'scroll',
             //图例纵向显示
-            {#orient: 'vertical',#}
+            orient: 'vertical',
             //图例位置
             {#right: 0,#}
             {#top: 30,#}
@@ -222,6 +264,37 @@
     {#if (option && typeof option === 'object') {#}
     myChart1.setOption(option);
 
+
+</script>
+<script type="text/javascript">
+
+    $(function () {
+        thememode();
+    })
+
+    function thememode() {
+        const options = {
+            bottom: 'unset', // default: '32px'
+            right: 'unset', // default: '32px'
+            left: '150px', // default: 'unset'
+            time: '0.5s', // default: '0.3s'
+            mixColor: '#fff', // default: '#fff'
+            backgroundColor: '#fff', // default: '#fff'
+            buttonColorDark: '#100f2c', // default: '#100f2c'
+            buttonColorLight: '#fff', // default: '#fff'
+            saveInCookies: true, // default: true,
+            label: '🌓', // default: ''
+            autoMatchOsTheme: true// default: true
+        }
+
+        function addDarkmodeWidget() {
+            let darkmode = new Darkmode(options);
+            darkmode.showWidget();
+
+        }
+
+        window.addEventListener('load', addDarkmodeWidget);
+    }
 
 </script>
 </body>

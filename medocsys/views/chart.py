@@ -339,7 +339,7 @@ def medicine_search_one(value="百日咳"):
     links = []
     # 查询节点是否存在
     node = graph.run('MATCH(n:Disease{name:"' + value + '"}) return n').data()
-    print(node)
+    # print(node)
     # 如果节点存在len(node)的值为1不存在的话len(node)的值为0
     if len(node):
         # 如果该节点存在将该节点存入data数组中
@@ -361,7 +361,7 @@ def medicine_search_one(value="百日咳"):
                 node = json.loads(node)
                 # 取出节点信息中person的name
                 name = str(node['m']['name'])
-                print(name)
+                # print(name)
                 # 构造字典存放单个节点信息
                 dict = {
                     # 'id': str(n),  # 防止重复节点
@@ -380,7 +380,7 @@ def medicine_search_one(value="百日咳"):
                 source = str(r['rel'].start_node['name'])
                 target = str(r['rel'].end_node['name'])
                 name = str(type(r['rel']).__name__)
-                print(name, str(reps.index(r)), str(r))
+                # print(name, str(reps.index(r)), str(r))
                 dict = {
                     'id': str(r),  # 防止重复节点
                     # 'id': name,  # 防止重复节点
@@ -391,18 +391,20 @@ def medicine_search_one(value="百日咳"):
                 links.append(dict)
         # 构造字典存储data和links
         res = {
-            'satus': 200,
+            'status': 200,
             'data': data,
-            'links': links
+            'links': links,
+            'error': '成功找到\"' + value + "\"疾病"
         }
-        # 将dict转化为json格式
-        # search_neo4j_data = json.dumps(search_neo4j_data)
-        # return JsonResponse(res)
     else:
-        print("查无此人")
+        # print("查无此人")
+        if value:
+            error = value + ",疾病不存在"
+        else:
+            error = "当前输入为空，请重新搜索"
         res = {
             'status': 404,
-            'error': value + ",疾病不存在"
+            'error': error
         }
     res = json.dumps(res)
     return res
@@ -411,23 +413,26 @@ def medicine_search_one(value="百日咳"):
 
 @csrf_exempt
 def index(request):
-    ctx = {}
     if request.method == 'POST':
         # 接收前端传过来的查询值
-        node_name = request.POST.get('node')
+        node_name = request.POST.get('disease_node')
+        # print(node_name)
         # 查询结果
-        search_neo4j_data = medicine_search_one()
+        search_neo4j_data = medicine_search_one(value=node_name)
         # 未查询到该节点
-        if search_neo4j_data == 0:
-            ctx = {'title': '数据库中暂未添加该实体'}
-            neo4j_data = medicine_search_all_category()
-            return render(request, 'medicine_graph.html', {'neo4j_data': neo4j_data, 'ctx': ctx})
+        if json.loads(search_neo4j_data)['status'] == 404:
+            # ctx = {'title': '数据库中暂未添加该实体'}
+            # neo4j_data = medicine_search_all_category()
+            neo4j_data = medicine_search_one()
+            return render(request, "medicine_graph.html",
+                          {'neo4j_data': neo4j_data, 'ctx': json.loads(search_neo4j_data)['error']})
         # 查询到了该节点
         else:
-            neo4j_data = medicine_search_all_category()
+            # neo4j_data = medicine_search_all_category()
             return render(request, 'medicine_graph.html',
-                          {'neo4j_data': neo4j_data, 'search_neo4j_data': search_neo4j_data, 'ctx': ctx})
+                          {'neo4j_data': search_neo4j_data, 'ctx': json.loads(search_neo4j_data)['error']})
 
     neo4j_data = medicine_search_one()
+    # neo4j_data = medicine_search_all()
     # neo4j_data = medicine_search_all_category()
-    return render(request, 'medicine_graph.html', {'neo4j_data': neo4j_data, 'ctx': ctx})
+    return render(request, 'medicine_graph.html', {'neo4j_data': neo4j_data, 'ctx': json.loads(neo4j_data)['error']})
