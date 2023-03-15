@@ -1,11 +1,11 @@
 import re
-from datetime import datetime
 from io import BytesIO
 
+from django.core.mail import send_mail
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
-from django.core.mail import send_mail
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.gzip import gzip_page
 
 from medocsys.models import User
 from medocsys.utils.code import check_code
@@ -13,6 +13,7 @@ from medocsys.utils.form import LoginForm, RegisterModelForm
 from medocsys.utils.get_random_strs import generate_random_str
 
 
+@gzip_page
 def login(request):
     """登录"""
     if request.method == "GET":
@@ -55,6 +56,7 @@ def login(request):
     return render(request, "login.html", {'form': form})
 
 
+@gzip_page
 def register(request):
     """注册"""
     if request.method == "GET":
@@ -80,6 +82,7 @@ def register(request):
         return render(request, "register.html", {'form': form})
 
 
+@gzip_page
 def logout(request):
     """注销"""
     request.session.clear()
@@ -87,10 +90,12 @@ def logout(request):
     return redirect("/login/")
 
 
+@gzip_page
 def detail(request):
     return render(request, "beauty.html")
 
 
+@gzip_page
 @csrf_exempt
 def checkcode_email(request):
     if request.method == "POST":
@@ -113,6 +118,7 @@ def checkcode_email(request):
     return redirect('/login/')
 
 
+@gzip_page
 @csrf_exempt
 def checkimgcode(request):
     """图片验证码"""

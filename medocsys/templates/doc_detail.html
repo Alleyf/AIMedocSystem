@@ -1,4 +1,5 @@
 {% extends 'layout.html' %}
+{#{% load cache %}#}
 {% block mytitle %}
     <title>检索详情</title>
 {% endblock %}
@@ -50,7 +51,7 @@
         <div class="row">
             <div class="col-4"></div>
             <div class="col-8  text-center" style="color: #007bbb;margin: 20px auto;font-size: 20px">
-                <a href="#{{ id }}" class="active" id={{ id }}>
+                <a style="text-decoration: none" href="#{{ id }}" class="active" id={{ id }}>
                     {{ title }}
                     <span style="color: #a592c4">[共{{ total_page }}页含有关键词]</span>
                 </a>

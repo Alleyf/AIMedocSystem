@@ -1,15 +1,20 @@
 import os
 import json
-from django.http import JsonResponse
-from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
 
-from ..models import MeDocs
+from django.core.cache import cache
+from django.http import JsonResponse
+from django.shortcuts import render, redirect
+# from django.views.decorators.cache import cache_page
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.gzip import gzip_page
+
+from ..models import MeDocs  # 位置不能放错，否则报错
 from ..utils.query import query_elastics_fulltext
 from ..utils.wordCloud import get_word_cloud
 from py2neo import *
 
 
+@gzip_page
 def chart_list(request):
     """数据可视化页面"""
     queryset = MeDocs.objects.all().order_by('-clkscore')
@@ -63,6 +68,7 @@ def chart_list(request):
     return render(request, "chart_list.html", context)
 
 
+@gzip_page
 def chart_bar(request):
     """柱状图数据接口"""
     # 去数据库中获取数据
@@ -88,6 +94,7 @@ def chart_bar(request):
     return JsonResponse(res)
 
 
+@gzip_page
 def chart_pie(request):
     """饼状图数据接口"""
     queryset = MeDocs.objects.all()
@@ -116,6 +123,7 @@ def chart_pie(request):
     return JsonResponse(res)
 
 
+@gzip_page
 def chart_line(request):
     """折线图数据接口"""
     legend = ['alleyf', 'chuiyugin']
@@ -145,6 +153,7 @@ def chart_line(request):
     return JsonResponse(res)
 
 
+@gzip_page
 # 连接数据库
 def medicine_search_all():
     graph = Graph('http://47.120.0.133:7474/', auth=("neo4j", "password"))
@@ -207,6 +216,7 @@ def medicine_search_all():
     return neo4j_data
 
 
+@gzip_page
 @csrf_exempt
 # def medicine_search_all(request):
 def medicine_search_all_category():
@@ -329,6 +339,7 @@ def medicine_search_all_category():
     return neo4j_data
 
 
+@gzip_page
 @csrf_exempt
 def medicine_search_one(value="百日咳"):
     graph = Graph('http://47.120.0.133:7474/', auth=("neo4j", "password"))
@@ -399,9 +410,9 @@ def medicine_search_one(value="百日咳"):
     else:
         # print("查无此人")
         if value:
-            error = value + ",疾病不存在"
+            error = value + ",疾病不存在,返回默认节点"
         else:
-            error = "当前输入为空，请重新搜索"
+            error = "当前输入为空，请重新搜索,返回默认节点"
         res = {
             'status': 404,
             'error': error
@@ -412,27 +423,48 @@ def medicine_search_one(value="百日咳"):
 
 
 @csrf_exempt
+# @cache_page(60 * 30)
 def index(request):
+    cache_data = cache.get('neo4j_default_data')
+    # print(type(cache_data))
     if request.method == 'POST':
         # 接收前端传过来的查询值
         node_name = request.POST.get('disease_node')
-        # print(node_name)
-        # 查询结果
-        search_neo4j_data = medicine_search_one(value=node_name)
-        # 未查询到该节点
-        if json.loads(search_neo4j_data)['status'] == 404:
-            # ctx = {'title': '数据库中暂未添加该实体'}
-            # neo4j_data = medicine_search_all_category()
-            neo4j_data = medicine_search_one()
-            return render(request, "medicine_graph.html",
-                          {'neo4j_data': neo4j_data, 'ctx': json.loads(search_neo4j_data)['error']})
-        # 查询到了该节点
-        else:
-            # neo4j_data = medicine_search_all_category()
-            return render(request, 'medicine_graph.html',
-                          {'neo4j_data': search_neo4j_data, 'ctx': json.loads(search_neo4j_data)['error']})
+        cache_search_data = cache.get('neo4j_' + node_name)
+        # print(node_name, cache_search_data)
+        # print(cache_data, type(cache_data))
+        if not cache_search_data:
+            # print(node_name)
+            # 查询结果
+            search_neo4j_data = medicine_search_one(value=node_name)
+            cache.set('neo4j_' + node_name, search_neo4j_data, 60 * 60 * 24)
+            cache_search_data = cache.get('neo4j_' + node_name)
+            # print(json.loads(search_neo4j_data)['error'])
 
-    neo4j_data = medicine_search_one()
-    # neo4j_data = medicine_search_all()
-    # neo4j_data = medicine_search_all_category()
-    return render(request, 'medicine_graph.html', {'neo4j_data': neo4j_data, 'ctx': json.loads(neo4j_data)['error']})
+            # 未查询到该节点
+            if json.loads(cache_search_data)['status'] == 404:
+                # print(json.loads(search_neo4j_data)['error'])
+                # return redirect('/chart/graph/')
+                # ctx = {'title': '数据库中暂未添加该实体'}
+                # neo4j_data = medicine_search_all_category()
+                # neo4j_data = medicine_search_one()
+                return render(request, "medicine_graph.html",
+                              {'neo4j_data': cache_data, 'ctx': json.loads(search_neo4j_data)['error']})
+            # 查询到了该节点
+            else:
+                # neo4j_data = medicine_search_all_category()
+                return render(request, 'medicine_graph.html',
+                              {'neo4j_data': cache_search_data, 'ctx': json.loads(cache_search_data)['error']})
+        else:
+            if json.loads(cache_search_data)['status'] == 404:
+                return render(request, 'medicine_graph.html',
+                              {'neo4j_data': cache_data, 'ctx': json.loads(cache_search_data)['error']})
+            else:
+                return render(request, 'medicine_graph.html',
+                              {'neo4j_data': cache_search_data, 'ctx': json.loads(cache_search_data)['error']})
+    if not cache_data:
+        neo4j_data = medicine_search_one()
+        cache.set('neo4j_default_data', neo4j_data, 60 * 60 * 24)
+        cache_data = cache.get('neo4j_data')
+        # print(cache_data, type(cache_data))
+    return render(request, 'medicine_graph.html', {'neo4j_data': cache_data, 'ctx': json.loads(cache_data)['error']})

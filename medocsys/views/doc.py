@@ -1,25 +1,21 @@
 import json
 import os
 import time
-from datetime import datetime
+
 from django.core import serializers
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from haystack.views import SearchView
 from django.views.decorators.gzip import gzip_page
 
 from medocsys import models
 from medocsys.utils import pagination, upload
 from medocsys.utils.form import MeDocsModelForm, DocTxtModelForm, DocImgTxtModelForm
 from medocsys.utils.upload import extract_img_info, extract_txt_info
-from ..models import MeDocs
 from ..utils.doc_get_category import get_category
 from ..utils.get_doc_title import get_doc_title
-from ..utils.query import query_elastics, query_elastics_min_fragment
-from ..utils.search import spdfmkeyword, div_word
 from ..utils.get_language_type import is_contains_chinese
-from ..utils.wordCloud import get_word_cloud
+from ..utils.query import query_elastics
 from ..utils.zhiwang import get_zhiwang_data
 
 
@@ -443,7 +439,7 @@ def doc_search(request):
         # return redirect('/admin/list/')
 
 
-@gzip_page
+# @gzip_page
 def doc_query(request):
     """同步检索"""
     start = 0

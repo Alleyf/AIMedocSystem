@@ -1,15 +1,17 @@
 import os
-import time
 
-from django.core.management import call_command
 from elasticsearch import Elasticsearch
 
 
+# 函数方法
+# @gzip_page
 def query_elastics(key: str, start=0, size=1000):
     results = []
     try:
         rel_num_ls = query_elastics_min_fragment(key=key)
-        es = Elasticsearch()  # 默认连接本地elasticsearch
+        # es = Elasticsearch()  # 默认连接本地elasticsearch
+        es = Elasticsearch([{"host": "127.0.0.1", "port": 9200}])  # 默认连接本地elasticsearch
+        # es = Elasticsearch([{"host": "43.138.44.190", "port": 9200}])  # 默认连接本地elasticsearch
         # 获取关键词相关词
         # union_api = "https://recom.cnki.net/api/recommendations/words/union"
         # union_key = requests.get(url=union_api, params={'w': key, 'top': 10})
@@ -81,11 +83,13 @@ def query_elastics(key: str, start=0, size=1000):
         return results
 
 
+# @gzip_page
 def query_elastics_min_fragment(key: str, start=0, size=1000):
     all_num = 0
     rel_score_ls = []
     try:
-        es = Elasticsearch()  # 默认连接本地elasticsearch
+        es = Elasticsearch([{"host": "127.0.0.1", "port": 9200}])  # 默认连接本地elasticsearch
+        # es = Elasticsearch([{"host": "43.138.44.190", "port": 9200}])  # 默认连接本地elasticsearch
         res = es.search(
             # index=['medocsys'],
             index=['doctxt', 'docimgtxt'],
@@ -127,9 +131,11 @@ def query_elastics_min_fragment(key: str, start=0, size=1000):
         return rel_score_ls
 
 
+# @gzip_page
 def query_elastics_fulltext(key):
     try:
-        es = Elasticsearch(timeout=360)  # 默认连接本地elasticsearch
+        es = Elasticsearch([{"host": "127.0.0.1", "port": 9200}])  # 默认连接本地elasticsearch
+        # es = Elasticsearch([{"host": "43.138.44.190", "port": 9200}])  # 默认连接本地elasticsearch
         print(es)
         res = es.search(
             index='medocsys',

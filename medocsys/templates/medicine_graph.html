@@ -1,32 +1,35 @@
+{% load cache %}
 {% load static %}
-<!DOCTYPE html>
-<html style="height: 100%;width:100%">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="{% static '/images/logo.png' %}" type="image/x-icon"/>
-    <link rel="shortcut icon" href="{% static '/images/logo.png' %}" type="image/x-icon"/>
-    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.3.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'plugins/bootstrap-5.2.3/css/bootstrap.min.css' %}">
-    <title>医学知识图谱</title>
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-        {#background: url("{% static '/images/bg.jpg' %}") no-repeat 0 0 transparent;#}
-        }
+{% cache None 'head_graph' %}
+    <!DOCTYPE html>
+    <html style="height: 100%;width:100%">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="{% static '/images/logo.png' %}" type="image/x-icon"/>
+        <link rel="shortcut icon" href="{% static '/images/logo.png' %}" type="image/x-icon"/>
+        <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.3.0/css/all.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'plugins/bootstrap-5.2.3/css/bootstrap.min.css' %}">
+        <title>医学知识图谱</title>
+        <style>
+            html, body {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: 100%;
+            {#background: url("{% static '/images/bg.jpg' %}") no-repeat 0 0 transparent;#}
+            }
 
-        .background {
-            position: absolute;
-            display: block;
-            top: 0;
-            left: 0;
-            z-index: -10;
-        }
-    </style>
-</head>
+            .background {
+                position: absolute;
+                display: block;
+                top: 0;
+                left: 0;
+                z-index: -10;
+            }
+        </style>
+    </head>
+{% endcache %}
 <body>
 <div class="container-fluid clearfix" style="height: 100%;width: 100%">
     <canvas id="particles-js" class="background"></canvas>
@@ -67,70 +70,72 @@
     <div class="container-fluid" id="chart-panel" style="display: flex;height: 710px;width: 100%;overflow: auto;"></div>
 
 </div>
-<script type="text/javascript" src="{% static 'js/echarts.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
-<script src="https://cdn.bootcdn.net/ajax/libs/Darkmode.js/1.5.7/darkmode-js.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/particlesjs/2.2.2/particles.min.js"></script>
-<script type="text/javascript">
-    window.onload
-        = function () {
-        Particles.init
-        ({
-            selector:
-                '.background'
-        });
-    };
-</script>
-<script type="text/javascript">
-    $(function () {
-        {#listen_window_size();#}
-        closetoast();
-    })
-
-    function closetoast() {
-        $("#liveToast").click(function () {
-            $("#liveToast").attr('class', 'toast fade hide')
-            console.log('关闭提示')
+{% cache None 'plugin' %}
+    <script type="text/javascript" src="{% static 'js/echarts.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/Darkmode.js/1.5.7/darkmode-js.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particlesjs/2.2.2/particles.min.js"></script>
+    <script type="text/javascript">
+        window.onload
+            = function () {
+            Particles.init
+            ({
+                selector:
+                    '.background'
+            });
+        };
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            {#listen_window_size();#}
+            closetoast();
         })
-    }
 
-    function listen_window_size() {
-        function set_chart_panel() {
-            let h = '710px'
-            console.log(h)
-            $(window).resize(
-                function () {
-                    $("canvas").attr("style", "height:" + h);
-                    $("canvas").closest('div').attr("style", "height:" + h);
-                    console.log($("#chart-panel").attr("style", "height:" + h));
-                }
-            )
+        function closetoast() {
+            $("#liveToast").click(function () {
+                $("#liveToast").attr('class', 'toast fade hide')
+                console.log('关闭提示')
+            })
         }
 
-        window.onload = function () {
-            set_chart_panel();
-        }
-        window.onresize = function () {
-            set_chart_panel();
-        }
-    }
+        function listen_window_size() {
+            function set_chart_panel() {
+                let h = '710px'
+                console.log(h)
+                $(window).resize(
+                    function () {
+                        $("canvas").attr("style", "height:" + h);
+                        $("canvas").closest('div').attr("style", "height:" + h);
+                        console.log($("#chart-panel").attr("style", "height:" + h));
+                    }
+                )
+            }
 
-
-    function toggleFullScreen() {
-        if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen();
-        } else {
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
+            window.onload = function () {
+                set_chart_panel();
+            }
+            window.onresize = function () {
+                set_chart_panel();
             }
         }
-    }
 
-    //实现全屏
-    function fullScreen() {
-        toggleFullScreen()
-    }
-</script>
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        //实现全屏
+        function fullScreen() {
+            toggleFullScreen()
+        }
+    </script>
+{% endcache %}
 <script type="text/javascript">
     var neo4j_data = [{{ neo4j_data|safe }}]
     var data1 = neo4j_data[0]['data']
@@ -266,36 +271,38 @@
 
 
 </script>
-<script type="text/javascript">
+{% cache None 'themejs' %}
+    <script type="text/javascript">
 
-    $(function () {
-        thememode();
-    })
+        $(function () {
+            thememode();
+        })
 
-    function thememode() {
-        const options = {
-            bottom: 'unset', // default: '32px'
-            right: 'unset', // default: '32px'
-            left: '150px', // default: 'unset'
-            time: '0.5s', // default: '0.3s'
-            mixColor: '#fff', // default: '#fff'
-            backgroundColor: '#fff', // default: '#fff'
-            buttonColorDark: '#100f2c', // default: '#100f2c'
-            buttonColorLight: '#fff', // default: '#fff'
-            saveInCookies: true, // default: true,
-            label: '🌓', // default: ''
-            autoMatchOsTheme: true// default: true
+        function thememode() {
+            const options = {
+                bottom: 'unset', // default: '32px'
+                right: 'unset', // default: '32px'
+                left: '150px', // default: 'unset'
+                time: '0.5s', // default: '0.3s'
+                mixColor: '#fff', // default: '#fff'
+                backgroundColor: '#fff', // default: '#fff'
+                buttonColorDark: '#100f2c', // default: '#100f2c'
+                buttonColorLight: '#fff', // default: '#fff'
+                saveInCookies: true, // default: true,
+                label: '🌓', // default: ''
+                autoMatchOsTheme: true// default: true
+            }
+
+            function addDarkmodeWidget() {
+                let darkmode = new Darkmode(options);
+                darkmode.showWidget();
+
+            }
+
+            window.addEventListener('load', addDarkmodeWidget);
         }
 
-        function addDarkmodeWidget() {
-            let darkmode = new Darkmode(options);
-            darkmode.showWidget();
-
-        }
-
-        window.addEventListener('load', addDarkmodeWidget);
-    }
-
-</script>
+    </script>
+{% endcache %}
 </body>
 </html>

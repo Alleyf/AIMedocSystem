@@ -1,4 +1,6 @@
+{% load cache %}
 {% load static %}
+{#{% cache None 'head_chart_list' %}#}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,6 +43,7 @@
     </style>
 </head>
 <body>
+{#{% endcache %}#}
 <div class="container-header container-fluid" id="wrapper">
     <ul class="nowTime">
         <li></li>
@@ -96,7 +99,8 @@
         <div class="count-resource  container-fluid">
             <div class="com-count-title">关键词词云</div>
             <div class="com-screen-content">
-                <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel" data-interval="1000">
+                <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel"
+                     data-interval="1000">
                     <div class="carousel-inner">
                         {% for item in word_cloud_ls %}
                             {% if forloop.first %}
@@ -114,12 +118,14 @@
                         </div>
                         {% endfor %}
                         </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+                        <button class="carousel-control-prev" type="button"
+                                data-bs-target="#carouselExampleCaptions"
                                 data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Previous</span>
                         </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+                        <button class="carousel-control-next" type="button"
+                                data-bs-target="#carouselExampleCaptions"
                                 data-bs-slide="next">
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Next</span>
@@ -177,10 +183,11 @@
         </div>
     </div>
 </div>
+{#{% cache None 'plugin_chart_list' %}#}
 <script src="{% static 'js/echarts.min.js' %}"></script>
 <script src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
 <script src="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.3.0/js/fontawsome.min.js"></script>
-{#<script src="{% static 'plugins/bootstrap-5.2.3/js/bootstrap.bundle.min.js' %}"></script>#}
+<script src="{% static 'plugins/bootstrap-5.2.3/js/bootstrap.bundle.min.js' %}"></script>
 
 <script type="text/javascript">
     //根据不同的分辨率调用不同的css和js
@@ -274,5 +281,6 @@
 
 </script>
 </body>
+{#{% endcache %}#}
 
 {#    <script src="http://cdn.highcharts.com.cn/highcharts/highcharts.js"></script>#}

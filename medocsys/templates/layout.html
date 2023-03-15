@@ -1,3 +1,4 @@
+{% load cache %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
@@ -11,10 +12,11 @@
     <meta name="description" content="MedocsysTem, We help your doc management.">
     <link rel="icon" href="{% static '/images/logo.png' %}" type="image/x-icon"/>
     <link rel="shortcut icon" href="{% static '/images/logo.png' %}" type="image/x-icon"/>
-    {#    <link rel="apple-touch-icon" sizes="120x120" href="{% static '/images/logo.png' %}"/>#}
-    {#    <link rel="apple-touch-icon" sizes="152x152" href="{% static '/images/logo.png' %}"/>#}
+    <link rel="apple-touch-icon" sizes="120x120" href="{% static '/images/logo.png' %}"/>
+    <link rel="apple-touch-icon" sizes="152x152" href="{% static '/images/logo.png' %}"/>
+    {#    {% cache 2 'layout1' %}#}
     <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.3.0/css/fontawesome.min.css" rel="stylesheet">
-    {#    <link rel="stylesheet" href="{% static 'plugins/fontawesome-free-6.2.1-web/css/fontawesome.min.css' %}">#}
+    {#    {% endcache %}#}
     <link rel="stylesheet" href="{% static 'css/layout.css' %}">
     <link rel="stylesheet" href="{% static 'plugins/bootstrap-5.2.3/css/bootstrap.min.css' %}">
     {#    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>#}
@@ -41,7 +43,9 @@
         }
     </style>
 </head>
+
 <body>
+
 {% block mynav %}
     <div>
         <nav class="container navbar bg-body-tertiary bg-default fixed-layout">
@@ -69,13 +73,14 @@
                             {{ request.session.info.name }}
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/user/{{ request.session.info.id }}/edit/">个人中心</a></li>
+                            <li><a class="dropdown-item" href="/user/{{ request.session.info.id }}/edit/">个人中心</a>
+                            </li>
                             <li><a class="dropdown-item" href="#">消息通知</a></li>
                             <li><a class="dropdown-item" href="/logout/">注销</a></li>
                         </ul>
                     </div>
                 </div>
-
+                {#                {% cache 3600 'layout2' %}#}
                 <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
                         data-bs-target="#offcanvasNavbar"
                         aria-controls="offcanvasNavbar">
@@ -87,7 +92,8 @@
                      aria-labelledby="offcanvasNavbarLabel" style="width: 40%">
                     <div class="offcanvas-header" style="width: 100%;">
                         <h5 class="offcanvas-title" id="offcanvasNavbarLabel">医道有易，为您导航</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
+                                aria-label="Close"></button>
                     </div>
                     <div class="offcanvas-body">
                         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3" style="width: 100%;">
@@ -166,7 +172,8 @@
                         </div>
                     </div>
                     <div class="chat-controls modal-footer">
-                        <input class="message-input" id="message-input" placeholder="Type your question here..."
+                        <input class="message-input" id="message-input"
+                               placeholder="Type your question here..."
                                type="text">
                         <div class="chat-extra">
                             {#                        <a href="javascript:void(0)">#}
@@ -187,6 +194,7 @@
             </div>
         </div>
     </div>
+    {#    {% endcache %}#}
 {% endblock %}
 <div>
     {% block info %}{% endblock %}
@@ -265,9 +273,8 @@
     }
 
 </script>
-
+{#{% endcache %}#}
 {% block myscript %}
 {% endblock %}
 </body>
-
 </html>

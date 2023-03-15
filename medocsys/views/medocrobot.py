@@ -3,8 +3,10 @@ import os
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.gzip import gzip_page
 
 
+@gzip_page
 @csrf_exempt
 def chat(request):
     # 设置API密钥

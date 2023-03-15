@@ -77,6 +77,7 @@ SIMPLEUI_HOME_QUICK = True
 SIMPLEUI_LOGO = '/static/images/favicon/favicon.png'
 
 MIDDLEWARE = [
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -85,8 +86,14 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # 谁在前面先执行谁
+    'django.middleware.gzip.GZipMiddleware',
     "medocsys.middleware.auth.LoginAuth",
+    'django.middleware.cache.FetchFromCacheMiddleware',
 ]
+# 缓存配置
+# CACHE_MIDDLEWARE_ALIAS = "all_cache"
+CACHE_MIDDLEWARE_SECONDS = 60
+CACHE_MIDDLEWARE_KEY_PREFIX = ''
 
 ROOT_URLCONF = 'AIMeDocSys.urls'
 
@@ -119,6 +126,23 @@ DATABASES = {
         'OPTIONS': {'charset': 'utf8mb4'},
     }
 }
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://47.120.0.133:6379',
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "CONNECTION_POOL_KWARGS": {"max_connections": 300},
+            # "DECODE_RESPONSES": True,
+            "PASSWORD": "medocsys",
+        },
+    },
+}
+
+REDIS_TIMEOUT = 7 * 24 * 60 * 60
+CUBES_REDIS_TIMEOUT = 60 * 60
+NEVER_REDIS_TIMEOUT = 365 * 24 * 60 * 60
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -176,6 +200,7 @@ HAYSTACK_CONNECTIONS = {
         # 'ENGINE': 'haystack.backends.elasticsearch7_backend.Elasticsearch7SearchEngine',
         'ENGINE': 'medocsys.elasticsearch_ik_backend.Elasticsearch7IkSearchEngine',
         'URL': 'http://127.0.0.1:9200/',  # 此处为elasticsearch运行的服务器ip地址，端口号固定为9200
+        # 'URL': 'http://43.138.44.190:9200/',  # 此处为elasticsearch运行的服务器ip地址，端口号固定为9200
         'INDEX_NAME': 'doctxt',  # 指定elasticsearch建立的索引库的名称
         'EXCLUDED_INDEXES': ['medocsys.search_indexes.DocImgTxtIndex'],
     },
@@ -183,6 +208,7 @@ HAYSTACK_CONNECTIONS = {
         # 'ENGINE': 'haystack.backends.elasticsearch7_backend.Elasticsearch7SearchEngine',
         'ENGINE': 'medocsys.elasticsearch_ik_backend.Elasticsearch7IkSearchEngine',
         'URL': 'http://127.0.0.1:9200/',  # 此处为elasticsearch运行的服务器ip地址，端口号固定为9200
+        # 'URL': 'http://43.138.44.190:9200/',  # 此处为elasticsearch运行的服务器ip地址，端口号固定为9200
         'INDEX_NAME': 'docimgtxt',  # 指定elasticsearch建立的索引库的名称
         'EXCLUDED_INDEXES': ['medocsys.search_indexes.DocTxtIndex'],
     },

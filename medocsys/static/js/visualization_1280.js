@@ -116,16 +116,32 @@ function init_myChart1() {
     var option;
 
     option = {
-        legend: {
-            top: 'top',
-            left: '0',
-            //图例纵向显示
-            // orient: 'vertical',
+        // legend: {
+        //     top: 'top',
+        //     left: '0',
+        //     //图例纵向显示
+        //     // orient: 'vertical',
+        //     textStyle: {
+        //         fontSize: 12,//图例文字字体大小
+        //         color: '#8A90A3'//图例文字颜色
+        //     },
+        // },
+        legend: [{
+            x: 'left',      //可设定图例在左、右、居中
+            y: 'center',     //可设定图例在上、下、居中
+            itemGap: 10,//图例图标与文字间的间距
             textStyle: {
-                fontSize: 12,//图例文字字体大小
-                color: '#8A90A3'//图例文字颜色
+                //图例字体大小
+                fontSize: 12,
+                color: '#ffffff'//图例文字颜色
             },
-        },
+            //图例大小
+            itemHeight: 15,
+            //图例滚动显示
+            type: 'scroll',
+            //图例纵向显示
+            orient: 'vertical',
+        }],
         tooltip: {
             trigger: 'item',
             formatter: '{a} <br/>{b} : {c} ({d}%)'
@@ -151,11 +167,12 @@ function init_myChart1() {
                     fontSize: 12,//图例文字字体大小
                 },
                 label: {
-                    show: true
+                    show: true,
+                    fontSize: 12
                 },
                 emphasis: {
                     label: {
-                        show: false
+                        show: true
                     }
                 },
                 data: []
