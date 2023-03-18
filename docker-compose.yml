@@ -1,29 +1,71 @@
 version: "3"
 services:
-  app:
-    restart: always
-    build: .  # '点'代表当前目录
-    command: "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8210"
-    volumes:
-      - .:/aimedocsys
-    ports:
-      - "8210:8210"
-    depends_on:
-      - db
   db:
     image: mysql:5.7
-    command: [
-      '--character-set-server=utf8mb4','--collation-server=utf8mb4_unicode_ci',
-      '--character-set-system=utf8mb4','--character-set-connection=utf8mb4',
-      '--collation-connection=utf8mb4_general_ci','--character_set_client=utf8mb4',
-      '--character_set_database=utf8mb4','--collation_database=utf8mb4_general_ci',
-      '--skip-character-set-client-handshake'
-    ]
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --init-connect='SET NAMES UTF8MB4;' --sql-mode="NO_ENGINE_SUBSTITUTION" --innodb-flush-log-at-trx-commit=0
+    #    privileged: true
     volumes:
       - "./mysql:/var/lib/mysql"
     ports:
-      - "3306:3306"
+      - "5250:3306"
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=123456
       - MYSQL_DATABASE=aimedocsys
+    networks:
+      - db_network
+  es:
+    image: elasticsearch:7.17.0
+    restart: always
+    hostname: es
+    container_name: es-single
+    volumes:
+      - "./es:/var/lib/elasticsearch"
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
+    ports:
+      - '9200:9200'     #java、集群通信端口
+      - '9300:9300'     #http通信端口
+    networks:
+      - es_network
+  nginx:
+    restart: always
+    image: nginx:latest
+    ports:
+      - "8210:8210"
+    volumes:
+      - static-volume:/aimedocsys/collected_static
+      - ./config/nginx:/etc/nginx/conf.d
+    depends_on:
+      - app
+    networks:
+      - web_network
+  app:
+    restart: always
+    build: .  # '点'代表当前目录
+    command: bash -c "python3 manage.py collectstatic --no-input && python3 manage.py migrate && gunicorn --timeout=30 --workers=4 --bind :8000 django_app.wsgi:application"
+    volumes:
+      - .:/aimedocsys
+      - static-volume:/code/collected_static
+    expose:
+      - "8210"
+    ports:
+      - "8210:8210"
+    depends_on:
+      - db
+      - es
+    networks:
+      - web_network
+      - db_network
+      - es_network
+networks:
+  web_network:
+    driver: bridge
+  db_network:
+    driver: bridge
+  es_network:
+    driver: bridge
+
+volumes:
+  static-volume:

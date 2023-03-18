@@ -13,7 +13,7 @@ from medocsys.utils.form import LoginForm, RegisterModelForm
 from medocsys.utils.get_random_strs import generate_random_str
 
 
-@gzip_page
+# @gzip_page
 def login(request):
     """登录"""
     if request.method == "GET":
@@ -56,7 +56,7 @@ def login(request):
     return render(request, "login.html", {'form': form})
 
 
-@gzip_page
+# @gzip_page
 def register(request):
     """注册"""
     if request.method == "GET":
@@ -82,7 +82,7 @@ def register(request):
         return render(request, "register.html", {'form': form})
 
 
-@gzip_page
+# @gzip_page
 def logout(request):
     """注销"""
     request.session.clear()
@@ -90,7 +90,7 @@ def logout(request):
     return redirect("/login/")
 
 
-@gzip_page
+# @gzip_page
 def detail(request):
     return render(request, "beauty.html")
 
@@ -118,7 +118,7 @@ def checkcode_email(request):
     return redirect('/login/')
 
 
-@gzip_page
+# @gzip_page
 @csrf_exempt
 def checkimgcode(request):
     """图片验证码"""

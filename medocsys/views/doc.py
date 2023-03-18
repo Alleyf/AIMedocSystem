@@ -440,6 +440,7 @@ def doc_search(request):
 
 
 # @gzip_page
+@csrf_exempt
 def doc_query(request):
     """同步检索"""
     start = 0

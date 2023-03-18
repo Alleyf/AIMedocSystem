@@ -6,6 +6,7 @@ MAINTAINER Alleyf
 
 # 设置 python 环境变量
 ENV PYTHONUNBUFFERED 1
+
 # 添加这两行
 RUN apt-get update
 RUN apt-get install python3-dev default-libmysqlclient-dev -y
@@ -27,6 +28,9 @@ ADD requirements.txt /aimedocsys/
 
 # pip安装依赖
 RUN pip install -r requirements.txt
+
+CMD python manage.py makemigrations
+CMD python manage.py migrate
 
 # 将当前目录文件加入到容器工作目录中（. 表示当前宿主机目录）
 ADD . /aimedocsys/

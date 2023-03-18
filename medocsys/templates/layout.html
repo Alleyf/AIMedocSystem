@@ -15,14 +15,10 @@
     <link rel="apple-touch-icon" sizes="120x120" href="{% static '/images/logo.png' %}"/>
     <link rel="apple-touch-icon" sizes="152x152" href="{% static '/images/logo.png' %}"/>
     {#    {% cache 2 'layout1' %}#}
-    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.3.0/css/fontawesome.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.3.0/css/all.min.css" rel="stylesheet">
     {#    {% endcache %}#}
     <link rel="stylesheet" href="{% static 'css/layout.css' %}">
     <link rel="stylesheet" href="{% static 'plugins/bootstrap-5.2.3/css/bootstrap.min.css' %}">
-    {#    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>#}
-    <!-- ***** Boostrap Custom / Addons Stylesheets ***** -->
-    {#    <link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>#}
-    {#    <link href="{% static '/plugins/material_icon/icon.css' %}" rel="stylesheet"/>#}
     <link href="{% static '/plugins/perfect-scrollbar/css/perfect-scrollbar.min.css' %}" rel="stylesheet"/>
     <link rel="stylesheet" href="{% static '/css/chat_box.css' %}" type="text/css" media="all">
     {% block mystyle %}
@@ -200,11 +196,7 @@
     {% block info %}{% endblock %}
 </div>
 <script src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
-<script src="https://cdn.bootcdn.net/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
-{#<script type="text/javascript"#}
-{#        src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js">#}
-{#</script>#}
-<script src="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.3.0/js/all.min.js"></script>
+{#<script src="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.3.0/js/all.min.js"></script>#}
 <script src="{% static 'plugins/bootstrap-5.2.3/js/bootstrap.bundle.min.js' %}"></script>
 <script src="https://cdn.bootcdn.net/ajax/libs/Darkmode.js/1.5.7/darkmode-js.min.js"></script>
 <script src="{% static '/plugins/perfect-scrollbar/js/perfect-scrollbar.jquery.min.js' %}"
@@ -226,7 +218,7 @@
 
     $(function () {
         thememode();
-        $("#draggable").draggable();
+        {#$("#draggable").draggable();#}
     })
 
     function thememode() {

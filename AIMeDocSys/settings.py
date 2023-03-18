@@ -27,6 +27,7 @@ SECRET_KEY = 'django-insecure-ttar_%7b)pane)#$-1ov(9!z!vt16h7*-*!&n!*hg8uw=wy4$f
 DEBUG = True
 # DEBUG = False
 # 部署环境静态路径配置
+# STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')  # 这里可以根据实际情况来定义，比如可以将static名修改
 STATIC_URL = '/static/'
 # STATICFILES_DIRS = [os.path.join(BASE_DIR, 'medocsys/static')]
@@ -77,7 +78,7 @@ SIMPLEUI_HOME_QUICK = True
 SIMPLEUI_LOGO = '/static/images/favicon/favicon.png'
 
 MIDDLEWARE = [
-    'django.middleware.cache.UpdateCacheMiddleware',
+    # 'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -88,7 +89,7 @@ MIDDLEWARE = [
     # 谁在前面先执行谁
     'django.middleware.gzip.GZipMiddleware',
     "medocsys.middleware.auth.LoginAuth",
-    'django.middleware.cache.FetchFromCacheMiddleware',
+    # 'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 # 缓存配置
 # CACHE_MIDDLEWARE_ALIAS = "all_cache"
@@ -178,12 +179,6 @@ USE_L10N = True
 
 # USE_TZ = True
 
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, 'static').replace("\\", "/"),
-# ]
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, 'static'),  ##修改地方
-# ]
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 

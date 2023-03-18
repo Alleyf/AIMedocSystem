@@ -16,7 +16,11 @@ selenium==4.8.0
 tencentcloud_sdk_python==3.0.683
 mysqlclient==2.1.1
 paddlepaddle==2.3.2
+paddleocr~=2.6.1.2
 wordcloud==1.8.2.2
 djangorestframework==3.12.4
 py2neo~=2021.2.3
 django-redis==5.2.0
+gunicorn==19.9.0
+opencv-python~=4.6.0.66
+openai~=0.26.5
