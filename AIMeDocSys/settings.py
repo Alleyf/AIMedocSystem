@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
+import mimetypes
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -28,9 +29,8 @@ DEBUG = True
 # DEBUG = False
 # 部署环境静态路径配置
 # STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')  # 这里可以根据实际情况来定义，比如可以将static名修改
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')  # 这里可以根据实际情况来定义，比如可以将static名修改
 STATIC_URL = '/static/'
-# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'medocsys/static')]
 
 # ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ["*"]
@@ -60,7 +60,9 @@ INSTALLED_APPS = [
     'haystack',
     # 注册rf
     'rest_framework',
-    "medocsys.apps.MedocsysConfig"
+    "medocsys.apps.MedocsysConfig",
+    # 'rest_framework_swagger',  # swagger自动生成接口文档
+
 ]
 
 # neo4j配置
@@ -212,3 +214,9 @@ HAYSTACK_CONNECTIONS = {
 # HAYSTACK_SEARCH_RESULTS_PER_PAGE = 3
 # 当添加、修改、删除数据时，自动生成索引
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+# 在settings.py末尾加入,保证部署环境下静态文件正常加载
+# SECURE_CONTENT_TYPE_NOSNIFF = False
+
+mimetypes.add_type('text/css', '.css')
+mimetypes.add_type('application/javascript', '.js')

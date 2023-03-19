@@ -106,8 +106,8 @@ def get_category_api(title: str):
 if __name__ == '__main__':
     title = "高果糖饮食与代谢综合征研究进展"
     start = time.time()
-    response = get_context(prompt=title)
-    # response = get_category_api(title)
+    # response = get_context(prompt=title)
+    response = get_category(title)
     end = time.time()
     # print("标题是：" + title)
     print(response, len(response))

@@ -196,7 +196,7 @@
     {#document.writeln("<script type=\"text/javascript\" src=\"{% static 'js/visualization_1280.js' %}\"><\/script>");#}
 
     if (window.screen.width >= 1600) {
-        document.write("<link href='.{% static 'css/visualization_1920.css' %}' rel='stylesheet' type='text/css'>");
+        document.write("<link href='{% static 'css/visualization_1920.css' %}' rel='stylesheet' type='text/css'>");
         document.writeln("<script type=\"text/javascript\" src=\"{% static 'js/visualization_1920.js' %}\"><\/script>");
     } else if (window.screen.width < 1600 && window.screen.width >= 1280) {
         document.write("<link href='{% static 'css/visualization_1280.css' %}' rel='stylesheet' type='text/css'>");

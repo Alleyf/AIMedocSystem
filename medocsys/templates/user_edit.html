@@ -1,4 +1,4 @@
-{% extends 'user_modelform_add.html' %} # 继承父模块的标识
+{% extends 'layout.html' %} # 继承父模块的标识
 {% block mytitle %}
     <title>用户信息</title>
 {% endblock %}
@@ -22,31 +22,42 @@
                 <div class="container" style="width: 400px;margin: auto">
                     {% block userform %}
                         <form class="input-group" method="post" novalidate enctype="multipart/form-data"
-                              style="width: 100%;justify-content: center;align-items: center;flex-direction: column">
+                              style="width: 100%;justify-content: center;align-items: center;">
                             {% csrf_token %}
                             {% for item in form %}
                                 {% if item.label != "验证码" %}
-                                    <div class="col-xs-6 g-3">
-                                        <label>{{ item.label }}</label>
-                                        {{ item }}
-                                        <span style="color: #c12c1f;float: bottom"><strong>{{ item.errors.0 }}</strong></span>
-                                    </div>
-                                {% endif %}
-                                {% if item.label == "头像" %}
-                                    <div class="rounded-circle row g-3" id="avatar_wrapper"
-                                         style="width: 100px; height: 100px;text-align: center;margin: 0;border: #8050c9 dashed 1px;">
-                                        <span class="err_msg" style="color: #c12c1f"></span>
-                                        <div id="avatar_container" onclick="$('input[id=id_avatar]').click();"
-                                             style="font-size: 15px;padding: 0;margin-left: 0;margin-top: -17px!important">
-                                            <i class="fa-solid fa-user"
-                                               style="font-size: 40px;margin-top: 0">
-                                            </i>
-                                            <span id="avatar_value"></span>
+                                    {% if item.label == "头像" %}
+                                        <div class="col-md-12 g-3" id="avatar_wrapper"
+                                             style="width: 100%;text-align: center;margin-top: 15px;overflow: hidden">
+                                            <label>{{ item.label }}</label>
+                                            <div hidden>
+                                                {{ item }}
+                                            </div>
+                                            {#                                            <span style="color: #c12c1f;float: bottom"><strong>{{ item.errors.0 }}</strong></span>#}
+                                            {#                                            <span class="err_msg" style="color: #c12c1f"></span>#}
+                                            <div id="avatar_container" onclick="$('input[id=id_avatar]').click();"
+                                                 style="font-size: 15px;padding: 0;margin-left: 0;margin-top: 0px;margin-bottom: 15px">
+                                                <img alt="88x88" id="avatar"
+                                                     src="/media/avatars/{{ request.session.info.avatar }}"
+                                                     width="88px" height="88px"
+                                                     class="rounded-circle img-fluid"/>
+                                                {#                                                <i class="rounded-circle fa-solid fa-user"#}
+                                                {#                                                   style="width: 100px; height: 100px;border: #8050c9 dashed 1px;font-size: 60px;margin: 10px;padding: 20px">#}
+                                                {#                                                </i>#}
+                                                <span id="avatar_value"></span>
+                                            </div>
                                         </div>
-                                    </div>
+                                    {% endif %}
+                                    {% if item.label != "头像" %}
+                                        <div class="col-xs-6 g-3" style="overflow: hidden">
+                                            <label>{{ item.label }}</label>
+                                            {{ item }}
+                                            <span style="color: #c12c1f;float: bottom"><strong>{{ item.errors.0 }}</strong></span>
+                                        </div>
+                                    {% endif %}
                                 {% endif %}
                             {% endfor %}
-                            <div class="g-3 col-md-12">
+                            <div class="g-3 col-md-12" style="display: block">
                                 <input class="button--submit " value="保存" type="submit">
                             </div>
                             <div class="g-3 col-md-6">
@@ -83,7 +94,7 @@
                 {#$(div > i).remove()#}
                 $("#avatar_wrapper").css('border', 'medium')
                 {#$(obj).after('<img class="rounded-circle" src="' + objUrl + '" alt="" style="width:50px;height:50px"> &nbsp;&nbsp;');#}
-                $("#avatar_container").html('<img class="rounded-circle" src="' + objUrl + '" alt="" style="width:100px;height:100px;margin: auto">')
+                $("#avatar_container").html('<img class="rounded-circle" src="' + objUrl + '" alt="" style="width:88px;height:88px;margin: auto">')
             }
         }
 
