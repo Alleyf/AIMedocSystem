@@ -8,6 +8,7 @@ import requests
 
 openai.api_key = "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"
 cohere_api_key = "AmyM4HOivElEHEo7Pd3AbYIBwtFUBMqjOPKhtxNy"
+openai.api_base = "https://openai.yugin.top/v1"
 
 
 def get_context(prompt: str) -> str:
@@ -104,7 +105,7 @@ def get_category_api(title: str):
 
 
 if __name__ == '__main__':
-    title = "高果糖饮食与代谢综合征研究进展"
+    title = "2016IJC-导管组织接触对于模型的影响PentarRay_FAM.pdf"
     start = time.time()
     # response = get_context(prompt=title)
     response = get_category(title)
