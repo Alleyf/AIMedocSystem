@@ -5,6 +5,7 @@ from django.core.cache import cache
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 # from django.views.decorators.cache import cache_page
+from django.views.decorators.cache import cache_page
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.gzip import gzip_page
 
@@ -153,7 +154,6 @@ def chart_line(request):
     return JsonResponse(res)
 
 
-# @gzip_page
 # 连接数据库
 def medicine_search_all():
     graph = Graph('http://47.120.0.133:7474/', auth=("neo4j", "password"))
@@ -216,9 +216,7 @@ def medicine_search_all():
     return neo4j_data
 
 
-# @gzip_page
 # @csrf_exempt
-# def medicine_search_all(request):
 def medicine_search_all_category():
     """医学知识图谱"""
     graph = Graph('http://47.120.0.133:7474/', auth=("neo4j", "password"))
@@ -339,8 +337,6 @@ def medicine_search_all_category():
     return neo4j_data
 
 
-# @gzip_page
-# @csrf_exempt
 def medicine_search_one(value="百日咳"):
     graph = Graph('http://47.120.0.133:7474/', auth=("neo4j", "password"))
     # 定义data数组存储节点信息
@@ -423,7 +419,7 @@ def medicine_search_one(value="百日咳"):
 
 
 @csrf_exempt
-# @cache_page(60 * 30)
+@cache_page(60 * 30)
 def index(request):
     cache_data = cache.get('neo4j_default_data')
     # print(type(cache_data))

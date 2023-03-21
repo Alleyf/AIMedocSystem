@@ -16,6 +16,30 @@
     {#    <link rel="stylesheet" href="{% static 'plugins/fontawesome-free-6.2.1-web/css/fontawesome.min.css' %}">#}
     <link rel="stylesheet" href="{% static 'plugins/bootstrap-5.2.3/css/bootstrap.min.css' %}">
     <style>
+        /* Let's get this party started */
+        ::-webkit-scrollbar {
+            width: 7px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+            -webkit-border-radius: 10px;
+            border-radius: 10px;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            -webkit-border-radius: 10px;
+            border-radius: 10px;
+            background: rgb(205, 206, 224);
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+        }
+
+        ::-webkit-scrollbar-thumb:window-inactive {
+            background: rgb(255, 255, 255);
+        }
+
         li > div {
             overflow: hidden; /*内容超出后隐藏*/
             white-space: nowrap;
@@ -56,7 +80,7 @@
             <i class="fa-solid fa-magnifying-glass" style="font-size: 25px;color: white"></i>
         </a>
     </div>
-    <h4 style="margin-top: 15px;color: white">医道有易——医学文献智能检索平台</h4>
+    <h4 style="margin-top: 15px;color: white">智检慧医——医学文献智能检索平台</h4>
 </div>
 <div class="container-content container-fluid text-center">
     <div class="top container-fluid clearfix" style="margin-bottom: 20px">

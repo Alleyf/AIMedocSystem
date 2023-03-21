@@ -2,7 +2,7 @@
 {#{% load cache %}#}
 {% load static %}
 {% block mytitle %}
-    <title>医道有易</title>
+    <title>智检慧医</title>
 {% endblock %}
 {% block mystyle %}
     <link rel="stylesheet" href="{% static 'css/query.css' %}">
@@ -16,160 +16,160 @@
 {% endblock %}
 
 {% block info %}
-    <div class="container-fluid">
-        <div id='PleaseWait' class='watiting-div'
-             style='justify-content: center;z-index: 999;opacity: 0.7;position: absolute;display: none;width: 100%;height: 100%;background: #111010'></div>
-        <div class="container-fluid" id="wrapper">
-            <div class="container" style="margin: 50px auto">
-                <form method="get" onsubmit="return bindsubmit()">
-                    <div style="width: 80%;margin: auto;">
-                        {% csrf_token %}
-                        <div class="input-group mb-3 has-validation set">
-                            <button id="cur_way" class="btn btn-outline-primary dropdown-toggle" type="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">本地
-                            </button>
-                            <ul class="dropdown-menu text-center" style="min-width: auto;">
-                                {#                                <li><a class="dropdown-item" target="_blank"#}
-                                {#                                       href="https://kns.cnki.net/kns8/defaultresult/index">知网</a></li>#}
-                                {#                                <li><a class="dropdown-item" target="_blank"#}
-                                {#                                       href="https://s.wanfangdata.com.cn/paper?q={{ search_data }}">万方</a></li>#}
-                                {#                                <li><a class="dropdown-item" target="_blank"#}
-                                {#                                       href="https://scholar.google.com/scholar?q={{ search_data }}">谷歌</a></li>#}
-                                <li>
-                                    <button id="zhiwang" class="btn" type="button">知网</button>
-                                </li>
-                                <li id="wanfang"><a class="dropdown-item" target="_blank"
-                                                    href="https://s.wanfangdata.com.cn/paper?q={{ search_data }}">万方</a>
-                                </li>
-                            </ul>
-                            <div class="form-floating btn-outline-info">
-                                <input type="text" name="keyword" class="form-control"
-                                       aria-label="Text input with dropdown button" placeholder="Search for Keyword"
-                                       id="keyword" autocomplete="off" value="{{ search_data }}"
-                                >
-                                <label for="keyword">Search for Keyword</label>
-                                <input type="text" name="start" id="start" value="{{ start }}" style="display: none">
-                            </div>
-                            <button class="btn btn-outline-primary" type="submit" id="search"
-                                    value="Go!" onsubmit="return bindsubmit()">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                            </button>
-                            <div class="text-center text-danger valid-feedback" id="fedback" style="display: block">
-                            </div>
+    {#    <div class="container-fluid card">#}
+    {#    <div id='PleaseWait' class='watiting-div'#}
+    {#         style='justify-content: center;z-index: 999;opacity: 0.7;position: absolute;display: none;width: 100%;height: 100%;background: #111010'></div>#}
+    <div class="container-fluid" id="wrapper">
+        <div class="container" style="margin: 50px auto">
+            <form method="get" onsubmit="return bindsubmit()">
+                <div style="width: 80%;margin: auto;">
+                    {% csrf_token %}
+                    <div class="input-group mb-3 has-validation set">
+                        <button id="cur_way" class="btn btn-outline-primary dropdown-toggle" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">本地
+                        </button>
+                        <ul class="dropdown-menu text-center" style="min-width: auto;">
+                            {#                                <li><a class="dropdown-item" target="_blank"#}
+                            {#                                       href="https://kns.cnki.net/kns8/defaultresult/index">知网</a></li>#}
+                            {#                                <li><a class="dropdown-item" target="_blank"#}
+                            {#                                       href="https://s.wanfangdata.com.cn/paper?q={{ search_data }}">万方</a></li>#}
+                            {#                                <li><a class="dropdown-item" target="_blank"#}
+                            {#                                       href="https://scholar.google.com/scholar?q={{ search_data }}">谷歌</a></li>#}
+                            <li>
+                                <button id="zhiwang" class="btn" type="button">知网</button>
+                            </li>
+                            <li id="wanfang"><a class="dropdown-item" target="_blank"
+                                                href="https://s.wanfangdata.com.cn/paper?q={{ search_data }}">万方</a>
+                            </li>
+                        </ul>
+                        <div class="form-floating btn-outline-info">
+                            <input type="text" name="keyword" class="form-control"
+                                   aria-label="Text input with dropdown button" placeholder="Search for Keyword"
+                                   id="keyword" autocomplete="off" value="{{ search_data }}"
+                            >
+                            <label for="keyword">Search for Keyword</label>
+                            <input type="text" name="start" id="start" value="{{ start }}" style="display: none">
+                        </div>
+                        <button class="btn btn-outline-primary" type="submit" id="search"
+                                value="Go!" onsubmit="return bindsubmit()">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                        <div class="text-center text-danger valid-feedback" id="fedback" style="display: block">
                         </div>
                     </div>
-                </form>
+                </div>
+            </form>
+        </div>
+        <section class="loader" style="display: none;width: auto;height: auto;">
+
+            <div style="--i:0" class="slider">
             </div>
-            <section class="loader" style="display: none;width: auto;height: auto;">
+            <div style="--i:1" class="slider">
+            </div>
+            <div style="--i:2" class="slider">
+            </div>
+            <div style="--i:3" class="slider">
+            </div>
+            <div style="--i:4" class="slider">
+            </div>
+        </section>
 
-                <div style="--i:0" class="slider">
-                </div>
-                <div style="--i:1" class="slider">
-                </div>
-                <div style="--i:2" class="slider">
-                </div>
-                <div style="--i:3" class="slider">
-                </div>
-                <div style="--i:4" class="slider">
-                </div>
-            </section>
-
-            {% if code == 404 %}
-                <div id="restip">
-                    {% if  search_data == '' %}
-                        <div class="text-center" style="margin: 100px auto;font-size: 20px">
-                            您当前输入的关键词为空，请重新输入，谢谢！
-                        </div>
-                    {% else %}
-                        <div class="text-center" style="margin: 100px auto;font-size: 20px">
-                            抱歉本地数据库未检索到含有
-                            <span style="color: red">{{ search_data }}</span>
-                            的关键词文献
-                        </div>
-                    {% endif %}
-                </div>
-            {% elif code == 200 %}
-                {% for pninfo in page_info %}
-                    {% if pninfo.num == 1 %}
-                        <div class="container-fluid table-responsive" id="tb" style="display: block">
-                        <div class="table-responsive"><i class="fa fa-list"></i>文献列表</div>
-                        <table class="table table-hover table-condensed ">
-                        <thead class="text-center table-default">
-                        <tr>
-                            <th>ID</th>
-                            <th>文献名</th>
-                            <th>点击量得分</th>
-                            <th>用户反馈得分</th>
-                            <th>相关度得分</th>
-                            <th>总分</th>
-                            <th>操作</th>
-                        </tr>
-                        </thead>
-                        <tbody class="text-center info">
-                    {% endif %}
-
-                    {#                        {% for pninfo in page_info %}#}
-                    <tr uid="{{ pninfo.id }}" class="tr">
-                        <th scope="row" style="display: none">{{ pninfo.id }}</th>
-                        <th scope="row">{{ pninfo.num }}</th>
-                        <td>
-                            <div>{{ pninfo.name }}</div>
-                        </td>
-                        <td class="clkscore" uid="{{ pninfo.id }}">{{ pninfo.clkscore }}</td>
-                        <td>{{ pninfo.fedbakscore }}</td>
-                        <td>{{ pninfo.relscore }}</td>
-                        <td>{{ pninfo.allscore }}</td>
-                        <td>
-                            <button uid="{{ pninfo.id }}" class="btn btn-default btn-sm clk"
-                                    type="button">
-                                <i class="fa-solid fa-eye"></i>
-                            </button>
-                            {#                                <input uid="{{ pninfo.id }}" type="button" class="btn btn-danger btn-xs btn_del"#}
-                            {#                                       value="删除">#}
-                        </td>
+        {% if code == 404 %}
+            <div id="restip">
+                {% if  search_data == '' %}
+                    <div class="text-center" style="margin: 100px auto;font-size: 20px">
+                        您当前输入的关键词为空，请重新输入，谢谢！
+                    </div>
+                {% else %}
+                    <div class="text-center" style="margin: 100px auto;font-size: 20px">
+                        抱歉本地数据库未检索到含有
+                        <span style="color: red">{{ search_data }}</span>
+                        的关键词文献
+                    </div>
+                {% endif %}
+            </div>
+        {% elif code == 200 %}
+            {% for pninfo in page_info %}
+                {% if pninfo.num == 1 %}
+                    <div class="container-fluid card table-responsive" id="tb" style="display: block">
+                    <div class="table-responsive"><i class="fa fa-list"></i>文献列表</div>
+                    <table class="wrappercontent table table-hover table-condensed ">
+                    <thead class="text-center table-default">
+                    <tr>
+                        <th>ID</th>
+                        <th>文献名称</th>
+                        <th>点击量分</th>
+                        <th>用户反馈分</th>
+                        <th>相关度分</th>
+                        <th>总分</th>
+                        <th>操作</th>
                     </tr>
-                {% endfor %}
-            {% endif %}
-            </tbody>
-            </table>
-            {#            </div>#}
-            {#        </div>#}
-            </div>
-            <nav aria-label="Page navigation example" id="pagination" style="display: none">
-                <ul class="pagination" style="justify-content: center">
-                    <li class="page-item">
-                        <button class="page-link" id="prev" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
+                    </thead>
+                    <tbody class="text-center info">
+                {% endif %}
+
+                {#                        {% for pninfo in page_info %}#}
+                <tr uid="{{ pninfo.id }}" class="tr wrappercontent">
+                    <th scope="row" style="display: none">{{ pninfo.id }}</th>
+                    <th scope="row">{{ pninfo.num }}</th>
+                    <td>
+                        <div>{{ pninfo.name }}</div>
+                    </td>
+                    <td class="clkscore" uid="{{ pninfo.id }}">{{ pninfo.clkscore }}</td>
+                    <td>{{ pninfo.fedbakscore }}</td>
+                    <td>{{ pninfo.relscore }}</td>
+                    <td>{{ pninfo.allscore }}</td>
+                    <td>
+                        <button uid="{{ pninfo.id }}" class="btn btn-default btn-sm clk"
+                                type="button">
+                            <i class="fa-solid fa-eye"></i>
                         </button>
-                    </li>
-                    {#                    <li class="page-item"><a class="page-link" href="#">1</a></li>#}
-                    {#                    <li class="page-item"><a class="page-link" href="#">2</a></li>#}
-                    {#                    <li class="page-item"><a class="page-link" href="#">3</a></li>#}
-                    <li class="page-item">
-                        <button class="page-link" id="next" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </button>
-                    </li>
-                </ul>
-            </nav>
-            {#            <a href="#top" id="back" class="set btn btn-info btn-sm back">#}
-            {#                <i class="fa-solid fa-caret-up"></i>#}
-            {#            </a>#}
-            <div id="tb_container"></div>
-            <div class="text-center" style="width: 100%;height: 60px;margin:0 auto">
-                <ul class="list-unstyled" style="margin-top: 30px;line-height: 30px;">
-                    <li>
-                        <h5 class="text-center"
-                            style="display: none;margin: 10px auto;font-size: 14px;color: #b5b5b5;" id="slogan">
-                            猜你想搜:
-                        </h5>
-                        <p class="text-center" id="relsearch"
-                           style="display: inline-block;vertical-align: top; width: 100%;font-size: 14px;"></p>
-                    </li>
-                </ul>
-            </div>
+                        {#                                <input uid="{{ pninfo.id }}" type="button" class="btn btn-danger btn-xs btn_del"#}
+                        {#                                       value="删除">#}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+        </tbody>
+        </table>
+        {#            </div>#}
+        {#        </div>#}
+        </div>
+        <nav aria-label="Page navigation example" id="pagination" style="display: none">
+            <ul class="pagination" style="justify-content: center">
+                <li class="page-item">
+                    <button class="page-link" id="prev" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </button>
+                </li>
+                {#                    <li class="page-item"><a class="page-link" href="#">1</a></li>#}
+                {#                    <li class="page-item"><a class="page-link" href="#">2</a></li>#}
+                {#                    <li class="page-item"><a class="page-link" href="#">3</a></li>#}
+                <li class="page-item">
+                    <button class="page-link" id="next" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+        {#            <a href="#top" id="back" class="set btn btn-info btn-sm back">#}
+        {#                <i class="fa-solid fa-caret-up"></i>#}
+        {#            </a>#}
+        <div id="tb_container"></div>
+        <div class="text-center" style="margin:0 auto">
+            <ul class="list-unstyled" style="margin-top: 30px;line-height: 30px;">
+                <li>
+                    <h5 class="text-center"
+                        style="display: none;margin: 10px auto;font-size: 14px;color: #b5b5b5;" id="slogan">
+                        猜你想搜:
+                    </h5>
+                    <p class="text-center" id="relsearch"
+                       style="display: inline-block;vertical-align: top; width: 100%;font-size: 14px;"></p>
+                </li>
+            </ul>
         </div>
     </div>
+    {#    </div>#}
 
 
 
