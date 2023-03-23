@@ -31150,7 +31150,7 @@ body.fixed-header .header {
     .logo-horizontal {
         display: block;
         left: 0;
-        position: absolute;
+        /*position: absolute;*/
         right: 0;
         width: inherit;
     }

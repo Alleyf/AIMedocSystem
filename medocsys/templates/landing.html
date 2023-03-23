@@ -1,0 +1,1780 @@
+﻿{% load static %}
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+    <!-- META DATA -->
+    <meta charset="UTF-8">
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=0'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="MedocsysTem, We help your doc management.">
+    <meta name="author" content="Spruko Technologies Private Limited">
+    <!-- FAVICON -->
+    <link rel="shortcut icon" type="image/x-icon" href="{% static '/images/favicon/favicon.png' %}"/>
+    <!-- TITLE -->
+    <title>智检慧医</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.3.0/css/all.min.css" rel="stylesheet">
+    <!-- BOOTSTRAP CSS -->
+    <link id="style" href="{% static 'plugins/bootstrap-5.2.3/css/bootstrap.min.css' %}" rel="stylesheet"/>
+    {#    <link href="https://cdn.bootcdn.net/ajax/libs/fullPage.js/4.0.19/fullpage.min.css" rel="stylesheet">#}
+    <!-- STYLE CSS -->
+    <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+    <!--- FONT-ICONS CSS -->
+    {#    <link href="{% static '/css/icons.css' %}" rel="stylesheet"/>#}
+    <style>
+        /* Let's get this party started */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+            -webkit-border-radius: 10px;
+            border-radius: 10px;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            -webkit-border-radius: 10px;
+            border-radius: 10px;
+            background: #d4eca4;
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+        }
+
+        ::-webkit-scrollbar-thumb:window-inactive {
+            background: rgb(255, 255, 255);
+        }
+    </style>
+</head>
+
+<body class="ltr app horizontal landing-page">
+
+<!-- GLOBAL-LOADER -->
+<div id="global-loader">
+    <img src="{% static 'images/loader.svg' %}" class="loader-img" alt="Loader">
+</div>
+<!-- /GLOBAL-LOADER -->
+<!--/login modal-->
+<!--/end login modal-->
+<!-- PAGE -->
+<div class="page">
+    <div class="page-main">
+        <!-- app-Header -->
+        <div class="hor-header header">
+            <div class="container main-container">
+                <div class="d-flex">
+                    <a aria-label="Hide Sidebar" class="" data-bs-toggle="sidebar"
+                       href="javascript:void(0)" style="font-weight: bold;;font-size: 20px;color: #8fbd56">
+                        <i class="fa fa-bars"></i>
+                        智检慧医
+                    </a>
+                    <!-- sidebar-toggle-->
+                    {#                    <img src="{% static '/images/logo_104_36.png' %}" class="header-brand-img desktop-logo"#}
+                    {#                         alt="logo">#}
+                    {#                    <img src="{% static '/images/logo_104_36.png' %}" class="header-brand-img light-logo1"#}
+                    {#                         alt="logo">#}
+                    <!-- LOGO -->
+
+                    <div class="d-flex order-lg-2 ms-auto header-right-icons">
+                        <button class="navbar-toggler navresponsive-toggler d-md-none ms-auto" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent-4"
+                                aria-controls="navbarSupportedContent-4" aria-expanded="false"
+                                aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon fa fa-bars"></span>
+                        </button>
+                        <div class="navbar navbar-collapse responsive-navbar p-0">
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
+                                <div class="d-flex order-lg-2 m-4 m-lg-0 m-md-1">
+                                    <a href="/register/" target="_blank"
+                                       class="btn btn-pill btn-outline-primary btn-w-md py-2 me-1">
+                                        Sign up
+                                    </a>
+                                    <a href="/login/" target="_blank" class="btn btn-pill btn-primary btn-w-md py-2">
+                                        Login
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /app-Header -->
+
+        <!--APP-SIDEBAR-->
+        <div class="landing-top-header overflow-hidden">
+            <div class="top sticky overflow-hidden">
+
+                <!--APP-SIDEBAR-->
+                <div class="app-sidebar__overlay" data-bs-toggle="sidebar"></div>
+                <div class="app-sidebar bg-transparent horizontal-main">
+                    <div class="container">
+                        <div class="main-sidemenu navbar px-0">
+                            <a class="navbar-brand ps-0 d-none d-lg-block"
+                               style="font-weight: bold;;font-size: 20px;color: #8fbd56"
+                               href="/login/">
+                                智检慧医
+                                {#                                <img alt="" class="logo-2" src="{% static 'images/logo_104_36.png' %}">#}
+                                {#                                <img alt="" class="dark-landinglogo" src="{% static 'images/logo_104_36.png' %}">#}
+                            </a>
+                            <ul class="side-menu">
+                                <li class="slide">
+                                    <a class="side-menu__item active" data-bs-toggle="slide" href="#home"><span
+                                            class="side-menu__label">Home</span></a>
+                                </li>
+                                <li class="slide">
+                                    <a class="side-menu__item" data-bs-toggle="slide" href="#Innovation"><span
+                                            class="side-menu__label">Innovation</span></a>
+                                </li>
+                                <li class="slide">
+                                    <a class="side-menu__item" data-bs-toggle="slide" href="#Feature"><span
+                                            class="side-menu__label">Feature</span></a>
+                                </li>
+                                <li class="slide">
+                                    <a class="side-menu__item" data-bs-toggle="slide" href="#Browser"><span
+                                            class="side-menu__label">Browser</span></a>
+                                </li>
+                                <li class="slide">
+                                    <a class="side-menu__item" data-bs-toggle="slide" href="#Technology"><span
+                                            class="side-menu__label">Technology</span></a>
+                                </li>
+                                <li class="slide">
+                                    <a class="side-menu__item" data-bs-toggle="slide" href="#Faq"><span
+                                            class="side-menu__label">Faq's</span></a>
+                                </li>
+                                <li class="slide">
+                                    <a class="side-menu__item" data-bs-toggle="slide" href="#Team"><span
+                                            class="side-menu__label">Team</span></a>
+                                </li>
+                            </ul>
+                            <div class="header-nav-right d-flex">
+                                <a href="/register/" target="_blank"
+                                   class="btn btn-pill btn-outline-primary btn py-2 me-1 my-auto  d-xl-block d-block">
+                                    Sign up
+                                </a>
+                                <a href="/login/" target="_blank"
+                                   class="btn btn-pill btn-primary btn py-2 my-auto  d-xl-block d-block">
+                                    Login
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--/APP-SIDEBAR-->
+            </div>
+
+            <!-- Header Main-->
+            <div class="demo-screen-headline section main-demo main-demo-1 overflow-hidden pb-0 mb-6" id="home">
+                <div class="container px-5 px-md-0">
+                    <div class="overflow-hidden">
+                        <div class="row">
+                            <div class="col-lg-6 text-left pos-relative overflow-hidden p-3">
+                                <h1 class="text-shadow text-dark">Improve query efficiency and quality with <span
+                                        class="text-primary">AIMeDocSys.</span></h1>
+                                <h6 class="mt-3">
+                                    AIMeDocSys是基于ElasticSearch分布式搜索分析引擎和光学字符识别技术（OCR）开发的医学文献智能识别检索系统，解决医疗行业中医学文献检索效率低、人力物力消耗大的问题。系统可建立本地文献库，支持上传、删除、检索本地文献并在线查看、下载，同时支持关键词查询知网和万方文献。采用光学字符识别技术可准确提取文献中图片所含内容，检索内容精确到页数，并提供段落摘要。大数据可视化技术展示系统运行状态、文献分类、点击量等数据，智能问答助手提供医学知识图谱。系统主体在Windows操作系统上开发，通过Docker容器化部署至腾讯云服务器，实现快速自动化部署.
+                                </h6>
+                                <h6 class="mb-4" style="color: #7ebeab">The system can provide comprehensive and
+                                    high-quality
+                                    literature
+                                    management and medical information retrieval services for medical staff.</h6>
+                                <a href="/register/" class="btn btn-pill btn-primary btn-w-md py-2 me-2 mb-1">Start
+                                    Now<i
+                                            class="fa fa-activity ms-2"></i></a>
+                                <a href="#Innovation" class="btn btn-pill btn-secondary btn-w-md py-2 mb-1">Demo<i
+                                        class="fa fa-file-text mx-2"></i></a>
+                            </div>
+                            <div class="card col-lg-6 text-left pos-relative overflow-hidden market-image">
+                                <img alt="" class="logo-2"
+                                     src="{% static 'images/landing/market.png' %}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Header Main Close-->
+
+        </div>
+        <!--/APP-SIDEBAR-->
+
+        <!--app-content open-->
+        <div class="hor-content main-content mt-0">
+            <div class="side-app">
+                <!-- CONTAINER -->
+                <div class="main-container">
+
+                    <!-- Testimonials section-->
+                    <div class="section pb-5 bg-white" id="Innovation">
+                        <div class="container px-5 px-md-0">
+                            <div class="row justify-content-center text-center">
+                                <div class="col-lg-8 ps-4 mb-lg-0- mb-4">
+                                    <h3 class="header-family">Innovation</h3>
+                                    <p class="text-default sub-text mb-0">The layout of this system is responsively made
+                                        and can suitable for all devices ,such as PC、Tablet and Mobile.</p>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-lg-12">
+                                    <div class="responsive-screens">
+                                        <div class="slide">
+                                            <div class="row align-items-center">
+                                                <div class="col-md-7 col-12 px-0">
+                                                    <h4 class="fs-25">Innovation Points</h4>
+                                                    <p class="text-muted mb-4">Some creative ideas in this system .</p>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>对搜索关键词进行语义分析实现相关检索.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>使用多模型融合识别提高文献图片识别准确率.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>支持多种文献数据库检索，并对用户归档文献进行自动分类.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>添加人工智能问答助手协助解答疑难问题.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>采用数据可视化直观展示系统文献数据及状态.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>加入医学知识图谱,支持图谱搜索并可视化展示.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <a href="#home"
+                                                       class="btn btn-pill btn-secondary btn-w-md py-2 me-2">Start
+                                                        Now<i class="fa fa-activity ms-2"></i></a>
+                                                </div>
+                                                <div class="col-md-5 col-12">
+                                                    <img class="img-fluid float-md-end"
+                                                         src="{% static 'images/illusion/PCquery.png' %}" alt="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slide">
+                                            <div class="row align-items-center">
+                                                <div class="col-md-7 col-12  px-0">
+                                                    <h4 class="fs-25">Innovation Points</h4>
+                                                    <p class="text-muted mb-4">Some creative ideas in this system .</p>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>对搜索关键词进行语义分析实现相关检索.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>使用多模型融合识别提高文献图片识别准确率.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>支持多种文献数据库检索，并对用户归档文献进行自动分类.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>添加人工智能问答助手协助解答疑难问题.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>采用数据可视化直观展示系统文献数据及状态.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>加入医学知识图谱,支持图谱搜索并可视化展示.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <a href="#Innovation"
+                                                       class="btn btn-pill btn-primary btn-w-md py-2 me-2">Demo<i
+                                                            class="fa fa-file-text mx-2"></i></a>
+                                                </div>
+                                                <div class="col-md-5 col-sm-12">
+                                                    <img class="img-fluid float-md-end"
+                                                         src="{% static 'images/illusion/3end.png' %}" alt="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slide">
+                                            <div class="row align-items-center">
+                                                <div class="col-md-7 col-12  px-0">
+                                                    <h4 class="fs-25">Innovation Points</h4>
+                                                    <p class="text-muted mb-4">Some creative ideas in this system .</p>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>对搜索关键词进行语义分析实现相关检索.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>使用多模型融合识别提高文献图片识别准确率.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>支持多种文献数据库检索，并对用户归档文献进行自动分类.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>添加人工智能问答助手协助解答疑难问题.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>采用数据可视化直观展示系统文献数据及状态.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>加入医学知识图谱,支持图谱搜索并可视化展示.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <a href="#home"
+                                                       class="btn btn-pill btn-secondary btn-w-md py-2 me-2">Start
+                                                        Now</a>
+                                                </div>
+                                                <div class="col-md-5 col-sm-12">
+                                                    <img class="img-fluid float-md-end"
+                                                         src="{% static 'images/illusion/tablet1.png' %}" alt="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slide">
+                                            <div class="row align-items-center">
+                                                <div class="col-md-7 col-12 px-0">
+                                                    <h4 class="fs-25">Innovation Points</h4>
+                                                    <p class="text-muted mb-4">Some creative ideas in this system .</p>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>对搜索关键词进行语义分析实现相关检索.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>使用多模型融合识别提高文献图片识别准确率.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>支持多种文献数据库检索，并对用户归档文献进行自动分类.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>添加人工智能问答助手协助解答疑难问题.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>采用数据可视化直观展示系统文献数据及状态.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>加入医学知识图谱,支持图谱搜索并可视化展示.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <a href="#" class="btn btn-pill btn-primary btn-w-md py-2 me-2">Start
+                                                        Now<i class="fa-brands fa-activity ms-2"></i></a>
+                                                </div>
+                                                <div class="col-md-5 col-sm-12">
+                                                    <img class="img-fluid float-md-end"
+                                                         src="{% static 'images/illusion/mobile1.png' %}" alt="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slide">
+                                            <div class="row align-items-center">
+                                                <div class="col-md-7 col-12 px-0">
+                                                    <h4 class="fs-25">Innovation Points</h4>
+                                                    <p class="text-muted mb-4">Some creative ideas in this system .</p>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>对搜索关键词进行语义分析实现相关检索.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>使用多模型融合识别提高文献图片识别准确率.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>支持多种文献数据库检索，并对用户归档文献进行自动分类.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>添加人工智能问答助手协助解答疑难问题.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>采用数据可视化直观展示系统文献数据及状态.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>加入医学知识图谱,支持图谱搜索并可视化展示.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <a href="#" class="btn btn-pill btn-primary btn-w-md py-2 me-2">Start
+                                                        Now<i class="fa-brands fa-activity ms-2"></i></a>
+                                                </div>
+                                                <div class="col-md-5 col-sm-12">
+                                                    <img class="img-fluid float-md-end"
+                                                         src="{% static 'images/illusion/AIassistant.png' %}" alt="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slide">
+                                            <div class="row align-items-center">
+                                                <div class="col-md-7 col-12 px-0">
+                                                    <h4 class="fs-25">Innovation Points</h4>
+                                                    <p class="text-muted mb-4">Some creative ideas in this system .</p>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>对搜索关键词进行语义分析实现相关检索.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>使用多模型融合识别提高文献图片识别准确率.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>支持多种文献数据库检索，并对用户归档文献进行自动分类.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>添加人工智能问答助手协助解答疑难问题.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>采用数据可视化直观展示系统文献数据及状态.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>加入医学知识图谱,支持图谱搜索并可视化展示.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <a href="#" class="btn btn-pill btn-primary btn-w-md py-2 me-2">Start
+                                                        Now<i class="fa-brands fa-activity ms-2"></i></a>
+                                                </div>
+                                                <div class="col-md-5 col-sm-12">
+                                                    <img class="img-fluid float-md-end"
+                                                         src="{% static 'images/illusion/knowgraph.png' %}" alt="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Testimonials Close-->
+
+                    <!-- Feature-->
+                    <div class="section customizable pb-6" id="Feature">
+                        <div class="container px-5 px-md-0">
+                            <div class="row text-center justify-content-center">
+                                <div class="col-lg-8 ps-4">
+                                    <h3 class="header-family">Feature</h3>
+                                    <p class="text-default sub-text mb-0">AIMeDocSys has the following features.</p>
+                                </div>
+                            </div>
+                            <div class="row align-items-center">
+                                <div class="col-xl-5 customize-image text-center">
+                                    <img class="img-fluid p-5" src="{% static 'images/landing/customize.png' %}" alt="">
+                                    {#                                    <img class="img-fluid p-5" src="{% static 'images/landing/brand.png' %}" alt="">#}
+                                </div>
+                                <div class="col-xl-7 p-5">
+                                    <div class="row">
+                                        <div class="col-md-6 col-12">
+                                            <div class="d-flex">
+														<span><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                   height="24"
+                                                                   viewBox="0 0 24 24">
+																<path fill="#8fbd56"
+                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                      opacity=".99"/>
+																<path fill="#8fbd56" opacity=".2"
+                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+															</svg></span>
+                                                <div class="ms-3">
+                                                    <p>ElasticSearch分布式搜索分析引擎实现全文检索.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <div class="d-flex">
+														<span><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                   height="24"
+                                                                   viewBox="0 0 24 24">
+																<path fill="#8fbd56"
+                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                      opacity=".99"/>
+																<path fill="#8fbd56" opacity=".2"
+                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+															</svg></span>
+                                                <div class="ms-3">
+                                                    <p>多模型OCR光学字符融合识别技术识别文献图片中的文字.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <div class="d-flex">
+														<span><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                   height="24"
+                                                                   viewBox="0 0 24 24">
+																<path fill="#8fbd56"
+                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                      opacity=".99"/>
+																<path fill="#8fbd56" opacity=".2"
+                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+															</svg></span>
+                                                <div class="ms-3">
+                                                    <p>前后台系统，用户模式和后台管理双模式.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <div class="d-flex">
+														<span><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                   height="24"
+                                                                   viewBox="0 0 24 24">
+																<path fill="#8fbd56"
+                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                      opacity=".99"/>
+																<path fill="#8fbd56" opacity=".2"
+                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+															</svg></span>
+                                                <div class="ms-3">
+                                                    <p>采用PDF.js通用文档解析平台在线呈现文献.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <div class="d-flex">
+														<span><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                   height="24"
+                                                                   viewBox="0 0 24 24">
+																<path fill="#8fbd56"
+                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                      opacity=".99"/>
+																<path fill="#8fbd56" opacity=".2"
+                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+															</svg></span>
+                                                <div class="ms-3">
+                                                    <p>搜索匹配评分反馈功能，根据得分动态更新检索顺序.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <div class="d-flex">
+														<span><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                   height="24"
+                                                                   viewBox="0 0 24 24">
+																<path fill="#8fbd56"
+                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                      opacity=".99"/>
+																<path fill="#8fbd56" opacity=".2"
+                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+															</svg></span>
+                                                <div class="ms-3">
+                                                    <p>响应式布局，系统可流畅运行于PC端和移动端.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <div class="d-flex">
+														<span><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                   height="24"
+                                                                   viewBox="0 0 24 24">
+																<path fill="#8fbd56"
+                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                      opacity=".99"/>
+																<path fill="#8fbd56" opacity=".2"
+                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+															</svg></span>
+                                                <div class="ms-3">
+                                                    <p>智能问答助手协助用户，为用户提供丰富而有效的信息.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <div class="d-flex">
+														<span><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                   height="24"
+                                                                   viewBox="0 0 24 24">
+																<path fill="#8fbd56"
+                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                      opacity=".99"/>
+																<path fill="#8fbd56" opacity=".2"
+                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+															</svg></span>
+                                                <div class="ms-3">
+                                                    <p>可视化展示大型医学知识图谱，并支持在线检索图谱节点.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <div class="d-flex">
+														<span><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                   height="24"
+                                                                   viewBox="0 0 24 24">
+																<path fill="#8fbd56"
+                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                      opacity=".99"/>
+																<path fill="#8fbd56" opacity=".2"
+                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+															</svg></span>
+                                                <div class="ms-3">
+                                                    <p>系统数据可视化，直观清晰展示系统归档的文献信息.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <div class="d-flex">
+														<span><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                   height="24"
+                                                                   viewBox="0 0 24 24">
+																<path fill="#8fbd56"
+                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                      opacity=".99"/>
+																<path fill="#8fbd56" opacity=".2"
+                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+															</svg></span>
+                                                <div class="ms-3">
+                                                    <p>私有文献库独立管理，用户可以管理自己的文献库，批量上传、删除和阅览.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Feature close-->
+
+                    <!-- Browsers section-->
+                    <div class="bg-primary section" id="Browser">
+                        <div class="container px-5 px-md-0">
+                            <div class="row justify-content-center text-center">
+                                <div class="col-lg-8 text-center">
+                                    <h3 class="header-family text-white">A wide range of Browsers support this
+                                        system.</h3>
+                                    <p class="sub-text text-white pb-3">We use the universal standards to perform
+                                        better.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-lg-12">
+                                    <div class="customer-logos">
+                                        <div class="slide"><img src="{% static 'images/landing/companies/chrome.png' %}"
+                                                                alt="">
+                                        </div>
+                                        <div class="slide"><img src="{% static 'images/landing/companies/google.png' %}"
+                                                                alt="">
+                                        </div>
+                                        <div class="slide"><img src="{% static 'images/landing/companies/edge.png' %}"
+                                                                alt="">
+                                        </div>
+                                        <div class="slide"><img
+                                                src="{% static 'images/landing/companies/firefox.png' %}"
+                                                alt=""></div>
+                                        <div class="slide"><img src="{% static 'images/landing/companies/opera.png' %}"
+                                                                alt="">
+                                        </div>
+                                        <div class="slide"><img src="{% static 'images/landing/companies/safari.png' %}"
+                                                                alt="">
+                                        </div>
+                                        <div class="slide"><img src="{% static 'images/landing/companies/bing.png' %}"
+                                                                alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Features -->
+                    <div class="section bg-white pb-7" id="Technology">
+                        <div class="container px-5 px-md-0">
+                            <div class="row text-center justify-content-center">
+                                <div class="col-lg-8 ps-4">
+                                    <h3 class="header-family">Technology</h3>
+                                    <p class="text-default sub-text">The AIMeDocSys mainly uses the following
+                                        mainstream technology stacks to realize the entire system design to
+                                        deployment.</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="card col-12 col-md-4 p-4 fanimate"
+                                     style="box-shadow: gainsboro!important;">
+                                    <div class="features-icon">
+                                        {#                                        <img width="128" height="128"#}
+                                        {#                                             src="https://elasticsearch.cn/static/css/default/img/logo.svg" alt="">#}
+                                        <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
+                                             viewBox="0 0 24 24">
+                                            <path fill="#8FBD56"
+                                                  d="M7.00293 8.05957a3 3 0 1 1 3-3A3.00328 3.00328 0 0 1 7.00293 8.05957zm0-4a1 1 0 1 0 1 1A1.0013 1.0013 0 0 0 7.00293 4.05957zM17.00293 12.05957a3 3 0 1 1 3-3A3.00328 3.00328 0 0 1 17.00293 12.05957zm0-4a1 1 0 1 0 1 1A1.0013 1.0013 0 0 0 17.00293 8.05957zM7.00293 22.05957a3 3 0 1 1 3-3A3.00328 3.00328 0 0 1 7.00293 22.05957zm0-4a1 1 0 1 0 1 1A1.0013 1.0013 0 0 0 7.00293 18.05957z"/>
+                                            <path fill="#8FBD56" opacity=".3"
+                                                  d="M17.00293,12.05957a2.98168,2.98168,0,0,1-1.15424-.2323,2.00186,2.00186,0,0,1-1.84576,1.2323h-4a3.95376,3.95376,0,0,0-2,.55646V7.87531a2.80519,2.80519,0,0,1-2-.00007v8.3686a2.89912,2.89912,0,0,1,2.1543.048,2.00179,2.00179,0,0,1,1.8457-1.23224h4a4.00437,4.00437,0,0,0,3.90619-3.15509A2.96013,2.96013,0,0,1,17.00293,12.05957Z"/>
+                                        </svg>
+                                    </div>
+                                    <h4 class="mx-1">
+                                        ElasticSearch
+                                    </h4>
+                                    <p class="text-muted mb-3 mx-1">
+                                        AIMeDocSys主要是利用了ElasticSearch分布式搜索引擎对用户上传的文献的文字文本和图片文本分词并建立倒排索引，从而实现了在搜索过程中达到高性能、速度快、低延迟的要求.
+                                    </p>
+                                    <a class="mx-1" href="https://www.elastic.co/cn/">Read More <i
+                                            class="fa fa-chevron-right"></i></a>
+                                </div>
+
+                                <div class="col-12 col-md-4 p-4 fanimate">
+                                    <div class="features-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
+                                             viewBox="0 0 24 24">
+                                            <path fill="#8FBD56"
+                                                  d="M12,15.89355c-0.17551-0.00004-0.34792-0.04618-0.5-0.13378l-9-5.19727c-0.47839-0.27632-0.64221-0.88814-0.36589-1.36653C2.22187,9.04403,2.34806,8.91784,2.5,8.83008l9-5.19336c0.30964-0.17774,0.69036-0.17774,1,0l9,5.19336c0.4784,0.27632,0.64221,0.88814,0.36589,1.36653c-0.08776,0.15194-0.21395,0.27813-0.36589,0.36589l-9,5.19727C12.34792,15.84737,12.17551,15.89351,12,15.89355z"/>
+                                            <path fill="#8FBD56" opacity=".3"
+                                                  d="M21.5,13.43359l-2.48682-1.435L12.5,15.75977c-0.1521,0.08759-0.32452,0.13373-0.5,0.13379c-0.17548-0.00006-0.3479-0.0462-0.5-0.13379L4.98682,11.9986L2.5,13.43359c-0.15192,0.08771-0.27814,0.21393-0.36591,0.36584C1.85779,14.27783,2.02161,14.88965,2.5,15.16602l9,5.19727c0.1521,0.08759,0.32452,0.13373,0.5,0.13379c0.17554-0.00006,0.3479-0.0462,0.5-0.13379l9-5.19727c0.15192-0.08777,0.27814-0.21399,0.36591-0.36591C22.14221,14.32172,21.97839,13.7099,21.5,13.43359z"/>
+                                        </svg>
+                                    </div>
+                                    <h4 class="mx-1">
+                                        光学字符识别技术(OCR)
+                                    </h4>
+                                    <p class="text-muted mb-3 mx-1">
+                                        AIMeDocSys基于百度飞桨的预训练模型，通过自制医学文献图片数据集和开源公开数据集对模型进行微调，进一步提升PaddleOCR模型检测与识别模型的精度，经过200张以上医学文献图片准确率的测试达到93.93%以上.
+                                    </p>
+                                    <a class="mx-1" href="https://github.com/PaddlePaddle/PaddleOCR">Read More <i
+                                            class="fa fa-chevron-right"></i></a>
+                                </div>
+
+                                <div class="col-12 col-md-4 p-4 fanimate">
+                                    <div class="features-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
+                                             viewBox="0 0 24 24">
+                                            <path fill="#8FBD56"
+                                                  d="M16,11H8c-0.55197,0.00031-0.99969-0.44689-1-0.99886C7,10.00076,7,10.00038,7,10V6C6.99969,5.44803,7.44689,5.00031,7.99886,5C7.99924,5,7.99962,5,8,5h8c0.55197-0.00031,0.99969,0.44689,1,0.99886C17,5.99924,17,5.99962,17,6v4c0.00031,0.55197-0.44689,0.99969-0.99886,1C16.00076,11,16.00038,11,16,11z"/>
+                                            <path fill="#8FBD56" opacity=".3"
+                                                  d="M18,2H6C4.89545,2,4,2.89545,4,4v16c0,1.10455,0.89545,2,2,2h12c1.10455,0,2-0.89545,2-2V4C20,2.89545,19.10455,2,18,2z M17,6v4c0.00031,0.55194-0.4469,0.99969-0.99884,1C16.00073,11,16.00037,11,16,11H8c-0.55194,0.00031-0.99969-0.4469-1-0.99884C7,10.00073,7,10.00037,7,10V6C6.99969,5.44806,7.4469,5.00031,7.99884,5C7.99927,5,7.99963,5,8,5h8c0.55194-0.00031,0.99969,0.4469,1,0.99884C17,5.99927,17,5.99963,17,6z"/>
+                                            <circle cx="8" cy="14" r="1" fill="#8FBD56"/>
+                                            <circle cx="8" cy="18" r="1" fill="#8FBD56"/>
+                                            <circle cx="12" cy="18" r="1" fill="#8FBD56"/>
+                                            <circle cx="16" cy="18" r="1" fill="#8FBD56"/>
+                                            <circle cx="16" cy="14" r="1" fill="#8FBD56"/>
+                                            <circle cx="12" cy="14" r="1" fill="#8FBD56"/>
+                                        </svg>
+                                    </div>
+                                    <h4 class="mx-1">
+                                        Neo4j高性能图形数据库
+                                    </h4>
+                                    <p class="text-muted mb-3 mx-1">
+                                        AIMeDocSys采用基于Neo4j高性能的NoSQL图形数据库并且使用刘焕勇老师整理的医学数据文件搭建便捷可查的可视化的医学知识图谱，帮助用户简单方便的获取关键医学信息.
+                                    </p>
+                                    <a class="mx-1" href="https://neo4j.com/">Read More <i
+                                            class="fa fa-chevron-right"></i></a>
+                                </div>
+
+                                <div class="col-12 col-md-4 p-4 fanimate">
+                                    <div class="features-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
+                                             viewBox="0 0 24 24">
+                                            <path fill="#8FBD56" opacity=".3"
+                                                  d="M16,10H8c-2.20917,0-4-1.79083-4-4v6c0.0022,2.20825,1.79175,3.9978,4,4h8c2.20825-0.0022,3.9978-1.79175,4-4V6C20,8.20917,18.20917,10,16,10z"/>
+                                            <path fill="#8FBD56" opacity=".3"
+                                                  d="M16,16H8c-2.20825-0.0022-3.9978-1.79175-4-4v6c0.0022,2.20825,1.79175,3.9978,4,4h8c2.20825-0.0022,3.9978-1.79175,4-4v-6C19.9978,14.20825,18.20825,15.9978,16,16z"/>
+                                            <polygon fill="#8FBD56" points="20 5.998 20 6 20 5.999"/>
+                                            <path fill="#8FBD56"
+                                                  d="M16,10H8c-2.20914,0-4-1.79086-4-4s1.79086-4,4-4h8c2.20914,0,4,1.79086,4,4S18.20914,10,16,10z"/>
+                                            <circle cx="8" cy="13" r="1" fill="#8FBD56"/>
+                                            <circle cx="8" cy="19" r="1" fill="#8FBD56"/>
+                                        </svg>
+                                    </div>
+                                    <h4 class="mx-1">
+                                        Redis持久化缓存机制
+                                    </h4>
+                                    <p class="text-muted mb-3 mx-1">
+                                        AIMeDocSys采用Redis对网站的静态资源和用户搜索后的前端数据进行持久化缓存，该机制能够显著提升网页的响应速度，提升用户体验.
+                                    </p>
+                                    <a class="mx-1" href="https://redis.io/">Read More <i
+                                            class="fa fa-chevron-right"></i></a>
+                                </div>
+
+                                <div class="col-12 col-md-4 p-4 fanimate">
+                                    <div class="features-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
+                                             viewBox="0 0 24 24">
+                                            <path fill="#8FBD56" opacity=".3"
+                                                  d="M21,22H14a.99974.99974,0,0,1-1-1V14a.99974.99974,0,0,1,1-1h7a.99974.99974,0,0,1,1,1v7A.99974.99974,0,0,1,21,22Z"/>
+                                            <path fill="#8FBD56"
+                                                  d="M7.91406 17.5l2.793-2.793A.99989.99989 0 0 0 9.293 13.293L6.5 16.08594 3.707 13.293A.99989.99989 0 0 0 2.293 14.707l2.793 2.793L2.293 20.293A.99989.99989 0 1 0 3.707 21.707l2.793-2.793 2.793 2.793A.99989.99989 0 0 0 10.707 20.293zM21 11H14a1.00009 1.00009 0 0 1-.89453-1.44727l3.5-7a1.04127 1.04127 0 0 1 1.78906 0l3.5 7A1.00009 1.00009 0 0 1 21 11z"/>
+                                            <path fill="#8FBD56" opacity=".3"
+                                                  d="M6.5,11A4.5,4.5,0,1,1,11,6.5,4.50491,4.50491,0,0,1,6.5,11Z"/>
+                                        </svg>
+                                    </div>
+                                    <h4 class="mx-1">
+                                        Docker容器化部署
+                                    </h4>
+                                    <p class="text-muted mb-3 mx-1">
+                                        AIMeDocSys在Windows操作系统上开发调试并采用Docker容器化打包部署至腾讯云服务器上，实现了方便快速并且与平台解耦的自动化部署方式.
+                                    </p>
+                                    <a class="mx-1" href="https://www.docker.com/">Read More <i
+                                            class="fa fa-chevron-right"></i></a>
+                                </div>
+
+                                <div class="col-12 col-md-4 p-4 fanimate">
+                                    <div class="features-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
+                                             viewBox="0 0 24 24">
+                                            <path fill="#8FBD56" opacity=".3"
+                                                  d="M8.44444,3.11121c-1.10457,0-2,0.89543-2,2v13.55556c-0.00003,1.22729-0.99493,2.22219-2.22222,2.22223h14.44445C20.50762,20.889,22,19.39662,22,17.55567c0,0,0-0.00001,0-0.00001V5.11121c0-1.10457-0.89543-2-2-2L8.44444,3.11121z"/>
+                                            <path fill="#8FBD56"
+                                                  d="M6.44446,18.66675V7.55603H4c-1.10455,0-2,0.89539-2,1.99994v9.33301c0,1.10461,0.89545,2,2,2h0.22223C5.44952,20.88898,6.4444,19.89404,6.44446,18.66675z"/>
+                                            <path fill="#8FBD56"
+                                                  d="M17,9.0001h-6c-0.55229,0-1-0.44771-1-1s0.44771-1,1-1h6c0.55228,0,1,0.44772,1,1S17.55228,9.0001,17,9.0001z M17,13.0001h-1c-0.55229,0-1-0.44771-1-1s0.44771-1,1-1h1c0.55228,0,1,0.44771,1,1S17.55228,13.0001,17,13.0001z M12,13.0001h-1c-0.55229,0-1-0.44771-1-1s0.44771-1,1-1h1c0.55229,0,1,0.44771,1,1S12.55229,13.0001,12,13.0001z M17,17.0001h-1c-0.55229,0-1-0.44772-1-1c0-0.55229,0.44771-1,1-1h1c0.55228,0,1,0.44771,1,1C18,16.55238,17.55228,17.0001,17,17.0001z M12,17.0001h-1c-0.55229,0-1-0.44772-1-1c0-0.55229,0.44771-1,1-1h1c0.55229,0,1,0.44771,1,1C13,16.55238,12.55229,17.0001,12,17.0001z"/>
+                                        </svg>
+                                    </div>
+                                    <h4 class="mx-1">
+                                        Nginx网关服务分发
+                                    </h4>
+                                    <p class="text-muted mb-3 mx-1">
+                                        AIMeDocSys通过加入Nginx网关服务分发机制和必要逻辑与中间件如消息队列等，能够处理好限流、负载均衡、过载保护、熔断、降级、服务解耦等挑战实现高并发、高可用.
+                                    </p>
+                                    <a class="mx-1" href="http://nginx.org/en/">Read More <i
+                                            class="fa fa-chevron-right"></i></a>
+                                </div>
+
+                                <div class="col-12 col-md-4 p-4 fanimate">
+                                    <div class="features-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
+                                             viewBox="0 0 24 24">
+                                            <rect width="18" height="6" x="3" y="3" fill="#8FBD56" opacity=".3"
+                                                  rx="2"/>
+                                            <rect width="18" height="6" x="3" y="9" fill="#8FBD56" opacity=".3"
+                                                  rx="2"/>
+                                            <rect width="18" height="6" x="3" y="15" fill="#8FBD56" opacity=".3"
+                                                  rx="2"/>
+                                            <circle cx="18" cy="6" r="1" fill="#8FBD56"/>
+                                            <circle cx="18" cy="12" r="1" fill="#8FBD56"/>
+                                            <circle cx="18" cy="18" r="1" fill="#8FBD56"/>
+                                            <circle cx="15" cy="6" r="1" fill="#8FBD56"/>
+                                            <circle cx="15" cy="12" r="1" fill="#8FBD56"/>
+                                            <circle cx="15" cy="18" r="1" fill="#8FBD56"/>
+                                            <path fill="#8FBD56"
+                                                  d="M9 7H6A1 1 0 0 1 6 5H9A1 1 0 0 1 9 7zM9 13H6a1 1 0 0 1 0-2H9a1 1 0 0 1 0 2zM9 19H6a1 1 0 0 1 0-2H9a1 1 0 0 1 0 2z"/>
+                                        </svg>
+                                    </div>
+                                    <h4 class="mx-1">
+                                        Vue渐进式JavaScript框架
+                                    </h4>
+                                    <p class="text-muted mb-3 mx-1">
+                                        AIMeDocSys采用Vue渐进式JavaScript框架打造后台管理系统，以友好的人机交互响应和精美的前端设计辅助管理人员对系统的管理更加省心.
+                                    </p>
+                                    <a class="mx-1" href="https://cn.vuejs.org/">Read More <i
+                                            class="fa fa-chevron-right"></i></a>
+                                </div>
+
+                                <div class="col-12 col-md-4 p-4 fanimate">
+                                    <div class="features-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            <path fill="#8FBD56" opacity=".3"
+                                                  d="M20,8.99969l-7-7H7a3,3,0,0,0-3,3v14a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3Z"/>
+                                            <path fill="#8FBD56"
+                                                  d="M20 8.99969H15a2 2 0 0 1-2-2v-5zM19 22a.99974.99974 0 0 1-1-1V19a1 1 0 0 1 2 0v2A.99974.99974 0 0 1 19 22zM19 17a1.03391 1.03391 0 0 1-.71-.29.99108.99108 0 0 1-.21045-1.08984A1.14883 1.14883 0 0 1 18.29 15.29a1.02673 1.02673 0 0 1 .32959-.21.91433.91433 0 0 1 .76025 0 1.03418 1.03418 0 0 1 .33008.21 1.15772 1.15772 0 0 1 .21.33008A.98919.98919 0 0 1 19.71 16.71a1.15384 1.15384 0 0 1-.33008.21A.9994.9994 0 0 1 19 17zM15 18H9a1 1 0 0 1 0-2h6a1 1 0 0 1 0 2zM15 14H9a1 1 0 0 1 0-2h6a1 1 0 0 1 0 2zM10 10H9A1 1 0 0 1 9 8h1a1 1 0 0 1 0 2z"/>
+                                        </svg>
+                                    </div>
+                                    <h4 class="mx-1">
+                                        Django开源Web应用框架
+                                    </h4>
+                                    <p class="text-muted mb-3 mx-1">
+                                        AIMeDocSys使用Django后端框架独立开发与前端解耦，实现前后端分离，利用其丰富的中间件进行鉴权、消息队列、负载均衡、高可用性监视等.
+                                    </p>
+                                    <a class="mx-1" href="https://www.djangoproject.com/">Read More <i
+                                            class="fa fa-chevron-right"></i></a>
+                                </div>
+
+                                <div class="col-12 col-md-4 p-4 fanimate">
+                                    <div class="features-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
+                                             viewBox="0 0 24 24">
+                                            <path fill="#8FBD56" opacity=".3"
+                                                  d="M11,22A9,9,0,0,1,11,4a.99943.99943,0,0,1,1,1v7h7a.99943.99943,0,0,1,1,1A9.00984,9.00984,0,0,1,11,22Z"/>
+                                            <path fill="#8FBD56"
+                                                  d="M21,10H15a.99943.99943,0,0,1-1-1V3a.99943.99943,0,0,1,1-1,7.0018,7.0018,0,0,1,7,7A.99943.99943,0,0,1,21,10Z"/>
+                                        </svg>
+                                    </div>
+                                    <h4 class="mx-1">
+                                        Echarts开源可视化图表库
+                                    </h4>
+                                    <p class="text-muted mb-3 mx-1">
+                                        AIMeDocSys使用Echarts构建数据可视化大屏界面，直观生动地展现本系统中的各种数据信息，为用户提供重要的信息，便捷用户管理，提升用户体验.
+                                    </p>
+                                    <a class="mx-1" href="https://echarts.apache.org/zh/index.html">Read More <i
+                                            class="fa fa-chevron-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Features Close-->
+
+                    <!-- Faq's -->
+                    <section class="section bg-white" id="Faq">
+                        <div class="container px-5 px-md-0">
+                            <div class="row text-center">
+                                <div class="col-lg-12">
+                                    <h3 class="header-family">FAQ's ?</h3>
+                                    <p class="text-default sub-text mb-5">Frequently asked questions and thieir
+                                        answers.</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="accordion" id="accordionExample">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="headingOne">
+                                                <button class="accordion-button" type="button"
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#collapseOne" aria-expanded="true"
+                                                        aria-controls="collapseOne">
+                                                    Simply dummy text typesetting industry ?
+                                                </button>
+                                            </h2>
+                                            <div id="collapseOne" class="accordion-collapse collapse show"
+                                                 aria-labelledby="headingOne"
+                                                 data-bs-parent="#accordionExample">
+                                                <div class="accordion-body text-muted">
+                                                    <strong>When an unknown printer took a galley.</strong> It has
+                                                    survived not only
+                                                    five centuries, but also the leap into electronic typesetting,
+                                                    remaining essentially
+                                                    unchanged. It was popularised in the 1960s with the release of
+                                                    Letraset sheets
+                                                    containing Lorem Ipsum passages, and more recently with desktop
+                                                    publishing software
+                                                    like Aldus PageMaker including versions of Lorem Ipsum.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="headingTwo">
+                                                <button class="accordion-button collapsed" type="button"
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#collapseTwo" aria-expanded="false"
+                                                        aria-controls="collapseTwo">
+                                                    There are many variations available ?
+                                                </button>
+                                            </h2>
+                                            <div id="collapseTwo" class="accordion-collapse collapse"
+                                                 aria-labelledby="headingTwo"
+                                                 data-bs-parent="#accordionExample">
+                                                <div class="accordion-body text-muted">
+                                                    <strong>When an unknown printer took a galley.</strong> It has
+                                                    survived not only
+                                                    five centuries, but also the leap into electronic typesetting,
+                                                    remaining essentially
+                                                    unchanged. It was popularised in the 1960s with the release of
+                                                    Letraset sheets
+                                                    containing Lorem Ipsum passages, and more recently with desktop
+                                                    publishing software
+                                                    like Aldus PageMaker including versions of Lorem Ipsum.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="headingThree">
+                                                <button class="accordion-button collapsed" type="button"
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#collapseThree" aria-expanded="false"
+                                                        aria-controls="collapseThree">
+                                                    When is the standard Lorem Ipsum used ?
+                                                </button>
+                                            </h2>
+                                            <div id="collapseThree" class="accordion-collapse collapse"
+                                                 aria-labelledby="headingThree"
+                                                 data-bs-parent="#accordionExample">
+                                                <div class="accordion-body text-muted">
+                                                    <strong>When an unknown printer took a galley.</strong> It has
+                                                    survived not only
+                                                    five centuries, but also the leap into electronic typesetting,
+                                                    remaining essentially
+                                                    unchanged. It was popularised in the 1960s with the release of
+                                                    Letraset sheets
+                                                    containing Lorem Ipsum passages, and more recently with desktop
+                                                    publishing software
+                                                    like Aldus PageMaker including versions of Lorem Ipsum.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="accordion" id="accordionExample1">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="headingFour">
+                                                <button class="accordion-button collapsed" type="button"
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#collapseFour" aria-expanded="false"
+                                                        aria-controls="collapseFour">
+                                                    But I must explain to you how all this mistaken ?
+                                                </button>
+                                            </h2>
+                                            <div id="collapseFour" class="accordion-collapse collapse"
+                                                 aria-labelledby="headingFour"
+                                                 data-bs-parent="#accordionExample1">
+                                                <div class="accordion-body text-muted">
+                                                    <strong>When an unknown printer took a galley.</strong> It has
+                                                    survived not only
+                                                    five centuries, but also the leap into electronic typesetting,
+                                                    remaining essentially
+                                                    unchanged. It was popularised in the 1960s with the release of
+                                                    Letraset sheets
+                                                    containing Lorem Ipsum passages, and more recently with desktop
+                                                    publishing software
+                                                    like Aldus PageMaker including versions of Lorem Ipsum.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="headingFive">
+                                                <button class="accordion-button collapsed" type="button"
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#collapseFive" aria-expanded="false"
+                                                        aria-controls="collapseFive">
+                                                    On the other hand, we denounce with righteous ?
+                                                </button>
+                                            </h2>
+                                            <div id="collapseFive" class="accordion-collapse collapse"
+                                                 aria-labelledby="headingFive"
+                                                 data-bs-parent="#accordionExample1">
+                                                <div class="accordion-body text-muted">
+                                                    <strong>When an unknown printer took a galley.</strong> It has
+                                                    survived not only
+                                                    five centuries, but also the leap into electronic typesetting,
+                                                    remaining essentially
+                                                    unchanged. It was popularised in the 1960s with the release of
+                                                    Letraset sheets
+                                                    containing Lorem Ipsum passages, and more recently with desktop
+                                                    publishing software
+                                                    like Aldus PageMaker including versions of Lorem Ipsum.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="headingSix">
+                                                <button class="accordion-button" type="button"
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#collapseSix" aria-expanded="true"
+                                                        aria-controls="collapseSix">
+                                                    It uses a dictionary of over 200 Latin words ?
+                                                </button>
+                                            </h2>
+                                            <div id="collapseSix" class="accordion-collapse collapse show"
+                                                 aria-labelledby="headingSix"
+                                                 data-bs-parent="#accordionExample1">
+                                                <div class="accordion-body text-muted">
+                                                    <strong>Very popular during the Renaissance.</strong> Contrary
+                                                    to
+                                                    popular belief,
+                                                    Lorem Ipsum is not simply random text. It has roots in a piece
+                                                    of
+                                                    lorem Ipsum is not
+                                                    simply random text classical Latin literature from 45 BC, making
+                                                    it
+                                                    over 2000 years
+                                                    old. Richard McClintock, a Latin professor at Hampden-Sydney
+                                                    College
+                                                    in Virginia.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- Faq's -->
+
+                    <!-- Team -->
+                    <div class="section pb-7" id="Team">
+                        <div class="container px-5 px-md-0">
+                            <div class="row text-center justify-content-center">
+                                <div class="col-lg-8 ps-3">
+                                    <h3 class="header-family">Team</h3>
+                                    <p class="text-default sub-text mb-5">The key to this success is the hardwork
+                                        and
+                                        the dedication
+                                        that our team put into work.</p>
+                                </div>
+                            </div>
+                            <div class="row text-center team ">
+                                <div class="col-lg-1 col-sm-6 mb-5"></div>
+                                <div class="col-lg-2 col-sm-6 mb-5">
+                                    <div class="bg-white shadow-sm p-5 team-card"><img
+                                            src="{% static 'images/avatar/team1.png' %}" alt=""
+                                            class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                                        <h5 class="mb-1">YuGin</h5><span class="text-muted small">Team Leader</span>
+                                        <ul class="social mb-0 list-inline mt-4">
+                                            <li class="list-inline-item"><a href="#" class="social"><i
+                                                    class="fa-brands fa-qq"></i></a>
+                                            </li>
+                                            <li class="list-inline-item"><a href="mailto:1234567891d360@gmail.com"
+                                                                            class="social"><i
+                                                    class="fa-solid fa-envelope"></i></a>
+                                            </li>
+                                            <li class="list-inline-item"><a href="#" class="social"><i
+                                                    class="fa-brands fa-github"></i></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-6 mb-5">
+                                    <div class="bg-white shadow-sm p-5 team-card"><img
+                                            src="{% static 'images/avatar/team2.jpg' %}" alt="" width="100"
+                                            class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                                        <h5 class="mb-1">Alleyf</h5><span
+                                                class="text-muted small">Full Stack Engineer</span>
+                                        <ul class="social mb-0 list-inline mt-4">
+                                            <li class="list-inline-item"><a target="_blank"
+                                                                            href="http://wpa.qq.com/msgrd?v=3&uin=3035581811&site=qq&menu=yes"
+                                                                            class="social"><i
+                                                    class="fa-brands fa-qq"></i></a>
+                                            </li>
+                                            <li class="list-inline-item"><a target="_blank"
+                                                                            href="mailto:alleyf@qq.com"
+                                                                            class="social"><i
+                                                    class="fa-solid fa-envelope"></i></a>
+                                            </li>
+                                            <li class="list-inline-item"><a target="_blank"
+                                                                            href="https://github.com/Alleyf"
+                                                                            class="social"><i
+                                                    class="fa-brands fa-github"></i></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-6 mb-5">
+                                    <div class="bg-white shadow-sm p-5 team-card"><img
+                                            src="{% static 'images/avatar/team3.jpg' %}" alt="" width="100"
+                                            class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                                        <h5 class="mb-1">Melessa janet</h5><span
+                                                class="text-muted small">AI Engineer</span>
+                                        <ul class="social mb-0 list-inline mt-4">
+                                            <li class="list-inline-item"><a href="#" class="social"><i
+                                                    class="fa-brands fa-qq"></i></a>
+                                            </li>
+                                            <li class="list-inline-item"><a href="mailto:1574557904@qq.com"
+                                                                            class="social"><i
+                                                    class="fa-solid fa-envelope"></i></a>
+                                            </li>
+                                            <li class="list-inline-item"><a href="#" class="social"><i
+                                                    class="fa-brands fa-github"></i></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-6 mb-5">
+                                    <div class="bg-white shadow-sm p-5 team-card"><img
+                                            src="{% static 'images/avatar/team4.jpg' %}" alt="" width="100"
+                                            class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                                        <h5 class="mb-1">小熊虫</h5><span class="text-muted small">Art Designer</span>
+                                        <ul class="social mb-0 list-inline mt-4">
+                                            <li class="list-inline-item"><a href="#" class="social"><i
+                                                    class="fa-brands fa-qq"></i></a>
+                                            </li>
+                                            <li class="list-inline-item"><a href="mailto:2801044041@qq.com"
+                                                                            class="social"><i
+                                                    class="fa-solid fa-envelope"></i></a>
+                                            </li>
+                                            <li class="list-inline-item"><a href="#" class="social"><i
+                                                    class="fa-brands fa-github"></i></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-6 mb-5">
+                                    <div class="bg-white shadow-sm p-5 team-card"><img
+                                            src="{% static 'images/avatar/team5.jpg' %}" alt="" width="100"
+                                            class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                                        <h5 class="mb-1">emptyStackEngineer</h5><span
+                                                class="text-muted small">Technical Consultant</span>
+                                        <ul class="social mb-0 list-inline mt-4">
+                                            <li class="list-inline-item"><a href="#" class="social"><i
+                                                    class="fa-brands fa-qq"></i></a>
+                                            </li>
+                                            <li class="list-inline-item"><a href="mailto:1452560640@qq.com"
+                                                                            class="social"><i
+                                                    class="fa-solid fa-envelope"></i></a>
+                                            </li>
+                                            <li class="list-inline-item"><a href="#" class="social"><i
+                                                    class="fa-brands fa-github"></i></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-lg-1 col-sm-6 mb-5"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Team close -->
+
+                    <!--Support-->
+                    <div class="demo-screen-skin bg-primary">
+                        <div class="container text-center text-white px-5 px-md-0">
+                            <div id="demo" class="row">
+                                <div class="col-lg-6">
+                                    <div class="feature-1">
+                                        <a href="#"></a>
+                                        <div class="mb-3">
+                                            <i class="si si-earphones-alt"></i>
+                                        </div>
+                                        <h4 class="fs-25">Get Support</h4>
+                                        <p class="mb-1 text-white">Need Help? Don't worry. Please contact us. Our
+                                            dedicated team will help you.</p>
+                                        <h6 class="mb-0">Support : <a class="text-dark"
+                                                                      href="mailto:alleyfcs@gmail.com">alleyfcs@gmail.com</a>
+                                        </h6>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 mt-5 mt-xl-0 mt-lg-0">
+                                    <div class="feature-1">
+                                        <a href="#"></a>
+                                        <div class="mb-3">
+                                            <i class="si si-bubbles"></i>
+                                        </div>
+                                        <h4 class="fs-25">Consults Questions</h4>
+                                        <p class="mb-1 text-white">Please contact the following email to ask any
+                                            questions .</p>
+                                        <h6 class="mb-0">Ask : <a class="text-dark"
+                                                                  href="mailto:alleyfcs@gmail.com">alleyfcs@gmail.com</a>
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Support close-->
+
+                    <!-- </Footer> -->
+                    <div class="demo-footer">
+                        <div class="container px-5 px-md-0">
+                            <div class="card mb-0 px-0">
+                                <div class="card-body px-0">
+                                    <div class="top-footer">
+                                        <div class="row">
+
+                                            {#                                            <div class="col-lg-2 col-sm-6 col-md-4">#}
+                                            {#                                                <h6 class="text-uppercase mb-2 font-weight-semibold">Pages</h6>#}
+                                            {#                                                <ul class="list-unstyled mb-5 mb-lg-0">#}
+                                            {#                                                    <li><a href="/doc/query/">Dashboard</a></li>#}
+                                            {#                                                </ul>#}
+                                            {#                                            </div>#}
+                                            <div class="col-lg-4 col-sm-6 col-md-4 text-center">
+                                                <h6 class="text-uppercase mb-2 font-weight-semibold">
+                                                    Information</h6>
+                                                <ul class="list-unstyled mb-5 mb-lg-0">
+                                                    <li><a href="#Team">Our Team</a></li>
+                                                    {#                                                    <li><a href="#Home">About</a></li>#}
+                                                    <li><a href="http://alleyf.github.io">Blog</a></li>
+                                                    {#                                                    <li><a href="terms.html">Terms and Services</a></li>#}
+                                                </ul>
+                                            </div>
+                                            <div class="col-lg-4 col-sm-12 col-md-12 text-center">
+                                                <h6 class="text-uppercase mb-3 font-weight-semibold">About</h6>
+                                                <p>
+                                                    AIMeDocSys使用ElasticSearch分布式搜索分析引擎能够为医疗团队用户提供内容精确时延低的检索功能；光学字符识别技术能够识别文献中医学影像图片中的文字；大数据可视化技术能够直观清晰展示当前文献识别检索系统的运行状态、中英文文献数量、文献点击量、文献词云、文献种类等各种数据。本系统能够为医护人员提供一站式文献系统管理和快速且精准的医学信息与文献检索服务.
+                                                </p>
+                                                {#                                                <p class="mb-5 mb-lg-2">Duis aute irure dolor in reprehenderit in#}
+                                                {#                                                    voluptate velit esse#}
+                                                {#                                                    cillum dolore eu fugiat nulla pariatur Excepteur sint occaecat .</p>#}
+                                            </div>
+                                            <div class="col-lg-4 col-sm-12 col-md-4 text-center">
+                                                <h6 class="text-uppercase mb-2 font-weight-semibold">Contact</h6>
+                                                <p><i class="fa fa-home me-3 mb-2"></i>Wu Han, Hu Bei, China</p>
+                                                <p><i class="fa fa-envelope me-3 mb-2"></i>alleyfcs@gmail.com</p>
+                                                <hr>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <footer class="main-footer px-0 pb-0">
+                                        <div class="row ">
+                                            <div class="col-xl-8 col-lg-12 col-md-12 footer1">Copyright © 2023 <a
+                                                    href="javascript:void(0)">AIMeDocSys</a>. Designed with <span
+                                                    class="fa fa-heart text-danger"></span> by <a
+                                                    href="https://github.com/Alleyf"> Alleyf </a>
+                                            </div>
+                                            <div class="col-xl-4 col-lg-12 col-md-12 ms-auto text-end">
+                                                <ul class="footer-social-list ">
+                                                    <li><a href="https://www.facebook.com/" target="_blank"><i
+                                                            class="fa-brands fa-facebook"></i></a></li>
+                                                    <li><a href="https://www.google.com/" target="_blank"><i
+                                                            class="fa-brands fa-google"></i></a>
+                                                    </li>
+                                                    <li><a href="https://twitter.com/" target="_blank"><i
+                                                            class="fa-brands fa-twitter"></i></a>
+                                                    </li>
+                                                    <li><a href="https://www.linkedin.com/" target="_blank"><i
+                                                            class="fa-brands fa-linkedin"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </footer>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Footer close -->
+
+                </div>
+            </div>
+            <!-- CONTAINER CLOSED -->
+        </div>
+    </div>
+</div>
+
+<!-- BACK-TO-TOP -->
+<a href="#top" id="back-to-top"><i class="fa fa-long-arrow-up"></i></a>
+{#<script src="https://cdn.bootcdn.net/ajax/libs/fullPage.js/4.0.19/fullpage.min.js"></script>#}
+<script src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-5.2.3/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-5.2.3/js/popper.min.js' %}"></script>
+<!-- Owl carousel JS -->
+<script src="{% static 'js/slider.js' %}"></script>
+<script src="{% static 'js/owl.carousel.js' %}"></script>
+<!-- landing JS -->
+<script src="{% static 'js/landing.js' %}"></script>
+<script type="text/javascript" crossorigin="anonymous"></script>
+</body>
+</html>

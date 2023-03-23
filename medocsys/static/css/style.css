@@ -7602,8 +7602,8 @@ a.card-tabs-item.active {
 
 @media print {
     .card {
-        box-shadow: none;
-        border: none;
+        /*box-shadow: none;*/
+        /*border: none;*/
     }
 }
 
@@ -30427,7 +30427,8 @@ body.fixed-header .header {
 }
 
 .app-sidebar__toggle:before {
-    content: "\e907";
+    /*content: "\e907";*/
+    content: "≡";
     transition: all 0.25s;
     font-size: 21px;
     font-family: "feather";

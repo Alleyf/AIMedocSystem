@@ -27,6 +27,7 @@ SECRET_KEY = 'django-insecure-ttar_%7b)pane)#$-1ov(9!z!vt16h7*-*!&n!*hg8uw=wy4$f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 # DEBUG = False
+# 错误视图设置
 # 部署环境静态路径配置
 # STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')  # 这里可以根据实际情况来定义，比如可以将static名修改
@@ -125,6 +126,7 @@ DATABASES = {
         'USER': 'root',  # 数据库用户名
         'PASSWORD': '123456',  # 数据库密码
         'HOST': '127.0.0.1',  # 数据库主机地址
+        # 'HOST': 'db',  # 部署数据库主机地址
         'PORT': 3306,  # 数据库连接端口号
         'OPTIONS': {'charset': 'utf8mb4'},
     }

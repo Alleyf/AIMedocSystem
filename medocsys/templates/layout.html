@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     {% block mytitle %}
-        <title>标题</title>
+        <title>智检慧医</title>
     {% endblock %}
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -82,7 +82,7 @@
     <!-- /GLOBAL-LOADER -->
 
     <!-- PAGE -->
-    <div class="page">
+    <div class="page drop" ondrop="handleDrop(event)" ondragover="handleDragOver(event)">
         <div class="page-main wrappercontent">
             <!-- app-Header -->
             <div class="app-header header sticky">
@@ -92,10 +92,12 @@
                             <i class="fa fa-bars"></i>
                         </a>
                         <!-- sidebar-toggle-->
-                        <a class="logo-horizontal " href="#">
-                            <img src="{% static '/images/logo.png' %}" class="header-brand-img desktop-logo"
+                        <a class="logo-horizontal" href="#" style="margin: auto 20px">
+                            <img src="{% static '/images/logo.png' %}"
+                                 class="header-brand-img desktop-logo"
                                  alt="logo">
-                            <img src="{% static '/images/logo.png' %}" class="header-brand-img light-logo1"
+                            <img src="{% static '/images/logo.png' %}"
+                                 class="header-brand-img light-logo1"
                                  alt="logo">
                         </a>
                         <!-- LOGO -->
@@ -140,7 +142,7 @@
                                     data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent-4"
                                     aria-controls="navbarSupportedContent-4" aria-expanded="false"
                                     aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon fe fe-more-vertical"></span>
+                                <span class="navbar-toggler-icon fa fa-bars"></span>
                             </button>
                             <div class="navbar navbar-collapse responsive-navbar p-0">
                                 <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
@@ -358,8 +360,6 @@
                                         </div>
                                         <!-- FULL-SCREEN -->
 
-                                        <!-- CART -->
-
                                         <!-- NOTIFICATIONS -->
                                         <div class="dropdown d-md-flex profile-1">
                                             <a href="#" data-bs-toggle="dropdown"
@@ -512,14 +512,16 @@
     </div>
     <div>
         <canvas id="particles-js" class="background"></canvas>
-        <div class="pvr_chat_button ui-widget-content" id="draggable" data-bs-toggle="modal"
+        <div class="pvr_chat_button " draggable="false" id="dragger"
+             ondragstart="handleDragStart(event)"
+             data-bs-toggle="modal"
              data-bs-target="#chat_modal">
             <i class="fa-solid fa-robot "></i>
-            <span>Assistant</span>
+            {#            <span>Assistant</span>#}
         </div>
         <div class="modal fade" id="chat_modal" tabindex="-1" style="display: none"
              aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable pvr_chat_wrapper">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable pvr_chat_wrapper">
                 <div class="pvr_chat_content modal-content">
                     <div class="close_chat" data-bs-dismiss="modal">
                         <i style="font-size: 20px">X</i>
@@ -655,7 +657,21 @@
     }
 
 </script>
-{#{% endcache %}#}
+<script>
+    function handleDragStart(e) {
+        e.dataTransfer.setData('DRAG_NODE_ID', e.target.id)
+    }
+
+    function handleDragOver(e) {
+        e.preventDefault();
+    }
+
+    function handleDrop(e) {
+        e.preventDefault();
+        let data = e.dataTransfer.getData('DRAG_NODE_ID');
+        e.target.appendChild(document.getElementById(data));
+    }
+</script>
 {% block myscript %}
 {% endblock %}
 </body>

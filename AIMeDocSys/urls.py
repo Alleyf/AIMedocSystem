@@ -32,6 +32,8 @@ urlpatterns = [
     # path("user/modelform/add/", user.user_add),
     path("user/<int:nid>/edit/", user.user_info),
     # path("user/<int:nid>/delete/", user.user_delete),
+    # *********************首页*********************
+    path("index/", account.index),
     # *********************注册和登录*********************
     # 登录
     path("login/", account.login),
@@ -43,7 +45,6 @@ urlpatterns = [
     path("checkimgcode/", account.checkimgcode),
     # 邮箱验证码
     path("checkcode/", account.checkcode_email),
-    path("beauty/", account.detail),
     # *********************机器人助手*********************
     path("chat/", medocrobot.chat),
     # *********************文档管理*********************

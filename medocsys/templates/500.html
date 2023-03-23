@@ -1,0 +1,25 @@
+﻿{% extends "404.html" %}
+<!-- End GLOBAL-LOADER -->
+<!-- PAGE -->
+{% block mainpage %}
+    <div class="page">
+        <!-- PAGE-CONTENT OPEN -->
+        <div class="page-content error-page error2">
+            <div class="container text-center">
+                <div class="error-template">
+                    <h2 class="text-danger mb-2">500<span class="fs-20 text-danger">error</span></h2>
+                    <h5 class="error-details text-danger">
+                        Oops! Some error has occured, Requested page not found!
+                    </h5>
+                    <div class="text-center">
+                        <a class="btn btn-primary mt-5 mb-5" href="/doc/query/"> <i class="fa fa-long-arrow-left"></i>
+                            Back
+                            to Home </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- PAGE-CONTENT OPEN CLOSED -->
+    </div>
+{% endblock %}
+<!-- End PAGE -->

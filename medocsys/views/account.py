@@ -4,6 +4,7 @@ from io import BytesIO
 from django.core.mail import send_mail
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
+from django.views.decorators.cache import cache_page
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.gzip import gzip_page
 
@@ -53,6 +54,7 @@ def login(request):
             return redirect("/chart/list/")
         form.add_error("username", "用户名或密码错误")
         return render(request, "login.html", {'form': form})
+        # return render(request, "landing.html", {'form': form})
     return render(request, "login.html", {'form': form})
 
 
@@ -87,12 +89,7 @@ def logout(request):
     """注销"""
     request.session.clear()
     request.session.flush()
-    return redirect("/login/")
-
-
-# @gzip_page
-def detail(request):
-    return render(request, "beauty.html")
+    return redirect("/index/")
 
 
 @gzip_page
@@ -136,3 +133,8 @@ def checkimgcode(request):
     # if stream:
     #     return JsonResponse({'status': 200})
     # return JsonResponse({'status': 403})
+
+
+@cache_page(60 * 60 * 24 * 7)
+def index(request):
+    return render(request, "landing.html")

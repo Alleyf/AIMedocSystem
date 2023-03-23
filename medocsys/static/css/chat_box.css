@@ -5,12 +5,12 @@ http://www.bootstrapmb.com**/
     z-index: 9999;
     position: fixed;
     bottom: 60px;
-    right: 10px;
+    left: 12px;
     background: linear-gradient(to left, #8f94fb, #4e54c8);
     box-shadow: 0 2px 30px 0 rgba(78, 84, 200, 0.8);
     border-radius: 75px;
     color: #fff;
-    padding: 12px 20px;
+    padding: 16px 16px;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
