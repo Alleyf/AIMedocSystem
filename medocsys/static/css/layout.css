@@ -6577,6 +6577,10 @@ a.btn-teritary svg {
     box-shadow: 0 4px 16px 0 rgba(169, 184, 200, 0.15);
 }
 
+.card:hover {
+    box-shadow: 0 10px 20px 5px #bdc7bb;
+}
+
 .card > hr {
     margin-right: 0;
     margin-left: 0;

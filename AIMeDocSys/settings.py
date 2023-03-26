@@ -71,7 +71,7 @@ INSTALLED_APPS = [
 graph = Graph("bolt://47.120.0.133:7687", auth=("neo4j", "password"))  # 连接neo4j图数据库
 
 # simpleui配置
-SIMPLEUI_HOME_TITLE = '医道有易-后台管理'
+SIMPLEUI_HOME_TITLE = '智检慧医-后台管理'
 SIMPLEUI_INDEX = '/chart/list/'
 # 隐藏右侧SimpleUI广告链接和使用分析
 SIMPLEUI_HOME_INFO = False
@@ -198,16 +198,16 @@ HAYSTACK_CONNECTIONS = {
     'default': {
         # 'ENGINE': 'haystack.backends.elasticsearch7_backend.Elasticsearch7SearchEngine',
         'ENGINE': 'medocsys.elasticsearch_ik_backend.Elasticsearch7IkSearchEngine',
-        # 'URL': 'http://127.0.0.1:9200/',  # 此处为elasticsearch运行的服务器ip地址，端口号固定为9200
-        'URL': 'http://43.139.217.160:9200/',  # 此处为elasticsearch运行的服务器ip地址，端口号固定为9200
+        'URL': 'http://127.0.0.1:9200/',  # 此处为elasticsearch运行的服务器ip地址，端口号固定为9200
+        # 'URL': 'http://43.139.217.160:9200/',  # 此处为elasticsearch运行的服务器ip地址，端口号固定为9200
         'INDEX_NAME': 'doctxt',  # 指定elasticsearch建立的索引库的名称
         'EXCLUDED_INDEXES': ['medocsys.search_indexes.DocImgTxtIndex'],
     },
     'docimgtxt': {
         # 'ENGINE': 'haystack.backends.elasticsearch7_backend.Elasticsearch7SearchEngine',
         'ENGINE': 'medocsys.elasticsearch_ik_backend.Elasticsearch7IkSearchEngine',
-        # 'URL': 'http://127.0.0.1:9200/',  # 此处为elasticsearch运行的服务器ip地址，端口号固定为9200
-        'URL': 'http://43.139.217.160:9200/',  # 此处为elasticsearch运行的服务器ip地址，端口号固定为9200
+        'URL': 'http://127.0.0.1:9200/',  # 此处为elasticsearch运行的服务器ip地址，端口号固定为9200
+        # 'URL': 'http://43.139.217.160:9200/',  # 此处为elasticsearch运行的服务器ip地址，端口号固定为9200
         'INDEX_NAME': 'docimgtxt',  # 指定elasticsearch建立的索引库的名称
         'EXCLUDED_INDEXES': ['medocsys.search_indexes.DocTxtIndex'],
     },

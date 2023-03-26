@@ -30,7 +30,7 @@
 {% endblock %}
 
 {% block info %}
-    <div class="container-fluid">
+    <div class="container-fluid" style="overflow: hidden">
         <div class="clearfix">
             <div style="float: left">
                 <i class="fa fa-list"></i>
@@ -77,7 +77,7 @@
                                                 {% for item in abstract %}
                                                     <a class="nav-link ms-3 my-1"
                                                        href="#item-{{ page_id }}-{{ forloop.counter }}">
-                                                        检索结果{{ page_id }}-{{ forloop.counter }}
+                                                        第{{ page_id }}页-摘要{{ forloop.counter }}
                                                     </a>
                                                 {% endfor %}
                                             </nav>
@@ -91,7 +91,7 @@
                 </div>
 
             </div>
-            <div class="col-8">
+            <div class="col-8" style="height: 1000px">
                 <div data-bs-spy="scroll" data-bs-target="#mynavbar" data-bs-smooth-scroll="true"
                      class="scrollspy-example-2" tabindex="0">
                     {% for page_id,abstract in key_page_info.items %}
@@ -106,7 +106,7 @@
                         </div>
                         {% for item in abstract %}
                             <div id="item-{{ page_id }}-{{ forloop.counter }}" class="clearfix">
-                                <h5>检索结果{{ page_id }}-{{ forloop.counter }}</h5>
+                                <h5>第{{ page_id }}页-摘要{{ forloop.counter }}</h5>
                                 <p style=" word-break: break-all; word-wrap:break-word;" id="abstract">
                                     {{ item.abstract|safe }}
                                 </p>
@@ -191,14 +191,6 @@
             thumbup();
             thumbdown();
             add_facet_num();
-            {#info();#}
-            {#            {% for page_id,abstract in key_page_info.items %}#}
-            {#                {% for item in abstract %}#}
-            {#                    console.log("渲染")#}
-            {#                    $("#abstract").html("{{ item|safe }}")#}
-            {#                {% endfor %}#}
-            {#            {% endfor %}#}
-
         })
 
         function back_last_page() {
@@ -272,74 +264,28 @@
         }
 
         function get_info() {
-            $("#search").click(function () {
-                    var keyword = "{{ keyword|safe }}";
-                    window.location.href = '/doc/search/'
-                    $.ajax({
-                        url: "/search/?text=" + keyword,
-                        type: 'get',
-                        dataType: 'json',
-                        success: function (res) {
-                            if (res) {
-                                var id_list = []
-                                for (let i = 0; i < res.count; i++) {
-                                    let id = res.results[i].object.id;
-                                    id_list.push(id)
-                                }
-                                var id_array = new Int8Array(id_list)
-                                console.log(id_array)
-                                $.ajax({
-                                    url: "/doc/search/",
-                                    type: 'post',
-                                    data: id_array,
-                                    dataType: 'json',
-                                    {#async: false,  //同步#}
-                                    success: function (res) {
-                                        console.log(res)
-                                        console.log('发送请求成功')
-                                        {#$("#tb").show()#}
-                                        $("#tb").attr('style', 'display:block')
-                                        $(".page_str").html(res.page_str)
-                                        var page_info = res.page_queryset
-                                        console.log(page_info.length)
-                                        for (let item in page_info) {
-                                            console.log(page_info[item])
-                                            let id = page_info[item].pk
-                                            let uid = $('<th>').text(id)
-                                            let title = $('<td>').text(page_info[item].fields.name)
-                                            let author = $('<td>').text(page_info[item].fields.author)
-                                            let details = $('<a>').attr({
-                                                "href": "/doc/details/?text=" + keyword + "&uid=" + id,
-                                                "uid": id,
-                                                "class": "btn btn-info btn-xs"
-                                            })
-                                            details.text("查看详情")
-                                            let details_td = $("<td>").append(details)
-                                            let tr = $('<tr>').attr('uid', id)
-                                            tr.append(uid)
-                                            tr.append(title)
-                                            tr.append(author)
-                                            tr.append(details_td)
-                                            $(".info").append(tr)
-                                        }
-                                        {#for (let i = 0; i < res.page_queryset.length; i++) {#}
-
-                                        {#console.log(res.page_queryset.pk)#}
-                                        {#id = item.pk#}
-                                        {#$(".info")#}
-
-                                        {#document.querySelector('html').innerHTML = res#}
-                                    }
-                                });
-                            } else {
-                                console.log(res.error)
-                            }
-
-                        }
-                    })
+            $('.chat-messages').append('<div class="message"><div class="message-content">' + "请稍等片刻，正在为您提炼文章主要内容！" + '</div></div>');
+            $("#chat_modal").modal("show")
+            $.ajax({
+                url: "/doc/keyinfo/",
+                type: 'get',
+                dataType: 'json',
+                data: {
+                    'doc_name': '{{ title }}'
+                },
+                success: function (res) {
+                    if (res.status === 200) {
+                        console.log(res.keyinfo)
+                        $('.chat-messages').append('<div class="message"><div class="message-content">' + res.keyinfo + '</div></div>');
+                    } else {
+                        $('.chat-messages').append('<div class="message"><div class="message-content">' + res.error + '</div></div>');
+                        console.log(res.error)
+                    }
                 }
-            )
+            })
+
         }
+
 
         function info() {
             var keyword = encodeURI("{{ keyword }}");

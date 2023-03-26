@@ -1,10 +1,10 @@
 import os
 
 from django.contrib import admin
-from simpleui.admin import AjaxAdmin
 
 from .models import MeDocs, User, DocTxt, DocImgTxt
 # Register your models here.
+from .utils.del_img import del_img
 from .utils.encrypt import md5
 
 
@@ -79,13 +79,13 @@ class MedocsAdmin(admin.ModelAdmin):
         # print(url, os.path.exists(url))
         if os.path.exists(url):
             os.remove(url)
+        del_img(img_name=queryset[0].name)
         super(MedocsAdmin, self).delete_queryset(request, queryset)
         os.system('python ./manage.py rebuild_index --noinput')
 
 
 @admin.register(DocTxt)
 class DocTxtAdmin(admin.ModelAdmin):
-    empty_value_display = '-empty-'
     list_per_page = 10
     list_max_show_all = 10
     search_fields = ("doc_name",)

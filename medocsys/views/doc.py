@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import time
 
 from django.core import serializers
@@ -12,9 +13,11 @@ from medocsys import models
 from medocsys.utils import pagination, upload
 from medocsys.utils.form import MeDocsModelForm, DocTxtModelForm, DocImgTxtModelForm
 from medocsys.utils.upload import extract_img_info, extract_txt_info
+from ..utils.del_img import del_img
 from ..utils.doc_get_category import get_category
 from ..utils.get_doc_title import get_doc_title
 from ..utils.get_language_type import is_contains_chinese
+from ..utils.learn_doc import get_keyinfo
 from ..utils.query import query_elastics
 from ..utils.zhiwang import get_zhiwang_data
 
@@ -241,14 +244,19 @@ def doc_del(request):
         obj = models.MeDocs.objects.filter(id=uid).first()
         content_obj = models.DocTxt.objects.filter(doc_name=obj.name).all()
         img_content_obj = models.DocImgTxt.objects.filter(doc_name=obj.name).all()
-        url = "./media/docs/" + obj.name + ".pdf"
-        # print(url, os.path.exists(url))
-        if os.path.exists(url):
-            os.remove(url)
+        doc_url = "./media/docs/" + obj.name + ".pdf"
+        # 删除图片
+        del_img(img_name=obj.name)
+        # 删除文献
+        if os.path.exists(doc_url):
+            os.remove(doc_url)
+        # 删除数据库doctxt记录
         if content_obj:
             content_obj.delete()
+        # 删除数据库imgdoctxtx记录
         if img_content_obj:
             img_content_obj.delete()
+        # 删数据库除medoc记录
         obj.delete()
         res = {
             'status': True,
@@ -353,23 +361,24 @@ def doc_details(request):
         keyword = request.GET.get("text")
         uid = request.GET.get("uid")
         title = models.MeDocs.objects.filter(id=uid).first().name
-        url = "./media/docs/" + title + '.pdf'
+        # url = "./media/docs/" + title + '.pdf'
         # page_info = spdfmkeyword(url=url, keyword=keyword)
         page_info = query_elastics(key=keyword, start=0, size=1000)
         # page_info = query_elastics_min_fragment(key=keyword, start=0, size=1000)
         new_page_info = []
         for item in page_info:
-            print(item['name'])
+            # print(item['name'])
             if item['name'] == title:
                 new_page_info.append(item)
         # 我们需要使用匿名函数，使用sort函数中的key这个参数，来指定字典比大小的方法
         new_page_info.sort(key=lambda x: x['page_id'])
-        print("打开该文献的含有关键词的信息为", new_page_info)
+        # print(len(new_page_info), "打开该文献的含有关键词的信息为", new_page_info)
         key_page_info = {}
         facetnum = []
         for item_dict in new_page_info:
             page_abstract = []
             for nape in item_dict["fragments"]:
+                # print(type(nape), is_contains_chinese(nape))
                 abstract = {'abstract': nape, 'source': item_dict['source'], 'keyword': keyword}
                 page_abstract.append(abstract)
             # 去重同页中重复的摘要
@@ -378,7 +387,7 @@ def doc_details(request):
                 if dictionary not in new_page_abstract:
                     new_page_abstract.append(dictionary)
             page_abstract = new_page_abstract
-            print("新摘要", page_abstract)
+            # print("新摘要", page_abstract)
             if item_dict["page_id"] not in key_page_info.keys():
                 key_page_info[item_dict["page_id"]] = page_abstract
                 facetnum.append(len(key_page_info[item_dict["page_id"]]))
@@ -620,3 +629,49 @@ def doc_external(request):
         'data': data
     }
     return JsonResponse(res)
+
+
+def doc_img(request):
+    doc_id = request.POST.get('uid', 98)
+    doc_name = models.MeDocs.objects.filter(id=doc_id).first().name
+    print(doc_id, doc_name)
+    names_list = []
+    paths_list = []
+    context = {
+        'status': 200,
+        'names': names_list,
+        'paths': paths_list
+    }
+    path = "./media/docimgs"
+    for parent, _, fileNames in os.walk(path):
+        for name in fileNames:
+            if doc_name in name:
+                names_list.append(name[-7:-4])
+                parent = parent.replace(".", '')
+                paths_list.append(os.path.join(parent, name))
+    if not names_list:  # 文件夹为空
+        context['status'] = 403
+        return JsonResponse(context)
+    print(context)
+    return JsonResponse(context)
+
+
+def doc_keyinfo(request):
+    try:
+        doc_name = request.GET.get('doc_name', "")
+        content = models.DocTxt.objects.filter(doc_name=doc_name, page_id=1).first().txt_content[:1000]
+        # print("内容为：", content)
+        keyinfo = get_keyinfo(content)
+        # print("关键信息为：", keyinfo)
+        context = {
+            'status': 200,
+            'keyinfo': keyinfo
+        }
+    except Exception as e:
+        print(e)
+        context = {
+            'status': 403,
+            'error': "抱歉，当前出错啦。"
+        }
+    finally:
+        return JsonResponse(context)

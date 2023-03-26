@@ -17,6 +17,22 @@
 
 {% block info %}
     {#    <div class="container-fluid card">#}
+    <div class="modal fade" id="ImageModal" tabindex="-1" aria-labelledby="ImageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content text-center">
+                <div class="modal-header text-primary">
+                    <h1 class="modal-title fs-5" id="ImageModalLabel">文献图片</h1>
+                    <button type="button" class="btn-close btn-outline-info" data-bs-dismiss="modal"
+                            aria-label="Close">X
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-group text-center" id="imgcard"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id='PleaseWait' class='watiting-div'
          style='justify-content: center;z-index: 999;opacity: 0.7;position: absolute;display: none;width: 100%;height: 100%;background: #111010'></div>
     <div class="container-fluid" id="wrapper">
@@ -120,6 +136,11 @@
                     <td>{{ pninfo.relscore }}</td>
                     <td>{{ pninfo.allscore }}</td>
                     <td>
+                        <button uid="{{ pninfo.id }}" type="button" class="btn btn-sm btn-default btn_img"
+                                data-bs-toggle="modal"
+                                data-bs-target="#ImageModal">
+                            <i class="fa-solid fa-image"></i>
+                        </button>
                         <button uid="{{ pninfo.id }}" class="btn btn-default btn-sm clk"
                                 type="button">
                             <i class="fa-solid fa-eye"></i>
@@ -184,9 +205,61 @@
             bindclk();
             bindsettb();
             bindsubmit();
+            bindbtnimg();
             change_search_way();
             changepage();
         })
+
+        function bindbtnimg() {
+            $(".btn_img").click(function () {
+                IMG_ID = $(this).attr('uid');
+                $.ajax({
+                    url: "/doc/img/",
+                    type: 'post',
+                    data: {
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        uid: IMG_ID
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        let card = $("#imgcard");
+                        card.children().remove();
+                        if (res.status === 200) {
+                            let img_residue = res.names.length;
+                            let num = 0;
+                            first:for (let i = 0; i < res.names.length; i++) {
+                                {#console.log(res.names.length, res.paths[i])#}
+                                let row = $("<div>")
+                                row.attr({
+                                    'class': 'row',
+                                    'style': 'width:100%;margin: 0 auto'
+                                })
+                                {#if (img_residue >= 4) {#}
+                                if (i % 4 === 0) {
+                                    for (let j = 0; j < 4; j++) {
+                                        if (res.names[i + j] === undefined) {
+                                            {#console.log(i + j)#}
+                                            break first
+                                        } else {
+                                            html = "<div style='width:25%;margin: 0 auto' class=\"card col-12 col-md-3 p-3 fanimate\">" + "<img style='min-width: 100%px!important;' width='128px' height='128px' src = " + "\"" + res.paths[i + j] + "\"" + " class =\"card-img-top\" alt = \"\">" +
+                                                "<div class=\"card-body\">" + "<h5 class=\"card-title text-center\" >" + "页码-编号：" + res.names[i + j] + "</h5></div>"
+                                            row.append(html)
+                                            card.append(row)
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            html = "<h5 class='text-danger' style='width:50%;margin: 0 auto'>抱歉，该文献中未发现图片！</h5>"
+                            card.append(html)
+                            console.log(res)
+                        }
+                    }
+                })
+
+            })
+        }
+
 
         function change_search_way() {
             $("#zhiwang").click(function () {
@@ -330,7 +403,7 @@
                 $("#tb").empty();
                 $("#restip").empty();
                 $("#keyword").addClass("is-invalid")
-                $("#fedback").text("Please input keywords!")
+                $("#fedback").text("请输入检索关键词!")
                 $(".loader").css('display', "flex")
                 console.log("输入为空")
                 $("#pagination").hide()

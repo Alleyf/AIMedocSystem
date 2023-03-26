@@ -3,6 +3,7 @@
     <title>个人文献管理</title>
 {% endblock %}
 {% block mystyle %}
+    <link href="https://cdn.bootcdn.net/ajax/libs/dropzone/5.9.3/dropzone.min.css" rel="stylesheet">
     <style>
 
         .upload {
@@ -29,10 +30,29 @@
 {% endblock %}
 
 {% block info %}
-    <!-- 添加/编辑文献【对话框】 -->
-    <div class="modal fade show" aria-modal="true" id="addModal" tabindex="-1" role="dialog"
+    <!-- Button trigger modal -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="ImageModal" tabindex="-1" aria-labelledby="ImageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content text-center">
+                <div class="modal-header text-primary">
+                    <h1 class="modal-title fs-5" id="ImageModalLabel">文献图片</h1>
+                    <button type="button" class="btn-close btn-outline-info" data-bs-dismiss="modal"
+                            aria-label="Close">X
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-group text-center" id="imgcard"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    {#    <!-- 添加/编辑文献【对话框】 -->modal-dialog-scrollable#}
+    <div class="modal fade" aria-modal="true" id="addModal" tabindex="-1"
          aria-labelledby="myModalLabel">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-dialog modal-dialog-centered " role="document">
             <div class="modal-content">
                 <div class="modal-header" style="display: flex;align-items: center;justify-content: space-between">
                     <h4 class="modal-title text-nowrap" id="upload_title">
@@ -50,29 +70,31 @@
                             失败：
                             <span id="fail_num">0</span>
                         </p>
-                        <p>
-                            <button class="btn btn-danger btn-sm" type="button" id="clear_upload_info">清空列表</button>
-                        </p>
+                        {#                        <p>#}
+                        {#                            <button class="btn btn-danger btn-sm" type="button" id="clear_upload_info">清空列表</button>#}
+                        {#                        </p>#}
                     </div>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="min-height: 180px">
                     <div id="upload_after"></div>
-                    <div id="upload_before">
+                    <div id="upload_before" onclick="$('#doc_dropzone').click" style="height: 100%"
+                         class="card">
                         {% for item in form %}
                             {% csrf_token %}
                             {{ item }}
-                            <div class="form-group upload"
-                                 style="text-align: center;margin: 0 auto;border: 1px dashed #2a6e3f;height: 100%;width: 100%;line-height: 20px;">
+                            <div class="form-group upload dropzone" id="doc_dropzone"
+                                 style="text-align: center;margin: 0 auto;border-radius: 10px;border: 1px dashed #2a6e3f;height: 100%;width: 100%;line-height: 20px;">
                                 <span class="err_msg" style="color: #c12c1f"></span>
-                                <div onclick="$('input[id=id_docfile]').click();" style="font-size: 15px;">
+                                {#                                <div onclick="$('input[id=id_docfile]').click();" style="font-size: 15px;">#}
+                                <div style="font-size: 15px;">
                                     <i class="fa-solid fa-cloud-arrow-up" style="font-size: 40px;margin-top: 10px"></i>
                                     <div id="docCovers" style="color:#c0d695;line-height: 20px;margin: 10px auto">
                                         点击选择文件进行上传
                                     </div>
-                                    <p style="line-height: 20px;">可以选择多个文件，不支持上传文件夹</p>
+                                    <p style="line-height: 20px;margin:20px auto">可以选择多个文件，不支持上传文件夹</p>
                                 </div>
                                 <div class="progress" style="display: none">
-                                    <div class="progress-bar-success progress-bar-striped active"
+                                    <div class="progress-bar bg-info progress-bar-striped active"
                                          role="progressbar"
                                          aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0">
                                     </div>
@@ -80,9 +102,9 @@
                             </div>
                         {% endfor %}
                     </div>
-                    {#                    </form>#}
                 </div>
                 <div class="modal-footer">
+                    <button class="btn btn-danger" type="button" id="clear_upload_info">清空列表</button>
                     <button type="button" class="btn btn-secondary" onclick="bindbtnclear_upload_info()"
                             data-bs-dismiss="modal">关闭
                     </button>
@@ -92,7 +114,7 @@
         </div>
     </div>
     {#    删除对话框#}
-    <div class="modal fade show" aria-modal="true" id="delModal" tabindex="-1" role="dialog"
+    <div class="modal fade" aria-modal="true" id="delModal" tabindex="-1"
          aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -163,9 +185,20 @@
                             {#                               class="btn btn-info btn-xs">查看详情</a>#}
                             {#                            <input uid="{{ pninfo.id }}" type="button" class="btn btn-default btn-xs btn_edit"#}
                             {#                                   value="编辑">#}
-                            <input uid="{{ pninfo.id }}" type="button" class="btn btn-primary btn-sm btn_view"
-                                   value="查看">
-                            <input uid="{{ pninfo.id }}" type="button" class="btn btn-danger btn-sm btn_del" value="删除">
+                            <button uid="{{ pninfo.id }}" type="button" class="btn btn-sm btn-primary btn_img"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#ImageModal">
+                                <i class="fa-solid fa-image"></i>
+                            </button>
+
+                            <button uid="{{ pninfo.id }}" type="button" class="btn btn-primary btn-sm btn_view"
+                                    value="查看"><i class="fa-solid fa-eye"></i>
+                            </button>
+
+                            <button uid="{{ pninfo.id }}" type="button" class="btn btn-danger btn-sm btn_del"
+                                    value="删除"><i class="fa-solid fa-trash"></i>
+                            </button>
+
                         </td>
                     </tr>
                 {% endfor %}
@@ -183,36 +216,46 @@
 {% endblock %}
 
 {% block myscript %}
+    <script src="https://cdn.bootcdn.net/ajax/libs/dropzone/5.9.3/dropzone.js"></script>
     <script type="text/javascript">
+        Dropzone.autoDiscover = false;
         var DELETE_ID;
         var EDIT_ID;
         var VIEW_ID;
+        var IMG_ID;
+        var myDropzone;
         $(function () {
             bindbtnadd();
             bindbtnsave();
             bindbtndel();
             bindbtnedit();
             bindbtnview();
+            bindbtnimg();
             bindbtndetail();
             bindbtnupload();
             bindbtnclear_upload_info();
+            binddrop_doc();
             {#get_info();#}
         })
 
         //公共函数
-        {#function set_progress(progress, num, other = '') {#}
-        {#    progress.attr({#}
-        {#        'style': 'display:block',#}
-        {#    })#}
-        {#    progress.children().attr({#}
-        {#        'style': 'width:' + num + '%',#}
-        {#        'aria-valuenow': num,#}
-        {#    })#}
-        {#    progress.children().html("<span class=\"sr-only\">" + num + "%Complete(success)</span>" + num + "%" + other)#}
-
         function bindbtnclear_upload_info() {
             $("#clear_upload_info").click(function () {
                 clear_upload_info()
+            })
+        }
+
+        function binddrop_doc() {
+            myDropzone = new Dropzone("#doc_dropzone", {
+                url: "/doc/add/",
+                autoProcessQueue: false, // 禁止自动上传
+                maxFiles: 1, // 最大允许上传文件数量
+                maxFilesize: 10, // 最大允许上传文件大小，单位为 MB
+                dictDefaultMessage: "支持拖拽上传", // 默认提示信息
+            });
+            myDropzone.on("addedfile", file => {
+                console.log("A file has been added", file);
+                create_upload_ls($("#upload_after"), myDropzone.files)
             })
         }
 
@@ -220,12 +263,19 @@
             $("#upload_info").attr("style", "display:none")
             $('#docCovers').text("点击选择文件进行上传")
             $("#upload_after").children().remove()
+            myDropzone.removeAllFiles(true);
+            console.log("删除前列表")
             $("#upload_title").text("添加文献")
+            $(".dz-preview").remove()
+            $(".dz-default").show()
             $("#upload_before").show()
+
         }
 
         function bindbtnupload() {
-            $('input[id=id_docfile]').change(function () {
+            let doc_input = $('input[id=id_docfile]');
+            doc_input.attr('accept', "application/pdf Portable")
+            doc_input.change(function () {
                 if ($(this).val() !== '') {
                     {#$('#docCovers').text($(this).val());#}
                     $("#upload_before").hide()
@@ -242,11 +292,6 @@
 
         function bindbtnadd() {
             $("#adddoc").click(function () {
-                $(".err_msg").empty();
-                {#将当前编辑ID置空#}
-                EDIT_ID = undefined;
-                {#清空已有的数据#}
-                clear_upload_info()
                 $('#addModal').modal('show');
             })
         }
@@ -258,13 +303,16 @@
                     doedit();
                 } else {
                     {#发送天加请求#}
-                    doadd();
+                    doadd(myDropzone.files);
                 }
             })
 
         }
 
         function create_upload_ls(upload_after, files) {
+            {#清空原来数据#}
+            $("#upload_after").children().remove();
+            {#console.log($("#upload_after").children())#}
             for (let index = 0; index < files.length; index++) {
                 const doc_name = files[index].name;
                 let doc_size = (files[index].size / 2 ** 10).toFixed(2).toString() + "KB"
@@ -285,13 +333,16 @@
                     "aria-valuemax": "100"
                 })
                 div_progress_child = $("<div>").attr({
-                    "class": "progress-bar bg-success progress-bar-striped progress-bar-animated w-0",
+                    "class": "progress-bar bg-info progress-bar-striped progress-bar-animated w-0",
                     "style": "width: 0;height:6px;font-size:12px",
                     "fid": index,
                 })
                 div_progress.append(div_progress_child)
                 {#set_progress(div_progress, 30)#}
-                p2 = $("<p>").attr("class", "clearfix")
+                p2 = $("<p>").attr({
+                    "class": "clearfix",
+                    "style": "overflow:hide"
+                })
                 span_size = $("<span>").text(doc_size)
                 span_size.attr({
                     "style": "float:right;color:#9aa7b1",
@@ -314,15 +365,21 @@
             }
         }
 
-        function doadd() {
+        function doadd(file) {
             console.log("发送添加请求")
             $(".err_msg").empty();
             let formData = new FormData();
             // 添加文件对象
-            let files = $('#id_docfile')[0].files;
-            for (let i = 0; i < files.length; i++) {
-                formData.append("docfile", files[i]);
+            {#if (file.length > 0) {#}
+            {#    var files = file;#}
+            var upload_filels = file;
+            myDropzone.removeAllFiles(true);
+            console.log(upload_filels, upload_filels.length, typeof (upload_filels))
+            {#let files = $('#id_docfile')[0].files;#}
+            for (let i = 0; i < upload_filels.length; i++) {
+                formData.append("docfile", upload_filels[i]);
                 $(".doc_status")[i].innerText = "上传中"
+                $('.progress > div')[i].setAttribute("class", "progress-bar bg-primary progress-bar-striped progress-bar-animated")
             }
             //formdata类型的变量需要get方法键值，直接打印为空
             console.log(formData.getAll('docfile'))
@@ -339,12 +396,12 @@
                     const xhr = new XMLHttpRequest();
                     //使用XMLHttpRequest.upload监听上传过程，注册progress事件，打印回调函数中的event事件
                     xhr.upload.addEventListener('progress', function (e) {
-                        console.log(e);
                         //loaded代表上传了多少
                         //total代表总数为多少
                         const progressRate = (e.loaded / e.total) * 100 + '%';
-
+                        console.log(progressRate, e);
                         //通过设置进度条的宽度达到效果
+                        $('.progress > div').text(progressRate)
                         $('.progress > div').css('width', progressRate);
                     })
 
@@ -372,7 +429,9 @@
                         $("#task_num").text(res.upload_num.success.toString() + "/" + res.upload_num.all.toString())
                         $("#success_num").text(res.upload_num.success.toString())
                         $("#fail_num").text(res.upload_num.fail.toString())
-                        $("#upload_info").attr("style", "display: flex")
+                        $("#upload_info").attr({
+                            "style": "display: flex;align-items: center"
+                        })
 
                     } else {
                         console.log("添加失败")
@@ -480,6 +539,57 @@
                         }
                     }
                 })
+            })
+        }
+
+        function bindbtnimg() {
+            $(".btn_img").click(function () {
+                IMG_ID = $(this).attr('uid');
+                $.ajax({
+                        url: "/doc/img/",
+                        type: 'post',
+                        data: {
+                            csrfmiddlewaretoken: '{{ csrf_token }}',
+                            uid: IMG_ID
+                        },
+                        dataType: 'json',
+                        success: function (res) {
+                            let card = $("#imgcard");
+                            card.children().remove();
+                            if (res.status === 200) {
+                                let img_residue = res.names.length;
+                                let num = 0;
+                                first:for (let i = 0; i < res.names.length; i++) {
+                                    {#console.log(res.names.length, res.paths[i])#}
+                                    let row = $("<div>")
+                                    row.attr({
+                                        'class': 'row',
+                                        'style': 'width:100%;margin: 0 auto'
+                                    })
+                                    {#if (img_residue >= 4) {#}
+                                    if (i % 4 === 0) {
+                                        for (let j = 0; j < 4; j++) {
+                                            if (res.names[i + j] === undefined) {
+                                                {#console.log(i + j)#}
+                                                break first
+                                            } else {
+                                                html = "<div style='width:25%;margin: 0 auto' class=\"card col-12 col-md-3 p-3 fanimate\">" + "<img style='min-width: 100%px!important;' width='128px' height='128px' src = " + "\"" + res.paths[i + j] + "\"" + " class =\"card-img-top\" alt = \"\">" +
+                                                    "<div class=\"card-body\">" + "<h5 class=\"card-title text-center\" >" + "页码-编号：" + res.names[i + j] + "</h5></div>"
+                                                row.append(html)
+                                                card.append(row)
+                                            }
+                                        }
+                                    }
+                                }
+                            } else {
+                                html = "<h5 class='text-danger' style='width:50%;margin: 0 auto'>抱歉，该文献中未发现图片！</h5>"
+                                card.append(html)
+                                console.log(res)
+                            }
+                        }
+                    }
+                )
+
             })
         }
 

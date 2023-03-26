@@ -11,11 +11,13 @@ from haystack.backends.elasticsearch7_backend import Elasticsearch7SearchBackend
 
 DEFAULT_FIELD_MAPPING = {
     "type": "text",
+    # "analyzer": "ik_smart",
     "analyzer": "ik_max_word",
     # "analyzer": "standard",
     # "analyzer": "ik_smart",
-    # "search_analyzer": "ik_smart"
-    "search_analyzer": "ik_max_word"
+    "search_analyzer": "ik_smart",
+    "similarity": "BM25",
+    # "index_options": "offsets"
 
 }
 
@@ -24,8 +26,9 @@ class Elasticsearc7IkSearchBackend(Elasticsearch7SearchBackend):
     def __init__(self, *args, **kwargs):
         self.DEFAULT_SETTINGS['settings']['analysis']['analyzer']['ik_analyzer'] = {
             "type": "custom",
-            "tokenizer": "ik_max_word",
-            # "tokenizer": "ik_smart",
+            # "tokenizer": "ik_max_word",
+            "tokenizer": "ik_smart",  # 这个自定义的分析器必须要
+            "min_gram": 2  # 最小分词个数为2
         }
         super(Elasticsearc7IkSearchBackend, self).__init__(*args, **kwargs)
 

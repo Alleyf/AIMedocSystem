@@ -135,6 +135,6 @@ def checkimgcode(request):
     # return JsonResponse({'status': 403})
 
 
-@cache_page(60 * 60 * 24 * 7)
+# @cache_page(60 * 60 * 24 * 7)
 def index(request):
     return render(request, "landing.html")

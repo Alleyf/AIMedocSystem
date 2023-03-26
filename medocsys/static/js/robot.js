@@ -28,11 +28,10 @@ $(function () {
         $('.message-input').on('keypress', function (e) {
             if (e.which === 13) {
                 if ($(this).val() === '') {
-                    $('.chat-messages').append('<div class="message"><div class="message-content">' + "Please input your question in here." + '</div></div>');
+                    $('.chat-messages').append('<div class="message"><div class="message-content">' + "请输入你的问题，我很荣幸为您解答." + '</div></div>');
                     return false;
                 } else {
                     let val = $(this).val();
-                    // var val = ($(this).val() !== '') ? $(this).val() : "Please input your question in here.";
                     $('.chat-messages').append('<div class="message self"><div class="message-content">' + val + '</div></div>');
                     $(this).val('');
                     let answer

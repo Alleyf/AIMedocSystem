@@ -55,55 +55,6 @@ def get_category(title: str) -> str:
         print(e)
 
 
-def get_category_api(title: str):
-    url = "https://chat.openai.run/wp-json/ai-chatbot/v1/chat"
-    question = "请判断文本'" + title + "'是医学中[内科，外科，儿科，妇产科，骨科，影像科，其他]中的哪个领域，用这是医学中的...领域来回答"
-    formdata = {
-        "env": "chatbot",
-        "session": "6415bb36147c3",
-        "prompt": "像 AI 助手一样交谈。 要友好，有创意。\n\nAI: 你好！有什么我可以帮助您的吗？openai.wiki\nUser: 免费的chatgpt接口有哪些？\nAI: ",
-        "context": "像 AI 助手一样交谈。 要友好，有创意。",
-        "messages": [
-            {
-                "id": "0f6jovcjjiej",
-                "role": "assistant",
-                "content": "你好！有什么我可以帮助您的吗？openai.wiki",
-                "who": "AI: ",
-                "html": "你好！有什么我可以帮助您的吗？openai.wiki"
-            },
-            {
-                "id": "lnr7nxcmcol",
-                "role": "user",
-                "content": "question",
-                "who": "User: ",
-                "html": "question"
-            }
-        ],
-        "rawInput": question,
-        "userName": "<div class=\"mwai-avatar mwai-svg\"><img src=\"https://chat.openai.run/wp-content/plugins/ai-engine-pro//images/avatar-user.svg\" /></div>",
-        "aiName": "<div class=\"mwai-avatar mwai-svg\"><img src=\"https://chat.openai.run/wp-content/plugins/ai-engine-pro//images/avatar-ai.svg\" /></div>",
-        "model": "gpt-3.5-turbo",
-        "temperature": 0.8,
-        "maxTokens": 1024,
-        "maxResults": 1,
-        "apiKey": "",
-        "embeddingsIndex": "",
-        "stop": "",
-        "clientId": "3xfuimltudo"
-    }
-    headers = {
-        'origin': "https://chat.openai.run",
-        'Accept': 'application/json, text/plain, */*',
-        'user-agent': "Mozilla/5.0(Windows NT 10.0; Win64; x64) AppleWebKit/537.36(KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36",
-        # 罪大恶极的参数:
-        'content-type': "application/json",
-    }
-
-    res = requests.post(url=url, data=formdata, headers=headers).text
-    print(type(res), res)
-    return res
-
-
 if __name__ == '__main__':
     title = "2016IJC-导管组织接触对于模型的影响PentarRay_FAM.pdf"
     start = time.time()
