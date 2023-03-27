@@ -48,9 +48,10 @@
 
 .set {
     position: fixed;
-    right: 10px;
-    bottom: 10px;
-    height: 33px;
+    z-index: 500;
+    left: 12px;
+    bottom: 150px;
+    height: 38px;
 }
 
 

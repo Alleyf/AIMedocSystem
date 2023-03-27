@@ -138,9 +138,15 @@
     <div class="container-fluid">
         <div style="margin-bottom: 10px;display: flex;align-items: center;justify-content: space-between"
              class="">
-            <button type="button" id="adddoc" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i>
-                添加文献
-            </button>
+            <div class="container-fluid">
+                <button type="button" id="adddoc" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i>
+                    添加文献
+                </button>
+                <button type="button" onclick="send_docs()" class="btn btn-sm btn-info"><i
+                        class="fa-regular fa-paper-plane"></i>
+                    推送文献
+                </button>
+            </div>
             <div>
                 <form method="get">
                     <div class="input-group">
@@ -160,12 +166,8 @@
                 <tr>
                     <th>ID</th>
                     <th>文献名</th>
-                    {#                    <th>作者</th>#}
                     <th>点击量得分</th>
                     <th>用户反馈得分</th>
-                    {#                    <th>归档</th>#}
-                    {#                    <th>来源</th>#}
-                    {#                    <th>管理员</th>#}
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -212,6 +214,22 @@
             </ul>
         </nav>
     </div>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast fade hide" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <svg class="bd-placeholder-img rounded me-2" width="20" height="20"
+                     xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice"
+                     focusable="false">
+                    <rect width="100%" height="100%" fill="#007aff"></rect>
+                </svg>
+                <strong class="me-auto" id="tip_title"></strong>
+                <small>{% now "Y-m-d G:i:s" %}</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" id="tip_body">
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
 
@@ -239,6 +257,30 @@
         })
 
         //公共函数
+        function send_docs() {
+            $.ajax({
+                url: "/sendocs/",
+                type: 'get',
+                dataType: 'json',
+                data: {
+                    'doc_name': '{{ title }}'
+                },
+                success: function (res) {
+                    const toastlive_tips = document.getElementById('liveToast')
+                    const toast = new bootstrap.Toast(toastlive_tips)
+                    if (res.status === "ok") {
+                        $("#tip_body").text(res.msg)
+                    } else {
+                        $("#tip_body").text(res.error)
+                        {#console.log(res)#}
+                    }
+                    $("#tip_title").text("文献推送提示")
+                    toast.show()
+                }
+            })
+        }
+
+
         function bindbtnclear_upload_info() {
             $("#clear_upload_info").click(function () {
                 clear_upload_info()

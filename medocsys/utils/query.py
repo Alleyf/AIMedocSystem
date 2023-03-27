@@ -10,8 +10,8 @@ def query_elastics(key: str, start=0, size=1000):
         rel_num_ls = query_elastics_min_fragment(key=key)
         # print(len(rel_num_ls))
         # es = Elasticsearch()  # 默认连接本地elasticsearch
-        es = Elasticsearch([{"host": "127.0.0.1", "port": 9200}])  # 默认连接本地elasticsearch
-        # es = Elasticsearch([{"host": "43.139.217.160", "port": 9200}])  # 连接云端elasticsearch
+        # es = Elasticsearch([{"host": "127.0.0.1", "port": 9200}])  # 默认连接本地elasticsearch
+        es = Elasticsearch([{"host": "43.139.217.160", "port": 9200}])  # 连接云端elasticsearch
         # 获取关键词相关词
         # union_api = "https://recom.cnki.net/api/recommendations/words/union"
         # union_key = requests.get(url=union_api, params={'w': key, 'top': 10})
@@ -25,7 +25,7 @@ def query_elastics(key: str, start=0, size=1000):
                 "match": {
                     "text": {
                         "query": key,
-                        "analyzer": "ik_smart"  # 指定搜索时的分词模式
+                        # "analyzer": "ik_smart"  # 指定搜索时的分词模式
                     },
                 },
 
@@ -89,8 +89,8 @@ def query_elastics_min_fragment(key: str, start=0, size=1000):
     all_num = 0
     rel_score_ls = []
     try:
-        es = Elasticsearch([{"host": "127.0.0.1", "port": 9200}])  # 默认连接本地elasticsearch
-        # es = Elasticsearch([{"host": "43.139.217.160", "port": 9200}])  # 连接云端elasticsearch
+        # es = Elasticsearch([{"host": "127.0.0.1", "port": 9200}])  # 默认连接本地elasticsearch
+        es = Elasticsearch([{"host": "43.139.217.160", "port": 9200}])  # 连接云端elasticsearch
         res = es.search(
             # index=['medocsys'],
             index=['doctxt', 'docimgtxt'],
@@ -98,7 +98,7 @@ def query_elastics_min_fragment(key: str, start=0, size=1000):
                 "match": {
                     "text": {
                         "query": key,
-                        "analyzer": "ik_smart"  # 指定搜索时的分词模式
+                        # "analyzer": "ik_smart"  # 指定搜索时的分词模式
                     },
                 },
 
@@ -136,8 +136,8 @@ def query_elastics_min_fragment(key: str, start=0, size=1000):
 
 def query_elastics_fulltext(key):
     try:
-        es = Elasticsearch([{"host": "127.0.0.1", "port": 9200}])  # 默认连接本地elasticsearch
-        # es = Elasticsearch([{"host": "43.139.217.160", "port": 9200}])  # 连接云端elasticsearch
+        # es = Elasticsearch([{"host": "127.0.0.1", "port": 9200}])  # 默认连接本地elasticsearch
+        es = Elasticsearch([{"host": "43.139.217.160", "port": 9200}])  # 连接云端elasticsearch
         print(es)
         res = es.search(
             index=['doctxt', 'docimgtxt'],

@@ -5,17 +5,17 @@ from django.conf.urls import url  ## 新增
 from django.contrib import admin
 from django.urls import path, re_path, include
 from django.views.static import serve
-from rest_framework.routers import SimpleRouter
 
-from medocsys.views import user, account, doc, chart, img, medocrobot
+from medocsys.views import user, account, doc, chart, medocrobot, send
 
-router = SimpleRouter()
+# from rest_framework.routers import SimpleRouter
+
+# router = SimpleRouter()
 # router.register('search/txt', search.DocTxtSearchViewSet, basename='searchtxt_api')
 # router.register('search/imgtxt', search.DocImgTxtSearchViewSet, basename='searchimgtxt_api')
 # router.register('checkcode', account.checkimgcode, basename='checkcode_api')
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^images/(?P<path>(.+))/$', img.images),
     path('api-auth/', include('rest_framework.urls')),
     re_path(r"^static/(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT}, name='static'),  # 新增的路径
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}, name='media'),
@@ -67,6 +67,10 @@ urlpatterns = [
     path("doc/img/", doc.doc_img),
     # 获取文献关键信息
     path("doc/keyinfo/", doc.doc_keyinfo),
+    # 推送用户文献库所有文献
+    url("sendocs/", send.send_all_usr_file),
+    # 推送正在阅览的文献
+    url("sendoc/", send.send_looking_file),
     # *********************数据可视化*********************
     path("chart/list/", chart.chart_list),
     # 柱状图接口
@@ -81,4 +85,4 @@ urlpatterns = [
     path("chart/graph/", chart.index),
 ]
 
-urlpatterns += router.urls
+# urlpatterns += router.urls

@@ -5,8 +5,6 @@
 {% endblock %}
 {% block mystyle %}
     <style>
-
-
         body {
             margin: 0;
             padding: 0;
@@ -127,36 +125,32 @@
                 </div>
             </div>
         </div>
-        <div class="btn-group set" style="position: fixed;">
+        <div class="btn-group set" style="position: fixed;display: block">
             <button type="button" data-bs-toggle="dropdown" aria-expanded="false"
-                    class="btn btn-info btn-sm dropdown-toggle">
-                <i class="fa-brands fa-airbnb"></i>
+                    class="btn btn-info dropdown-toggle">
+                <i class="fa-brands fa-airbnb fa-4"></i>
             </button>
             <ul class="dropdown-menu" style="min-width: auto;">
                 <li>
-                    <button type="button" id="back"
-                            class="dropdown-item btn btn-warning btn-sm">
-                        <a href="#top">
-                            <i class="fa-solid fa-caret-up"></i>
-                        </a>
+                    <button type="button" onclick="send_doc()"
+                            class="dropdown-item btn btn-info btn-lg">
+                        <i class="fa-solid fa-paper-plane fa-4"></i>
                     </button>
                 </li>
                 <li>
-                    <button type="button" id="thumb_up" class="dropdown-item btn btn-success btn-sm"
+                    <button type="button" id="thumb_up" class="dropdown-item btn btn-success btn-lg"
                             data-container="body" data-toggle="popover" data-placement="left">
-                        <i class="fa-solid fa-thumbs-up"></i>
+                        <i class="fa-solid fa-thumbs-up fa-4"></i>
                     </button>
                 </li>
                 <li>
-                    <button type="button" id="thumb_down" class="dropdown-item btn btn-danger btn-sm">
-                        <i class="fa-solid fa-thumbs-down"></i>
+                    <button type="button" id="thumb_down" class="dropdown-item btn btn-danger btn-lg">
+                        <i class="fa-solid fa-thumbs-down fa-4"></i>
                     </button>
                 </li>
                 <li>
-                    <button onclick="back_last_page()" class="dropdown-item btn btn-default btn-sm">
-                        {#                        <a href="/doc/query/?keyword={{ keyword|safe }}">#}
-                        <i class="fa-solid fa-rotate-right"></i>
-                        {#                        </a>#}
+                    <button onclick="back_last_page()" class="dropdown-item btn btn-default btn-lg">
+                        <i class="fa-solid fa-rotate-right fa-4"></i>
                     </button>
                 </li>
             </ul>
@@ -275,11 +269,11 @@
                 },
                 success: function (res) {
                     if (res.status === 200) {
-                        console.log(res.keyinfo)
+                        {#console.log(res.keyinfo)#}
                         $('.chat-messages').append('<div class="message"><div class="message-content">' + res.keyinfo + '</div></div>');
                     } else {
                         $('.chat-messages').append('<div class="message"><div class="message-content">' + res.error + '</div></div>');
-                        console.log(res.error)
+                        {#console.log(res.error)#}
                     }
                 }
             })
@@ -287,43 +281,25 @@
         }
 
 
-        function info() {
-            var keyword = encodeURI("{{ keyword }}");
-            var id = {{ id }};
+        function send_doc() {
             $.ajax({
-                url: "/search/?text=" + keyword,
+                url: "/sendoc/",
                 type: 'get',
                 dataType: 'json',
+                data: {
+                    'doc_name': '{{ title }}'
+                },
                 success: function (res) {
-                    if (res) {
-                        {#var results = res;#}
-                        {#console.log(results)#}
-                        for (var i = 0; i < res.count; i++) {
-                            if (res.results[i].object.id === id) {
-                                let title = res.results[i].object.name;
-                                let abstract = res.results[i].highlighted;
-                                $("#title").text(title);
-                                $("#abstract").html(abstract);
-                            }
-                        }
-
-                        {#let title = res.results[0].object.name;#}
-                        {#let abstract = res.results[0].highlighted;#}
-                        {#$.ajax({#}
-                        {#    url: "/doc/details/",#}
-                        {#    type: 'post',#}
-                        {#    data: results,#}
-                        {#    dataType: 'json',#}
-                        {#    success: function (res) {#}
-                        {#        console.log('发送请求成功')#}
-                        {#    }#}
-                        {#);#}
-                        {#$("#title").text(title);#}
-                        {#$("#abstract").html(abstract);#}
+                    const toastlive_tips = document.getElementById('liveToast')
+                    const toast = new bootstrap.Toast(toastlive_tips)
+                    if (res.status === 200) {
+                        $("#tip_body").text(res.msg)
                     } else {
-                        console.log(res)
+                        $("#tip_body").text(res.error)
+                        {#console.log(res)#}
                     }
-
+                    $("#tip_title").text("文献推送提示")
+                    toast.show()
                 }
             })
         }

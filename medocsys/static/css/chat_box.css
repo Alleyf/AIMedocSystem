@@ -177,8 +177,8 @@ http://www.bootstrapmb.com**/
     height: calc(100vh - 400px);
     position: relative;
     width: auto;
-    margin: auto;
-    overflow: hidden;
+    /*margin: auto;*/
+    /*overflow: hidden;*/
 }
 
 .pvr_chat_wrapper .chat-messages .message {
@@ -207,7 +207,7 @@ http://www.bootstrapmb.com**/
     padding: 10px 20px;
     background-color: #da8d67;
     border-radius: 20px 20px 20px 0px;
-    max-width: 80%;
+    max-width: 100%;
     font-size: 13px;
     display: inline-block;
     text-align: left;
