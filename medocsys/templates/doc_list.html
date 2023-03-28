@@ -1,4 +1,5 @@
 {% extends 'layout.html' %}
+{% load static %}
 {% block mytitle %}
     <title>个人文献管理</title>
 {% endblock %}
@@ -159,15 +160,16 @@
                 </form>
             </div>
         </div>
-        <div class="container-fluid table-responsive">
+        <div class="container-fluid table-responsive card">
             <div class="table-responsive"><i class="fa fa-list"></i>文献列表</div>
-            <table class="table table-hover table-condensed">
-                <thead class="text-center">
-                <tr>
+            <table class="table table-hover table-condensed mb-0">
+                <thead class="text-center table-head">
+                <tr role="row">
                     <th>ID</th>
                     <th>文献名</th>
                     <th>点击量得分</th>
                     <th>用户反馈得分</th>
+                    <th>种类</th>
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -176,15 +178,10 @@
                     <tr uid="{{ pninfo.id }}">
                         <th scope="row">{{ pninfo.id }}</th>
                         <td>{{ pninfo.name }}</td>
-                        {#                        <td>{{ pninfo.author }}</td>#}
                         <td>{{ pninfo.clkscore }}</td>
                         <td>{{ pninfo.fedbakscore }}</td>
-                        {#                        <td>{{ pninfo.get_status_display }}</td>#}
-                        {#                        <td>{{ pninfo.get_source_display }}</td>#}
-                        {#                        <td>{{ pninfo.user.username }}</td>#}
+                        <td>{{ pninfo.category }}</td>
                         <td>
-                            {#                            <a href="/doc/details/?text={{ search_data }}&uid={{ pninfo.id }}" uid="{{ pninfo.id }}"#}
-                            {#                               class="btn btn-info btn-xs">查看详情</a>#}
                             {#                            <input uid="{{ pninfo.id }}" type="button" class="btn btn-default btn-xs btn_edit"#}
                             {#                                   value="编辑">#}
                             <button uid="{{ pninfo.id }}" type="button" class="btn btn-sm btn-primary btn_img"
@@ -206,6 +203,7 @@
                 {% endfor %}
                 </tbody>
             </table>
+            {#            </div>#}
         </div>
         <nav class="text-center" aria-label="Page navigation">
             <ul class="pagination pagination-sm justify-content-center"
@@ -217,11 +215,13 @@
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
         <div id="liveToast" class="toast fade hide" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
-                <svg class="bd-placeholder-img rounded me-2" width="20" height="20"
-                     xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice"
-                     focusable="false">
-                    <rect width="100%" height="100%" fill="#007aff"></rect>
-                </svg>
+                {#                <svg class="bd-placeholder-img rounded me-2" width="20" height="20"#}
+                {#                     xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice"#}
+                {#                     focusable="false">#}
+                {#                    <rect width="100%" height="100%" fill="#007aff"></rect>#}
+                {#                </svg>#}
+                <img class="bd-placeholder-img rounded me-2" width="20" height="20"
+                     src="{% static 'images/favicon/favicon.png' %}" alt="智检慧医">
                 <strong class="me-auto" id="tip_title"></strong>
                 <small>{% now "Y-m-d G:i:s" %}</small>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
@@ -262,9 +262,9 @@
                 url: "/sendocs/",
                 type: 'get',
                 dataType: 'json',
-                data: {
-                    'doc_name': '{{ title }}'
-                },
+                {#data: {#}
+                {#    'doc_name': '{{ title }}'#}
+                //}
                 success: function (res) {
                     const toastlive_tips = document.getElementById('liveToast')
                     const toast = new bootstrap.Toast(toastlive_tips)
@@ -272,7 +272,7 @@
                         $("#tip_body").text(res.msg)
                     } else {
                         $("#tip_body").text(res.error)
-                        {#console.log(res)#}
+                        console.log(res)
                     }
                     $("#tip_title").text("文献推送提示")
                     toast.show()

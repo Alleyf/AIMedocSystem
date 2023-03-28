@@ -659,7 +659,7 @@ def doc_keyinfo(request):
         # content = query_leastic_firstpage(doc_name=doc_name)[2]
         if content != "":
             part_content = content[:1000] if len(content) > 1000 else content
-            print("耗时为：", time.perf_counter() - start)
+            # print("耗时为：", time.perf_counter() - start)
             keyinfo = get_keyinfo(part_content)
             # print("关键信息为：", keyinfo)
             context = {
@@ -669,7 +669,7 @@ def doc_keyinfo(request):
         else:
             context = {
                 'status': 403,
-                'keyinfo': "抱歉，网络当前出错啦，请重试谢谢！"
+                'error': "抱歉，网络当前出错啦，请重试谢谢！"
             }
     except Exception as e:
         # print(e)

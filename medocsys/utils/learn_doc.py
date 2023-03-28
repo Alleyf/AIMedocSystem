@@ -6,8 +6,10 @@ import re
 
 
 openai.api_key = "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"
-cohere_api_key = "AmyM4HOivElEHEo7Pd3AbYIBwtFUBMqjOPKhtxNy"
 openai.api_base = "https://openai.yugin.top/v1"
+
+
+# cohere_api_key = "AmyM4HOivElEHEo7Pd3AbYIBwtFUBMqjOPKhtxNy"
 
 
 # 提问代码
@@ -28,8 +30,8 @@ def get_keyinfo(txt: str):
         # print(response)
         return response
     except Exception as e:
-        print(e)
-        return e
+        print(e.__str__())
+        return e.__str__()
 
 
 if __name__ == '__main__':
