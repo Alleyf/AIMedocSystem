@@ -21,7 +21,7 @@ from ..utils.doc_get_category import get_category
 from ..utils.get_doc_title import get_doc_title
 from ..utils.get_language_type import is_contains_chinese
 from ..utils.learn_doc import get_keyinfo
-from ..utils.query import query_elastics
+from ..utils.query import query_elastics, query_leastic_firstpage
 from ..utils.zhiwang import get_zhiwang_data
 
 
@@ -654,19 +654,28 @@ def doc_img(request):
 def doc_keyinfo(request):
     try:
         doc_name = request.GET.get('doc_name', "")
-        content = models.DocTxt.objects.filter(doc_name=doc_name, page_id=1).first().txt_content[:1000]
-        # print("内容为：", content)
-        keyinfo = get_keyinfo(content)
-        # print("关键信息为：", keyinfo)
-        context = {
-            'status': 200,
-            'keyinfo': keyinfo
-        }
+        start = time.perf_counter()
+        content = models.DocTxt.objects.filter(doc_name=doc_name, page_id=1).first().txt_content
+        # content = query_leastic_firstpage(doc_name=doc_name)[2]
+        if content != "":
+            part_content = content[:1000] if len(content) > 1000 else content
+            print("耗时为：", time.perf_counter() - start)
+            keyinfo = get_keyinfo(part_content)
+            # print("关键信息为：", keyinfo)
+            context = {
+                'status': 200,
+                'keyinfo': keyinfo
+            }
+        else:
+            context = {
+                'status': 403,
+                'keyinfo': "抱歉，网络当前出错啦，请重试谢谢！"
+            }
     except Exception as e:
         # print(e)
         context = {
             'status': 403,
-            'error': "抱歉，网络当前出错啦。"
+            'error': "抱歉，网络当前出错啦，请重试谢谢！"
         }
     finally:
         return JsonResponse(context)

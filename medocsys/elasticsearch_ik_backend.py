@@ -11,25 +11,31 @@ from haystack.backends.elasticsearch7_backend import Elasticsearch7SearchBackend
 
 DEFAULT_FIELD_MAPPING = {
     "type": "text",
-    "analyzer": "ik_analyzer",
-    # "analyzer": "ik_max_word",
-    # "analyzer": "standard",
-    # "analyzer": "ik_smart",
-    "search_analyzer": "ik_analyzer",
+    "analyzer": "ik_max_analyzer",
+    "search_analyzer": "ik_smart_analyzer",
     "similarity": "BM25",
+    "term_vector": "with_positions_offsets",
     # "index_options": "offsets"
-
 }
 
 
 class Elasticsearc7IkSearchBackend(Elasticsearch7SearchBackend):
     def __init__(self, *args, **kwargs):
-        self.DEFAULT_SETTINGS['settings']['analysis']['analyzer']['ik_analyzer'] = {
+        self.DEFAULT_SETTINGS['settings']['analysis']['filter']['len'] = {
+            "type": "length",
+            "min": 2
+        }
+        self.DEFAULT_SETTINGS['settings']['analysis']['analyzer']['ik_smart_analyzer'] = {
             "type": "custom",
-            # "tokenizer": "ik_max_word",
             "tokenizer": "ik_smart",  # 这个自定义的分析器必须要
             "filter": ["len"]  # 最小分词个数为2
         }
+        self.DEFAULT_SETTINGS['settings']['analysis']['analyzer']['ik_max_analyzer'] = {
+            "type": "custom",
+            "tokenizer": "ik_max_word",  # 这个自定义的分析器必须要
+            "filter": ["len"]  # 最小分词个数为2
+        }
+
         super(Elasticsearc7IkSearchBackend, self).__init__(*args, **kwargs)
 
 

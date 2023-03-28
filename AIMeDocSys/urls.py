@@ -30,17 +30,13 @@ urlpatterns = [
     path("checkcode/", account.checkcode_email),
     # *********************机器人助手*********************
     path("chat/", medocrobot.chat),
-    # *********************文档管理*********************
+    # *********************文档接口*********************
     # 文档列表
     path("doc/list/", doc.doc_list),
     # 添加文档(ajax异步上传)
     path("doc/add/", doc.doc_add),
     # 删除文献
     path("doc/del/", doc.doc_del),
-    # # 传递编辑信息
-    # path("doc/edit/details", doc.doc_edit_details),
-    # # 编辑文献
-    # path("doc/edit/", doc.doc_edit),
     # 查看文献
     path("doc/view/", doc.doc_view),
     # 查看文献具体信息

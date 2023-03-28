@@ -8,10 +8,6 @@ from .utils.del_img import del_img
 from .utils.encrypt import md5
 
 
-# admin.site.register(MeDocs)
-# admin.site.register(DocTxt)
-# admin.site.register(DocImgTxt)
-
 # @admin.register(User)
 # class UserAdmin(AjaxAdmin):
 #     actions = ('upload_file',)
@@ -119,9 +115,9 @@ class DocImgTxtAdmin(admin.ModelAdmin):
         os.system('python ./manage.py rebuild_index --noinput')
 
 
-admin.site.site_header = "医道有易——后台管理"
-admin.site.site_title = "医道有易——后台管理"
-admin.site.index_title = "医道有易——后台管理首页"
+admin.site.site_header = "智检慧医——后台管理"
+admin.site.site_title = "智检慧医——后台管理"
+admin.site.index_title = "智检慧医——后台管理首页"
 # 分页，每页显示条数
 list_per_page = 5
 

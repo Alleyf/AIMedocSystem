@@ -157,7 +157,7 @@ function init_myChart1() {
         },
         series: [
             {
-                name: 'PapersAmounts',
+                name: '文献数量',
                 type: 'pie',
                 radius: [20, 80],
                 center: ['60%', '50%'],

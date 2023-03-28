@@ -62,9 +62,10 @@
             <a class="navbar-brand">医学知识图谱</a>
             <form class="d-flex" role="search" method="post" action="/chart/graph/">
                 {% csrf_token %}
-                <input class="form-control me-2" name="disease_node" type="text" placeholder="Search for disease"
-                       aria-label="Search">
-                <button class="btn btn-outline-success" type="submit" id="liveToastBtn">Search</button>
+                <input class="form-control me-2" name="disease_node" type="text"
+                       placeholder="Search for disease" style="padding-right: 50px ">
+                <button class="btn btn-outline-success" type="submit" id="liveToastBtn"><i
+                        class="fa-solid fa-magnifying-glass"></i></button>
             </form>
             <div class="d-flex">
                 <i class="fas fa-expand-arrows-alt" onclick="fullScreen()"
@@ -188,6 +189,15 @@
     var myChart1 = echarts.init(dom);
     var categories1 = [{name: "Disease"}, {name: "Check"}, {name: "Department"}, {name: "Drug"}, {name: "Food"}, {name: "Producer"}, {name: "Symptom"}];
     var option;
+    {#let namels = {#}
+    {#    "Disease": "疾病",#}
+    {#    "Check": "检查",#}
+    {#    "Department": "种类",#}
+    {#    "Drug": "宜用药",#}
+    {#    "Food": "建议食物",#}
+    {#    "Producer": "病因",#}
+    {#    "Symptom": "症状"#}
+    //}
     option = {
         // 图的标题
         title: {
@@ -222,6 +232,7 @@
             y: 'center',     //可设定图例在上、下、居中
             itemGap: 50,//图例图标与文字间的间距
             data: categories1.map(function (a) {
+                {#console.log(namels[a.name])#}
                 return a.name;
             }),
             textStyle: {
@@ -285,8 +296,6 @@
             links: links1,
             categories: categories1,
             color: ['#c23531', '#2f4554', '#61a0a8', '#d48265', '#91c7ae', '#749f83', '#ca8622', '#bda29a', '#6e7074', '#546570', '#c4ccd3'],
-
-
         }]
     };
     {#console.log(option)#}

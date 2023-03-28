@@ -17,7 +17,7 @@ def query_elastics(key: str, start=0, size=1000):
                 "match": {
                     "text": {
                         "query": key,
-                        "analyzer": "ik_analyzer"  # 指定搜索时的分词模式
+                        "analyzer": "ik_smart_analyzer"  # 指定搜索时的分词模式
                     },
                 },
             },
@@ -82,7 +82,7 @@ def query_elastics_min_fragment(key: str, start=0, size=1000):
                 "match": {
                     "text": {
                         "query": key,
-                        "analyzer": "ik_analyzer"  # 指定搜索时的分词模式
+                        "analyzer": "ik_smart_analyzer"  # 指定搜索时的分词模式
                     },
                 },
 
@@ -144,17 +144,47 @@ def query_elastics_fulltext(key):
         print(e, "发生了错误")
         return False, '', ''
 
-    # 获取关键词相关词
-    # union_api = "https://recom.cnki.net/api/recommendations/words/union"
-    # union_key = requests.get(url=union_api, params={'w': key, 'top': 10})
-    # union_key = json.loads(union_key.text)['wordres']
-    # key = key + ',' + ','.join(union_key)
-    # print(key)
+
+def query_leastic_firstpage(doc_name):
+    try:
+        es = Elasticsearch([{"host": "127.0.0.1", "port": 9200}])  # 默认连接本地elasticsearch
+        # es = Elasticsearch([{"host": "43.139.217.160", "port": 9200}])  # 连接云端elasticsearch
+        res = es.search(
+            index=['doctxt'],
+            query={
+                "bool": {
+                    "filter": {
+                        "term": {
+                            'page_id': 1
+                        },
+                    },
+                    "must": {
+                        "match": {
+                            "doc_name": doc_name,
+                        }
+                    }
+                }
+            }
+        )
+        res = res.get('hits')['hits']
+        full_txt = ''
+        for item in res:
+            if item['_source']['doc_name'] == res[0]['_source']['doc_name']:
+                # full_txt += item["_source"]["text"]
+                full_txt = os.path.join(full_txt, item["_source"]["text"])
+        if res:
+            doc_name = res[0]['_source']['doc_name']
+            return True, doc_name, full_txt
+        else:
+            return False, '', ''
+    except Exception as e:
+        print(e, "发生了错误")
+        return False, '', ''
 
 
 if __name__ == '__main__':
-    print(os.system('python ../../manage.py rebuild_index --noinput'))
-
+    # print(os.system('python ../../manage.py rebuild_index --noinput'))
+    print(query_leastic_firstpage(doc_name="三维标测系统和单环状标测导管指示_省略_线性消融电学隔离肺静脉方法学评价_董建增"))
 #     # query_elastics("细胞培养", start=0, size=100)
 #     # print(query_elastics_fulltext(key="fast"))
 #     a = [{'id': 2}, {'id': 6}, {'id': 6}, {'id': 1}, ]

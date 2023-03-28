@@ -17,7 +17,7 @@ DEBUG = True
 # DEBUG = False
 # 错误视图设置
 # 部署环境静态路径配置
-# STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
+# 部署时使用collastic_static指令迁移静态文件
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')  # 这里可以根据实际情况来定义，比如可以将static名修改
 STATIC_URL = '/static/'
 
@@ -32,8 +32,6 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = '467807892@qq.com'  # 这里是你的邮箱账号
 EMAIL_HOST_PASSWORD = 'jrlrljlzzhgzbhha'  # 注意这里不能用你邮箱账号的密码，而要用申请的设备授权码。
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-
-# Application definition
 
 INSTALLED_APPS = [
     'simpleui',
@@ -200,5 +198,5 @@ HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 # 在settings.py末尾加入,保证部署环境下静态文件正常加载
 # SECURE_CONTENT_TYPE_NOSNIFF = False
 
-mimetypes.add_type('text/css', '.css')
-mimetypes.add_type('application/javascript', '.js')
+# mimetypes.add_type('text/css', '.css')
+# mimetypes.add_type('application/javascript', '.js')

@@ -459,8 +459,10 @@ def index(request):
                 return render(request, 'medicine_graph.html',
                               {'neo4j_data': cache_search_data, 'ctx': json.loads(cache_search_data)['error']})
     if not cache_data:
+        # if cache_data:
         neo4j_data = medicine_search_one()
         cache.set('neo4j_default_data', neo4j_data, 60 * 60 * 24)
         cache_data = cache.get('neo4j_data')
         # print(cache_data, type(cache_data))
     return render(request, 'medicine_graph.html', {'neo4j_data': cache_data, 'ctx': json.loads(cache_data)['error']})
+    # return render(request, 'medicine_graph.html', {'neo4j_data': neo4j_data, 'ctx': json.loads(neo4j_data)['error']})
