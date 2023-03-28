@@ -38,24 +38,6 @@ def user_add(request):
         return render(request, 'user_modelform_add.html', {'form': form})
 
 
-# def user_edit(request, nid):
-#     """编辑用户"""
-#     # 根据ID获取所要编辑的数据
-#     rowobj = models.User.objects.filter(id=nid).first()
-#     if request.method == "GET":
-#         # （instance=rowobj）将默认数据显示在表单中
-#         form = UserModelForm(instance=rowobj)
-#         return render(request, 'user_edit.html', {'form': form})
-#     form = UserModelForm(data=request.POST, instance=rowobj)
-#     if form.is_valid():
-#         # 默认保存的是用户输入的所有数据,如果想要再保存用户输入以外的字段的值
-#         # form.instance.字段名 = 值
-#         form.save()
-#         return redirect('/user/list/')
-#     else:
-#         return render(request, 'user_edit.html', {'form': form})
-
-
 def user_delete(request, nid):
     """删除用户"""
     models.User.objects.filter(id=nid).first().delete()

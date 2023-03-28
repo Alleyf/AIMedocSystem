@@ -259,7 +259,6 @@
 
         function get_info() {
             $('.chat-messages').append('<div class="message"><div class="message-content">' + "请稍等片刻，正在为您提炼文章主要内容！" + '</div></div>');
-            $("#chat_modal").modal("show")
             $.ajax({
                 url: "/doc/keyinfo/",
                 type: 'get',
@@ -275,6 +274,7 @@
                         $('.chat-messages').append('<div class="message"><div class="message-content">' + res.error + '</div></div>');
                         {#console.log(res.error)#}
                     }
+                    $("#chat_modal").modal("show")
                 }
             })
 

@@ -291,7 +291,7 @@
             myDropzone = new Dropzone("#doc_dropzone", {
                 url: "/doc/add/",
                 autoProcessQueue: false, // 禁止自动上传
-                maxFiles: 1, // 最大允许上传文件数量
+                {#maxFiles: 1, // 最大允许上传文件数量#}
                 maxFilesize: 10, // 最大允许上传文件大小，单位为 MB
                 dictDefaultMessage: "支持拖拽上传", // 默认提示信息
             });

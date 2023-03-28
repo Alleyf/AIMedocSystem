@@ -1,5 +1,5 @@
+from django.shortcuts import redirect
 from django.utils.deprecation import MiddlewareMixin
-from django.shortcuts import redirect, render
 
 
 class LoginAuth(MiddlewareMixin):
@@ -8,7 +8,7 @@ class LoginAuth(MiddlewareMixin):
     def process_request(self, request):
         # 1.排除哪些不需要登录的页面
         # request.path_info获取当前用户请求的url
-        print("当前访问的路由为" + request.path_info)
+        # print("当前访问的路由为" + request.path_info)
         if request.path_info in ["/index/", "/login/", '/register/', '/checkcode/', '/checkimgcode/']:
             return
         # 2.读取当前访问的用户的session信息,如果能读到,说明已登录鉴权,可以继续向后走

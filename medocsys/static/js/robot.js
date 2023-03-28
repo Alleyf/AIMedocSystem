@@ -1,16 +1,4 @@
-/*
- * @Author: Alleyf 3035581811@qq.com
- * @Github: https://github.com/Alleyf
- * @QQ: 3035581811
- * @Signature: You know more，you know less
- * @Date: 2023-03-01 17:46:13
- * @LastEditors: Alleyf 3035581811@qq.com
- * @LastEditTime: 2023-03-01 18:01:41
- * @FilePath: \PVR\assets\js\robot.js
- * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
- */
 $(function () {
-    // $.backstretch("../../static/images/bg.jpg");
     var count = 0;
     var classes = ["theme_1", "theme_2", "theme_3", "theme_4"];
     var length = classes.length;
@@ -28,7 +16,7 @@ $(function () {
         $('.message-input').on('keypress', function (e) {
             if (e.which === 13) {
                 if ($(this).val() === '') {
-                    $('.chat-messages').append('<div class="message"><div class="message-content">' + "请输入你的问题，我很荣幸为您解答." + '</div></div>');
+                    $('.chat-messages').append('<div class="message"><div class="message-content">' + "请输入你的问题，小医很荣幸为您解答哦！" + '</div></div>');
                     return false;
                 } else {
                     let val = $(this).val();

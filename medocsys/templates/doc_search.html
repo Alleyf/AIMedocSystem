@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 {% block mytitle %}
-    <title>医学文献-易管理</title>
+    <title>智检慧医</title>
 {% endblock %}
 {% block mystyle %}
 {% endblock %}
@@ -19,43 +19,23 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid" id="tb" style="display: none">
+    <div class="container-fluid card" id="tb" style="display: none">
         <div class="panel panel-info">
-            <div class="panel-heading"><i class="fa fa-list"></i>文献列表</div>
-            <div class="panel-body">
+            <div class="card-heading"><i class="fa fa-list"></i>文献列表</div>
+            <div class="card-body">
                 <table class="table table-hover table-condensed ">
                     <thead class="text-center">
                     <tr>
                         <th>ID</th>
                         <th>文献名</th>
-                        <th>作者</th>
-                        {#                        <th>点击量得分</th>#}
-                        {#                        <th>用户反馈得分</th>#}
-                        {#                        <th>归档</th>#}
-                        {#                        <th>来源</th>#}
-                        {#                        <th>管理员</th>#}
+                        <th>反馈得分</th>
+                        <th>点击量得分</th>
+                        <th>相关得分</th>
+                        <th>总分</th>
                         <th>操作</th>
                     </tr>
                     </thead>
                     <tbody class="text-center info">
-                    {% for pninfo in page_queryset %}
-                        <tr uid="{{ pninfo.id }}">
-                            <th scope="row">{{ pninfo.id }}</th>
-                            <td>{{ pninfo.name }}</td>
-                            <td>{{ pninfo.clkscore }}</td>
-                            <td>{{ pninfo.fedbakscore }}</td>
-                            <td>
-                                <a href="/doc/details/?text={{ search_data }}&uid={{ pninfo.id }}" uid="{{ pninfo.id }}"
-                                   class="btn btn-info btn-xs">查看详情</a>
-                                <input uid="{{ pninfo.id }}" type="button" class="btn btn-default btn-xs btn_edit"
-                                       value="编辑">
-                                <input uid="{{ pninfo.id }}" type="button" class="btn btn-primary btn-xs btn_view"
-                                       value="查看">
-                                <input uid="{{ pninfo.id }}" type="button" class="btn btn-danger btn-xs btn_del"
-                                       value="删除">
-                            </td>
-                        </tr>
-                    {% endfor %}
                     </tbody>
                 </table>
             </div>
@@ -66,88 +46,148 @@
             </ul>
         </div>
     </div>
+    <div class="modal fade" id="ImageModal" tabindex="-1" aria-labelledby="ImageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content text-center">
+                <div class="modal-header text-primary">
+                    <h1 class="modal-title fs-5" id="ImageModalLabel">文献图片</h1>
+                    <button type="button" class="btn-close btn-outline-info" data-bs-dismiss="modal"
+                            aria-label="Close">X
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-group text-center" id="imgcard"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
 
 {% block myscript %}
     <script type="text/javascript">
         var KEYWORD
+        var IMG_UID
         $(function () {
-            {#$("#tb").hide()#}
             get_info();
+            {#bindbtnimg();#}
         })
+
+        function bindbtnimg() {
+            console.log(IMG_UID)
+
+            $("#btn_img").click(function () {
+                IMG_UID = $(this).siblings('<a>').first().attr('uid')
+                console.log(IMG_UID)
+                $.ajax({
+                    url: "/doc/img/",
+                    type: 'post',
+                    data: {
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        uid: IMG_UID
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        let card = $("#imgcard");
+                        card.children().remove();
+                        if (res.status === 200) {
+                            let img_residue = res.names.length;
+                            let num = 0;
+                            first:for (let i = 0; i < res.names.length; i++) {
+                                {#console.log(res.names.length, res.paths[i])#}
+                                let row = $("<div>")
+                                row.attr({
+                                    'class': 'row',
+                                    'style': 'width:100%;margin: 0 auto'
+                                })
+                                {#if (img_residue >= 4) {#}
+                                if (i % 4 === 0) {
+                                    for (let j = 0; j < 4; j++) {
+                                        if (res.names[i + j] === undefined) {
+                                            {#console.log(i + j)#}
+                                            break first
+                                        } else {
+                                            html = "<div style='width:25%;margin: 0 auto' class=\"card col-12 col-md-3 p-3 fanimate\">" + "<img style='min-width: 100%px!important;' width='128px' height='128px' src = " + "\"" + res.paths[i + j] + "\"" + " class =\"card-img-top\" alt = \"\">" +
+                                                "<div class=\"card-body\">" + "<h5 class=\"card-title text-center\" >" + "页码-编号：" + res.names[i + j] + "</h5></div>"
+                                            row.append(html)
+                                            card.append(row)
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            html = "<h5 class='text-danger' style='width:50%;margin: 0 auto'>抱歉，该文献中未发现图片！</h5>"
+                            card.append(html)
+                            console.log(res)
+                        }
+                    }
+                })
+
+            })
+        }
 
         function get_info() {
             $("#search").click(function () {
-                    $(".info").children().remove()
-                    var keyword = $("#keyword").val();
-                    $.ajax({
-                        url: "/search/?text=" + keyword,
-                        type: 'get',
-                        dataType: 'json',
-                        success: function (res) {
-                            if (res) {
-                                var id_list = []
-                                let data_length = res.count
-                                if (data_length >= 10) {
-
-                                }
-                                for (let i = 0; i < res.count; i++) {
-                                    console.log(res.results[i].object.id)
-                                    let id = res.results[i].object.id;
-                                    id_list.push(id)
-                                }
-                                var id_array = new Int8Array(id_list)
-                                console.log(id_array)
-                                $.ajax({
-                                    url: "/doc/search/",
-                                    type: 'post',
-                                    data: id_array,
-                                    dataType: 'json',
-                                    {#async: false,  //同步#}
-                                    success: function (res) {
-                                        console.log('发送请求成功')
-                                        {#$("#tb").show()#}
-                                        $("#tb").attr('style', 'display:block')
-                                        $(".page_str").html(res.page_str)
-                                        var page_info = res.page_queryset
-                                        for (let item in page_info) {
-                                            console.log(page_info[item])
-                                            let id = page_info[item].pk
-                                            let uid = $('<th>').text(id)
-                                            let title = $('<td>').text(page_info[item].fields.name)
-                                            let author = $('<td>').text(page_info[item].fields.author)
-                                            let details = $('<a>').attr({
-                                                "href": "/doc/details/?text=" + keyword + "&uid=" + id,
-                                                "uid": id,
-                                                "class": "btn btn-info btn-xs"
-                                            })
-                                            details.text("查看详情")
-                                            let details_td = $("<td>").append(details)
-                                            let tr = $('<tr>').attr('uid', id)
-                                            tr.append(uid)
-                                            tr.append(title)
-                                            tr.append(author)
-                                            tr.append(details_td)
-                                            $(".info").append(tr)
-                                        }
-                                        {#for (let i = 0; i < res.page_queryset.length; i++) {#}
-
-                                        {#console.log(res.page_queryset.pk)#}
-                                        {#id = item.pk#}
-                                        {#$(".info")#}
-
-                                        {#document.querySelector('html').innerHTML = res#}
-                                    }
-                                });
-                            } else {
-                                console.log(res.error)
+                $(".info").children().remove()
+                let keyword = $("#keyword").val();
+                $.ajax({
+                    url: "/doc/search/",
+                    type: 'get',
+                    data: {'keyword': keyword},
+                    dataType: 'json',
+                    {#async: false,  //同步#}
+                    success: function (res) {
+                        {#console.log('发送请求成功', res)#}
+                        {#$("#tb").show()#}
+                        if (res.code === 200) {
+                            $("#tb").attr('style', 'display:block')
+                            trcss = ['table-primary', 'table-secondary', 'table-success', 'table-danger', 'table-warning', 'table-light']
+                            $(".page_str").html(res.page_info)
+                            var page_info = res.page_info
+                            for (let item in page_info) {
+                                {#console.log(page_info[item])#}
+                                let id = page_info[item].id
+                                IMG_UID = id;
+                                let uid = $('<th>').text(id)
+                                let title = $('<td>').text(page_info[item].name)
+                                let fedbakscore = $('<td>').text(page_info[item].fedbakscore)
+                                let clkscore = $('<td>').text(page_info[item].clkscore)
+                                let relscore = $('<td>').text(page_info[item].relscore)
+                                let allscore = $('<td>').text(page_info[item].allscore)
+                                {#let author = $('<td>').text(page_info[item].author)#}
+                                let details = $('<a>').attr({
+                                    "href": "/doc/details/?text=" + keyword + "&uid=" + id,
+                                    "uid": id,
+                                    "class": "btn btn-info btn-xs"
+                                })
+                                let btn_img = '<button id="btn_img" type="button" class="btn btn-xs btn-primary btn_img" \
+                                        data-bs-toggle="modal" data-bs-target="#ImageModal"><i class="fa-solid fa-image"></i></button>'
+                                details.html("<i class='fa-solid fa-eye'></i>")
+                                let details_td = $("<td>")
+                                details_td.append(details)
+                                details_td.append(btn_img)
+                                let tr = $('<tr>').attr({
+                                    'uid': id,
+                                    'class': trcss[item % 6]
+                                })
+                                tr.append(uid)
+                                tr.append(title)
+                                tr.append(fedbakscore)
+                                tr.append(clkscore)
+                                tr.append(relscore)
+                                tr.append(allscore)
+                                tr.append(details_td)
+                                $(".info").append(tr)
+                                console.log()
                             }
-
+                        } else {
+                            console.log(res.error)
                         }
-                    })
-                }
-            )
+                    }
+                });
+            });
         }
+
+
     </script>
 {% endblock %}

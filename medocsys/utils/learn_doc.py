@@ -11,7 +11,7 @@ openai.api_base = "https://openai.yugin.top/v1"
 
 
 # 提问代码
-def get_keyinfo(txt: str) -> str:
+def get_keyinfo(txt: str):
     # 你的问题
     try:
         question = '[' + txt + ']' + "请帮我提炼浓缩上述内容，高度总结概括出关键信息发给我." + "并且检查你的回答是否存在语法错误，将不通顺的语法错误纠正后的内容发给我。请以'本文的主要内容可概括为：'为开头回答我。"
@@ -29,6 +29,7 @@ def get_keyinfo(txt: str) -> str:
         return response
     except Exception as e:
         print(e)
+        return e
 
 
 if __name__ == '__main__':

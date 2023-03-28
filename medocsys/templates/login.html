@@ -30,7 +30,7 @@
     <div class="container clearfix"
          style="justify-content: center;display: flex;align-items: center;flex-wrap: wrap;align-content: center;">
         <div style="margin: 35px auto;display: flex;flex-direction: column;flex-wrap: wrap;align-content: center;justify-content: center;align-items: center;">
-            <h1 class="title" style="font-family: Helvetica;margin: 15px auto">智检慧医-智能文献检索系统</h1>
+            <h1 class="title" style="font-family: Helvetica;margin: 15px auto">智检慧医-医学文献智能检索系统</h1>
             <h2 class="text-center">
                 让您检索文献从此变得
                 <div class="mask text-center" style="">
@@ -73,8 +73,6 @@
     <canvas class="background"></canvas>
 {% endblock %}
 
-{#<script src="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.3.0/js/fontawesome.min.js"></script>#}
-{#<script type="text/javascript" src="{% static 'js/jquery-3.6.1.min.js' %}"></script>#}
 <script type="text/javascript" src="/static/js/jquery-3.6.1.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/particlesjs/2.2.2/particles.min.js"></script>
 {% block myscript %}
@@ -82,6 +80,7 @@
         var code; //声明一个变量用于存储生成的验证码
         changeImg();
         document.getElementById("id_code").onclick = changeImg;
+        turnaudio();
 
 
         function changeImg() {
@@ -108,18 +107,29 @@
 
             //获取用户输入的验证码
             let input_code = document.getElementById('vcode').value;
-            if (input_code.toLowerCase() === code.toLowerCase()) {
-                return true
-            } else {
-                alert("请输入正确的验证码!");
-                return false;
-            }
+            return input_code.toLowerCase() === code.toLowerCase();
         }
+
+        function turnaudio() {
+            setInterval(function () {
+                const show = document.querySelector('span[data-show]')
+                const next = show.nextElementSibling || document.querySelector('span:first-child')
+                const up = document.querySelector('span[data-up]')
+
+                if (up) {
+                    up.removeAttribute('data-up')
+                }
+
+                show.removeAttribute('data-show')
+                show.setAttribute('data-up', '')
+
+                next.setAttribute('data-show', '')
+            }, 2000)
+        }
+
 
     </script>
 {% endblock %}
-
-</body>
 <script type="text/javascript">
     window.onload = function () {
         Particles.init
@@ -127,25 +137,9 @@
             selector:
                 '.background'
         });
-        turnaudio();
     };
 
-    function turnaudio() {
-        setInterval(function () {
-            const show = document.querySelector('span[data-show]')
-            const next = show.nextElementSibling || document.querySelector('span:first-child')
-            const up = document.querySelector('span[data-up]')
-
-            if (up) {
-                up.removeAttribute('data-up')
-            }
-
-            show.removeAttribute('data-show')
-            show.setAttribute('data-up', '')
-
-            next.setAttribute('data-show', '')
-        }, 2000)
-    }
 </script>
 
+</body>
 </html>

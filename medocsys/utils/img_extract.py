@@ -34,7 +34,7 @@ def get_pdf_img(url: str):
                 if pix.n < 4:  # this is GRAY or RGB
                     # pix1 = fitz.Pixmap(fitz.csRGB, pix)
                     pix._writeIMG("../../media/docimgs/%s-%s-%s.png" % (f[:-4], tempcurrentpage, imgindex + 1), 1)
-                    print("%s 图片提取成功" % f[:-4])
+                    # print("%s 图片提取成功" % f[:-4])
                     if filedic['filename'] == f[:-4]:
                         if filedic['filepage'] == tempcurrentpage:
                             filedic['filepageimgnumber'] += 1
@@ -48,7 +48,7 @@ def get_pdf_img(url: str):
                 else:  # CMYK: convert to RGB first
                     pix1 = fitz.Pixmap(fitz.csRGB, pix)
                     pix1._writeIMG("../../media/docimgs/%s-%s-%s.png" % (f[:-4], tempcurrentpage, imgindex + 1), 1)
-                    print("%s 图片提取成功" % f[:-4])
+                    # print("%s 图片提取成功" % f[:-4])
                     pix1 = None
                     if filedic['filename'] == f[:-4]:
                         if filedic['filepage'] == tempcurrentpage:
@@ -62,7 +62,7 @@ def get_pdf_img(url: str):
                         filelist.append(filedic)
                 pix = None
     end = time.perf_counter()
-    print("耗时{}秒".format(end - start))
+    # print("耗时{}秒".format(end - start))
     return filelist
 
 

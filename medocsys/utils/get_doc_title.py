@@ -7,7 +7,7 @@ def get_doc_title(doc_name: str):
     # 1.使用PyPDF2库：PyPDF2是用来提取PDF文档内容的库，可以把PDF文档转换成文本，并且可以提取其中的文本，所以可以用它来提取PDF文档中的论文题目：
     # url = '../../media/docs/' + doc_name  # 测试
     url = './media/docs/' + doc_name + '.pdf'  # 实际
-    print(url)
+    # print(url)
     pdf_document = fitz.open(url)
     # 获取pdf元信息
     document_info = pdf_document.metadata
@@ -35,7 +35,7 @@ def get_doc_title(doc_name: str):
             item = item.replace("＊", ",")
             if "\n" and "\r" and "," not in item:
                 # if not re.search(" ", item):
-                print("满足条件的项", item, len(item))
+                # print("满足条件的项", item, len(item))
                 title_ls.append(item)
                 yes_signal += 1
             else:

@@ -34,7 +34,7 @@ def get_context(prompt: str) -> str:
 
 
 # 提问代码
-def get_category(title: str) -> str:
+def get_category(title: str):
     # 你的问题
     try:
         question = "请判断文本'" + title + "'是医学中[内科，外科，儿科，妇产科，骨科，影像科，其他]中的哪个领域，用这是医学中的...领域来回答"
@@ -52,7 +52,8 @@ def get_category(title: str) -> str:
         category = re.findall(rule, response)[0].strip()
         return category
     except Exception as e:
-        print(e)
+        # print(e)
+        return e
 
 
 if __name__ == '__main__':

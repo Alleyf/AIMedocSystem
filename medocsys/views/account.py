@@ -40,14 +40,14 @@ def login(request):
             avatar_name1 = pattern.findall(usrobj.avatar.name)
             pattern = re.compile('/.+/')
             avatar_name2 = pattern.findall(usrobj.avatar.name)
-            print(avatar_name1)
+            # print(avatar_name1)
             if not avatar_name1:
                 avatar_name = usrobj.avatar.name
             elif not avatar_name2:
                 avatar_name = avatar_name1[0].replace("/", '')
             else:
                 avatar_name = avatar_name1[0].replace(avatar_name2[0], '')
-            print(usrobj.avatar.name, avatar_name)
+            # print(usrobj.avatar.name, avatar_name)
             request.session["info"] = {"id": usrobj.id, "name": usrobj.username, "avatar": avatar_name}
             # 设置用户信息保存7天
             request.session.set_expiry(60 * 60 * 24 * 7)
@@ -58,7 +58,7 @@ def login(request):
     return render(request, "login.html", {'form': form})
 
 
-# @gzip_page
+@csrf_exempt
 def register(request):
     """注册"""
     if request.method == "GET":
@@ -66,6 +66,7 @@ def register(request):
         return render(request, "register.html", {'form': form})
     # print(type(request.POST), request.POST)
     form = RegisterModelForm(data=request.POST, files=request.FILES)
+    print(request.POST, request.FILES)
     if form.is_valid():
         # 验证码校验,取出并出栈验证码，防止后面校验多出数据库中没有的验证码
         usr_input_code = form.cleaned_data.pop('code')
@@ -76,7 +77,7 @@ def register(request):
         if request.FILES:
             # form.instance.avatar.name = "images/avatars/" + avatarname + ".png"
             # 修改用户头像名
-            print(request.FILES['avatar'].name)
+            # print(request.FILES['avatar'].name)
             form.instance.avatar.name = request.FILES['avatar'].name
         form.save()
         return redirect('/login/')
@@ -96,7 +97,7 @@ def logout(request):
 @csrf_exempt
 def checkcode_email(request):
     if request.method == "POST":
-        print(request.POST)
+        # print(request.POST)
         email_des = request.POST.get('email')
         code = generate_random_str(randomlength=4)
         request.session['checkcode'] = code
@@ -109,7 +110,7 @@ def checkcode_email(request):
             status = "发送成功"
         else:
             status = "发送失败"
-        print(status)
+        # print(status)
         # return JsonResponse({'status': status, 'code': code})
         return JsonResponse({'status': status})
     return redirect('/login/')
@@ -120,7 +121,7 @@ def checkcode_email(request):
 def checkimgcode(request):
     """图片验证码"""
     # 调用函数生成图片验证码
-    print(request.method)
+    # print(request.method)
     img, code = check_code()
     # 将验证码写入到自己的session中(以便于后续校验)
     request.session['checkimgcode'] = code

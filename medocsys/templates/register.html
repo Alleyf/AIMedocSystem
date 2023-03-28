@@ -1,11 +1,18 @@
 {% extends 'login.html' %}
 {% block mytitle %}
     <title>用户注册</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/dropzone/5.9.3/dropzone.min.css" rel="stylesheet">
+    <style>
+        .dropzone > .dz-message {
+            margin: 0 auto;
+        }
+    </style>
 {% endblock %}
 {% block myinfo %}
     <div class="container" style="flex-wrap: wrap;justify-content: center;display: flex;align-items: center;">
         <div class="login-wrapper">
-            <form method="post" action="/register/" onsubmit="return check()" novalidate enctype="multipart/form-data">
+            <form id="signup_form" method="post" action="/register/" novalidate
+                  enctype="multipart/form-data" class="form-group">
                 {% csrf_token %}
                 <div class="header">Register</div>
                 <div class="container-fluid form-wrapper clearfix">
@@ -17,26 +24,9 @@
                     <span style="color: red">{{ form.password.errors }}</span>
                     {{ form.confirm_password }}
                     <span style="color: red">{{ form.confirm_password.errors }}</span>
-                    {#                    <div class="dropify-wrapper" style="height: 212px;">#}
-                    {#                        <div class="dropify-message"><span class="file-icon"> <p>Drag and drop a file here or click</p></span>#}
-                    {#                            <p class="dropify-error">Ooops, something wrong appended.</p></div>#}
-                    {#                        <div class="dropify-loader"></div>#}
-                    {#                        <div class="dropify-errors-container">#}
-                    {#                            <ul></ul>#}
-                    {#                        </div>#}
-                    {#                        <input type="file" class="dropify" data-height="200">#}
-                    {#                        <button type="button" class="dropify-clear">Remove</button>#}
-                    {#                        <div class="dropify-preview"><span class="dropify-render"></span>#}
-                    {#                            <div class="dropify-infos">#}
-                    {#                                <div class="dropify-infos-inner"><p class="dropify-filename"><span#}
-                    {#                                        class="dropify-filename-inner"></span></p>#}
-                    {#                                    <p class="dropify-infos-message">Drag and drop or click to replace</p></div>#}
-                    {#                            </div>#}
-                    {#                        </div>#}
+                    {#                    <div style="display: none">#}
+                    {#                        {{ form.avatar }}#}
                     {#                    </div>#}
-
-                    {{ form.avatar }}
-                    <span style="color: red">{{ form.avatar.errors }}</span>
                     <div class="row" style="align-items: center">
                         <div class="col">
                             {{ form.code }}
@@ -60,10 +50,28 @@
     <canvas class="background"></canvas>
 {% endblock %}
 {% block myscript %}
+    <script src="https://cdn.bootcdn.net/ajax/libs/dropzone/5.9.3/dropzone.js"></script>
     <script type="text/javascript">
+        {#$("#id_avatar").hide();#}
+
         $(function () {
             send_checkcode();
+            {#binddrop_avatar();#}
         })
+
+        function binddrop_avatar() {
+            let avatar = $("#id_avatar");
+            avatar.change(function () {
+                console.log(avatar.val())
+                if (avatar.val()) {
+                    $("#tip").text(avatar.val())
+                    {#avatar.show()#}
+                } else {
+
+                }
+            })
+
+        }
 
         function send_checkcode() {
             let send_btn = $("#send_email_btn");

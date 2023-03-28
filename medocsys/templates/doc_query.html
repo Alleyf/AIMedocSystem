@@ -34,7 +34,7 @@
     </div>
 
     <div id='PleaseWait' class='watiting-div'
-         style='justify-content: center;z-index: 999;opacity: 0.7;position: absolute;display: none;width: 100%;height: 100%;background: #111010'></div>
+         style='justify-content: center;z-index: 10;opacity: 0.7;position: absolute;display: flex;background: #111010'></div>
     <div class="container-fluid" id="wrapper">
         <div class="container" style="margin: 50px auto">
             <form method="get" onsubmit="return bindsubmit()">
@@ -208,6 +208,7 @@
             bindbtnimg();
             change_search_way();
             changepage();
+            rel_search();
         })
 
         function bindbtnimg() {
@@ -265,6 +266,7 @@
             $("#zhiwang").click(function () {
                 $("#restip").children().remove();
                 $("#tb").hide();
+                $("#pagination").hide()
                 if (SEARCHWAY === "本地") {
                     $("#zhiwang").text(SEARCHWAY)
                     SEARCHWAY = "知网";
@@ -291,27 +293,9 @@
             }
         }
 
-        function loading() {
-            $('#PleaseWait')[0].innerHTML =
-                '<section class="loader" style="display: flex;align-items: center;justify-content:center"><div style="--i:0" class="slider"></div><div style="--i:1" class="slider"></div><div style="--i:2" class="slider"></div><div style="--i:3" class="slider"></div><div style="--i:4" class="slider"></div></section>';   // 解决在ie加载时gif图片freeze问题
-            $("#PleaseWait").show();
-            window.addEventListener('load', completeLoading);
-
-            function completeLoading() {
-                if (document.readyState === "complete") {
-                    $("#PleaseWait").hide();
-                }
-            }
-        }
-
 
         function bindsubmit() {
-            addloader();
-            if (!$("#relsearch").text()) {
-                rel_search();
-            }
             ikw = $("#keyword")
-            {#console.log(SEARCHWAY)#}
             let keywords = ikw.val()
             if (keywords !== "") {
                 ikw.removeClass("is-invalid")
@@ -319,7 +303,8 @@
                 $("#fedback").text("")
                 {#console.log($("#tb").length)#}
                 if ($("#tb").length != 0) {
-                    $("#pagination").show()
+                    $("#global-loader").show()
+                    $("#pagination").remove()
                 }
                 if (SEARCHWAY === "知网") {
                     $("span").detach();
@@ -334,71 +319,74 @@
                         },
                         dataType: 'json',
                         success: function (res) {
-                            {#console.log(res);#}
-                            $("#PleaseWait").css('display', "none")
-                            {#console.log("修改成功")#}
-                            $(".loader").remove();
-                            divcf = $("<div>");
-                            divcf.attr({
-                                'class': "container-fluid table-responsive",
-                                'id': "tb",
-                                'style': "display: block"
-                            })
-                            table = $("<table>")
-                            table.attr({
-                                'class': "table table-hover table-condensed"
-                            })
-                            thead = $("<thead>")
-                            thead.attr({
-                                'class': "text-center"
-                            })
-                            tr = $("<tr>")
-                            th1 = $("<th>")
-                            th2 = $("<th>")
-                            th1.text("文献名")
-                            th2.text("操作")
-                            tr.append(th1)
-                            tr.append(th2)
-                            thead.append(tr)
-                            table.append(thead)
-                            tbody = $("<tbody>")
-                            tbody.attr('class', 'text-center')
-                            for (let i = 0; i < res.data.length; i++) {
-                                trby = $("<tr>")
-                                td1 = $("<td>")
-                                td2 = $("<td>")
-                                a = $("<a>")
-                                td1.text(res.data[i].name)
-                                a.attr({
-                                    'href': res.data[i].href,
-                                    'target': '_blank',
-                                    'style': 'text-decoration: none'
+                            if (res.status === 200) {
+                                $(".loader").remove();
+                                divcf = $("<div>");
+                                divcf.attr({
+                                    'class': "container-fluid table-responsive",
+                                    'id': "tb",
+                                    'style': "display: block"
                                 })
-                                a.text("浏览")
-                                td2.append(a)
-                                trby.append(td1)
-                                trby.append(td2)
-                                tbody.append(trby)
+                                table = $("<table>")
+                                table.attr({
+                                    'class': "table table-hover table-condensed"
+                                })
+                                thead = $("<thead>")
+                                thead.attr({
+                                    'class': "text-center"
+                                })
+                                tr = $("<tr>")
+                                th1 = $("<th>")
+                                th2 = $("<th>")
+                                th1.text("文献名")
+                                th2.text("操作")
+                                tr.append(th1)
+                                tr.append(th2)
+                                thead.append(tr)
+                                table.append(thead)
+                                tbody = $("<tbody>")
+                                tbody.attr('class', 'text-center')
+                                for (let i = 0; i < res.data.length; i++) {
+                                    trby = $("<tr>")
+                                    td1 = $("<td>")
+                                    td2 = $("<td>")
+                                    a = $("<a>")
+                                    td1.text(res.data[i].name)
+                                    a.attr({
+                                        'href': res.data[i].href,
+                                        'target': '_blank',
+                                        'style': 'text-decoration: none'
+                                    })
+                                    a.html("<i class='fa-solid fa-eye'></i>")
+                                    td2.append(a)
+                                    trby.append(td1)
+                                    trby.append(td2)
+                                    tbody.append(trby)
+                                }
+                                table.append(tbody)
+                                divcf.append(table)
+                                $("#tb_container").prepend(divcf)
+                                bindsettb()
+                                {#if (!$("#relsearch").text()) {#}
+
+                            } else {
+                                $("#tb_container").text("抱歉由于您的网络问题，导致检索超时，请重试谢谢！")
                             }
-                            table.append(tbody)
-                            divcf.append(table)
-                            $("#tb_container").prepend(divcf)
-                            {#$("#wrapper").append(divcf)#}
-                            {#console.log("添加表格")#}
-                            rel_search()
-                            bindsettb()
+                            $("#global-loader").hide()
+                            rel_search();
                         }
                     })
-                    console.log("换页失败")
+                    {#console.log("换页失败")#}
                     return false
                 } else {
                     ikw = $("#keyword")
                     ikw.removeClass("is-invalid")
                     ikw.addClass("is-valid")
                     {#console.log("输入不为空")#}
-                    console.log("修改后的起始页码", $("#start").val())
+                    {#console.log("修改后的起始页码", $("#start").val())#}
                     return true
                 }
+
             } else {
                 $("#tb").empty();
                 $("#restip").empty();
@@ -431,28 +419,20 @@
             })
         }
 
-        function addloader() {
-            {#console.log(document.readyState)#}
-            $("#search").click(function () {
-                if ($("#keyword").val() !== "") {
-                    loading();
-                } else {
-                    $(".loader").css('display', "none")
-                }
-            })
-
-        }
-
         function rel_search() {
             $("#slogan").show();
             {#$("#relsearch").removeTag('span')#}
             let keyword = $("#keyword").val()
+            if (!keyword) {
+                keyword = "心血管"
+            }
+            console.log(keyword)
             $.ajax({
-                url: 'https://recom.cnki.net/api/recommendations/words/union',
+                {#url: 'https://recom.cnki.net/api/recommendations/words/union',#}
+                url: '/doc/union/',
                 type: 'GET',
                 data: {
-                    'w': keyword,
-                    'top': 10
+                    'keyword': keyword,
                 },
                 dataType: 'json',
                 success: function (res) {

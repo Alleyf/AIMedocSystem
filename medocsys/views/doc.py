@@ -1,8 +1,11 @@
 import json
 import os
+import random
 import re
 import time
 
+import jieba
+import requests
 from django.core import serializers
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -22,63 +25,12 @@ from ..utils.query import query_elastics
 from ..utils.zhiwang import get_zhiwang_data
 
 
-# 一定要继承SearchView
-
-
-# class MySearchView(SearchView):
-#
-#     # 重写人家的方法
-#     def create_response(self):
-#         # 人家的，就这样写，获取到的就是全部的东西
-#         start = time.perf_counter()
-#         context = self.get_context()
-#         end = time.perf_counter()
-#         print('-----------------------------------')
-#         print("{}秒".format(end - start))
-#         print('-----------------------------------')
-#         data_list = []
-#         #   context['page'].object_list   这样获取到的就是  数据的list集合
-#         for sku in context['page'].object_list:
-#             # 获取表里面的数据，就是前缀就是sku.object
-#             # print(sku.object.status, sku.object.get_status_display())
-#             data_list.append({
-#                 'id': sku.object.id,
-#                 'name': sku.object.name,
-#                 'content': sku.object.content,
-#                 'author': sku.object.author,
-#                 'source': sku.object.get_source_display(),
-#                 'relscore': sku.object.relscore,
-#                 'clkscore': sku.object.clkscore,
-#                 'fedbakscore': sku.object.fedbakscore,
-#                 'allscore': sku.object.allscore,
-#                 'status': sku.object.get_status_display(),
-#                 'user': sku.object.user,
-#             })
-#         content = {}
-#         if data_list:
-#             content = {
-#                 'status': True,
-#                 'data': data_list,
-#             }
-#         else:
-#             xw_list = MeDocs.objects.all()[0:1]
-#             content = {
-#                 'status': False,
-#                 'data': xw_list,
-#             }
-#
-#         # 渲染到我们自己写的页面
-#         # return JsonResponse({"content": content}
-#         print(content)
-#         return render(self.request, 'doc_list_search.html', {"context": context, "content": content})
-
 @gzip_page
 def doc_list(request):
     form = MeDocsModelForm()
     # 1.搜索参数初始化
     search_dict = {}
     user_id = models.User.objects.filter(username=request.session['info']['name']).first().pk
-    # print(request.session['info']['name'], user_id)
     # 获取号码搜索参数
     search_data = request.GET.get(key="n", default='')
     if search_data:
@@ -105,7 +57,6 @@ def doc_list(request):
         #     分页html字符串组件
         'page_str': page_str
     }
-    # print(datetime.now().strftime('%Y%m%d%H%M%S'))
     return render(request, "doc_list.html", context)
 
 
@@ -232,7 +183,6 @@ def doc_add(request):
             'all': fail_num + success_num
         }
     }
-    # return render(request, 'doc_list.html', context)
     return JsonResponse(context)
 
 
@@ -378,7 +328,11 @@ def doc_details(request):
         for item_dict in new_page_info:
             page_abstract = []
             for nape in item_dict["fragments"]:
-                # print(type(nape), is_contains_chinese(nape))
+                # 将未高亮的关键词高亮
+                re_strong = r"<strong>(.*?)</strong>"
+                key = re.findall(re_strong, nape)[0]
+                nape = nape.replace(key, "<strong>" + key + "</strong>")
+                # print("加粗：", key, "提取加粗", key[8:-8], "摘要类型", type(nape), "摘要为", nape)
                 abstract = {'abstract': nape, 'source': item_dict['source'], 'keyword': keyword}
                 page_abstract.append(abstract)
             # 去重同页中重复的摘要
@@ -406,65 +360,19 @@ def doc_details(request):
 @csrf_exempt
 def doc_search(request):
     """异步检索"""
-    if request.method == 'GET':
-        return render(request, "doc_search.html")
-    else:
-        id_ls = []
-        for i in range(len(request.POST)):
-            id_ls.append(request.POST[str(i)])
-        start = time.perf_counter()
-        querysets = models.MeDocs.objects.filter(id__in=id_ls)
-        end = time.perf_counter()
-        # print("{}秒".format(end - start))
-        # 2.页码参数初始化
-        pagesize = 10
-        pageplus = 2
-        # 3.筛选符合条件的数据
-        queryset = querysets
-        # 4.实例化页面对象
-        page_obj = pagination.Pagination(request, query_set=queryset, page_size=pagesize, page_plus=pageplus)
-        # 5.获取页面数据
-        page_queryset = page_obj.page_queryset
-        page_str = page_obj.htmlstr()
-        page_queryset = serializers.serialize("json", page_queryset)
-        page_queryset = json.loads(page_queryset)
-        i = 0
-        for uid in id_ls:
-            for index, item in enumerate(page_queryset):
-                if str(item['pk']) == uid:
-                    # temp = page_queryset[i]
-                    page_queryset[i], page_queryset[index] = item, page_queryset[i]
-                    # page_queryset[index] = temp
-                    i += 1
-                    break
-        context = {
-            #     页面数据信息
-            'page_queryset': page_queryset,
-            #     分页html字符串组件
-            'page_str': page_str
-        }
-        return JsonResponse(context)
-        # return render(request, "doc_search.html", context)
-        # return redirect('/admin/list/')
-
-
-# @gzip_page
-@csrf_exempt
-def doc_query(request):
-    """同步检索"""
     start = 0
     if request.GET.get("keyword") is None:
-        return render(request, "doc_query.html")
+        return render(request, "doc_search.html")
     keyword = request.GET.get("keyword")
     # print(request.GET.get("start"))
     if request.GET.get('start') not in ['', None]:
         start = int(request.GET.get('start'))
-    print("起始页为：" + str(start))
+    # print("起始页为：" + str(start))
     request.session['info']['keyword'] = keyword
     request.session.set_expiry(60 * 60 * 24 * 7)
     # print(request.session['info']['keyword'])
     page_info = query_elastics(key=keyword, start=0, size=1000)
-    print(page_info)
+    # print(page_info)
     if len(page_info) == 0:
         context = {
             'search_data': keyword,
@@ -472,7 +380,7 @@ def doc_query(request):
             'code': 404
         }
         # print(context['code'])
-        return render(request, "doc_query.html", context)
+        return JsonResponse(context)
     # print("{}秒".format(end - start))
     # print(page_info)
     for i, item in enumerate(page_info):
@@ -480,7 +388,7 @@ def doc_query(request):
         repeate_ls = []
         # print("当前的下标为：", i)
         rel_score = item['rel_score']
-        print("每页的分数", rel_score)
+        # print("每页的分数", rel_score)
         for j, _ in enumerate(page_info):
             # print(j)
             if i >= j:
@@ -488,7 +396,7 @@ def doc_query(request):
             if page_info[i]['name'] == page_info[j]['name']:
                 rel_score += page_info[j]['rel_score']
                 repeate_ls.append(j)
-                print("剔除了" + str(j), page_info[i]['rel_score'])
+                # print("剔除了" + str(j), page_info[i]['rel_score'])
             continue
         n = 0
         for k in repeate_ls:
@@ -496,7 +404,7 @@ def doc_query(request):
             page_info.pop(k)
             n += 1
         # print("更新前的名字：" + page_info[i]['name'])
-        print("求和后的分数", rel_score)
+        # print("求和后的分数", rel_score)
         page_info[i]['id'] = models.MeDocs.objects.filter(name=page_info[i]['name']).first().id
         page_info[i]['name'] = get_doc_title(page_info[i]['name'])
         # print('更新后的名字：' + page_info[i]['name'])
@@ -513,7 +421,7 @@ def doc_query(request):
     page_info = sorted(page_info, key=lambda x: x['allscore'], reverse=True)
     # for i, item in enumerate(page_info):
     #     item['num'] = i + 1
-    print("去除重复后的文献数", len(page_info))
+    # print("去除重复后的文献数", len(page_info))
     if start + 10 < len(page_info):
         page_info = page_info[start:start + 10]
         page_status = False
@@ -523,7 +431,94 @@ def doc_query(request):
     for i, item in enumerate(page_info):
         # print("行号为", i)
         item['num'] = i + 1
-    print("分页后的文献数", len(page_info))
+    # print("分页后的文献数", len(page_info))
+    # print(page_info)
+    context = {
+        'search_data': keyword,
+        'page_info': page_info,
+        'code': 200,
+        'start': start,
+        'final_page': page_status
+    }
+    return JsonResponse(context)
+
+
+# @gzip_page
+@csrf_exempt
+def doc_query(request):
+    """同步检索"""
+    start = 0
+    if request.GET.get("keyword") is None:
+        return render(request, "doc_query.html")
+    keyword = request.GET.get("keyword")
+    # print(request.GET.get("start"))
+    if request.GET.get('start') not in ['', None]:
+        start = int(request.GET.get('start'))
+    # print("起始页为：" + str(start))
+    request.session['info']['keyword'] = keyword
+    request.session.set_expiry(60 * 60 * 24 * 7)
+    # print(request.session['info']['keyword'])
+    page_info = query_elastics(key=keyword, start=0, size=1000)
+    # print(page_info)
+    if len(page_info) == 0:
+        context = {
+            'search_data': keyword,
+            'page_info': page_info,
+            'code': 404
+        }
+        # print(context['code'])
+        return render(request, "doc_query.html", context)
+    # print("{}秒".format(end - start))
+    # print(page_info)
+    for i, item in enumerate(page_info):
+        # if i < len(page_info) - 1:
+        repeate_ls = []
+        # print("当前的下标为：", i)
+        rel_score = item['rel_score']
+        # print("每页的分数", rel_score)
+        for j, _ in enumerate(page_info):
+            # print(j)
+            if i >= j:
+                continue
+            if page_info[i]['name'] == page_info[j]['name']:
+                rel_score += page_info[j]['rel_score']
+                repeate_ls.append(j)
+                # print("剔除了" + str(j), page_info[i]['rel_score'])
+            continue
+        n = 0
+        for k in repeate_ls:
+            k -= n
+            page_info.pop(k)
+            n += 1
+        # print("更新前的名字：" + page_info[i]['name'])
+        # print("求和后的分数", rel_score)
+        page_info[i]['id'] = models.MeDocs.objects.filter(name=page_info[i]['name']).first().id
+        page_info[i]['name'] = get_doc_title(page_info[i]['name'])
+        # print('更新后的名字：' + page_info[i]['name'])
+        uid = page_info[i]['id']
+        rel_score = round(rel_score, 2)
+        models.MeDocs.objects.filter(id=uid).update(relscore=rel_score)
+        page_info[i]['relscore'] = rel_score
+        page_info[i]['fedbakscore'] = models.MeDocs.objects.filter(id=uid).first().fedbakscore
+        page_info[i]['clkscore'] = models.MeDocs.objects.filter(id=uid).first().clkscore
+        allscore = round(page_info[i]['fedbakscore'] + page_info[i]['clkscore'] + rel_score, 2)
+        models.MeDocs.objects.filter(id=uid).update(allscore=allscore)
+        page_info[i]['allscore'] = models.MeDocs.objects.filter(id=uid).first().allscore
+    # 对文档结果按照总分进行排序
+    page_info = sorted(page_info, key=lambda x: x['allscore'], reverse=True)
+    # for i, item in enumerate(page_info):
+    #     item['num'] = i + 1
+    # print("去除重复后的文献数", len(page_info))
+    if start + 10 < len(page_info):
+        page_info = page_info[start:start + 10]
+        page_status = False
+    else:
+        page_info = page_info[start:len(page_info)]
+        page_status = True
+    for i, item in enumerate(page_info):
+        # print("行号为", i)
+        item['num'] = i + 1
+    # print("分页后的文献数", len(page_info))
     # print(page_info)
     context = {
         'search_data': keyword,
@@ -634,7 +629,7 @@ def doc_external(request):
 def doc_img(request):
     doc_id = request.POST.get('uid', 98)
     doc_name = models.MeDocs.objects.filter(id=doc_id).first().name
-    print(doc_id, doc_name)
+    # print(doc_id, doc_name)
     names_list = []
     paths_list = []
     context = {
@@ -652,7 +647,7 @@ def doc_img(request):
     if not names_list:  # 文件夹为空
         context['status'] = 403
         return JsonResponse(context)
-    print(context)
+    # print(context)
     return JsonResponse(context)
 
 
@@ -668,10 +663,30 @@ def doc_keyinfo(request):
             'keyinfo': keyinfo
         }
     except Exception as e:
-        print(e)
+        # print(e)
         context = {
             'status': 403,
-            'error': "抱歉，当前出错啦。"
+            'error': "抱歉，网络当前出错啦。"
         }
     finally:
         return JsonResponse(context)
+
+
+@csrf_exempt
+@gzip_page
+def doc_union(request):
+    keyword = request.GET.get('keyword')
+    keyword = list(jieba.cut(keyword))
+    # print(keyword, type(keyword))
+    res = {'wordres': []}
+    url = "https://recom.cnki.net/api/recommendations/words/union"
+    for item in keyword:
+        formdata = {
+            'w': item,
+            'top': 10
+        }
+        result = requests.get(url=url, params=formdata).json()
+        res['wordres'] += result['wordres'] if result else result
+    random.shuffle(res['wordres'])
+    res['wordres'] = res['wordres'][:10]
+    return JsonResponse(res)

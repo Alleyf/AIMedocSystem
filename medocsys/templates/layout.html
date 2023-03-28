@@ -101,7 +101,8 @@
                                  alt="logo">
                         </a>
                         <!-- LOGO -->
-                        <div class="container text-center" style="width: 42%;color: #0a84ff;font-size: 30px">
+                        <div class="text-center"
+                             style="margin: auto 10px;display: flex;color: #0a84ff;font-size: 30px">
                             智检慧医
                         </div>
                         <div class="d-flex order-lg-2 ms-auto header-right-icons">
@@ -322,11 +323,11 @@
                 </div>
                 <div class="chat-messages theme_2 modal-body">
                     <div class="date-break">
-                        Mon 10:20am
+                        {{ now }}
                     </div>
                     <div class="message">
                         <div class="message-content">
-                            智小医，为您服务！😉
+                            您好，我是智小医，您有医学相关的问题都可以问我哦！😉
                         </div>
                     </div>
                 </div>
@@ -335,16 +336,8 @@
                            placeholder="Type your question here..."
                            type="text">
                     <div class="chat-extra">
-                        {#                        <a href="javascript:void(0)">#}
-                        {#                            <span class="extra-tooltip">Attach Document</span>#}
-                        {#                            <i class="material-icons">attach_file</i>#}
-                        {#                        </a>#}
-                        {#                        <a href="javascript:void(0)">#}
-                        {#                            <span class="extra-tooltip">Insert Photo</span>#}
-                        {#                            <i class="material-icons">add_a_photo</i>#}
-                        {#                        </a>#}
                         <a href="javascript:void(0)" class="change_chat_theme">
-                            <span class="extra-tooltip">Change chat theme</span>
+                            <span class="extra-tooltip">切换主题</span>
                             <i class="fa-solid fa-palette "></i>
                         </a>
                     </div>
@@ -390,7 +383,6 @@
 
     $(function () {
         thememode();
-        {#$("#draggable").draggable();#}
     })
 
     function thememode() {
@@ -419,7 +411,7 @@
                         "background-color": "#a5d29a",
                         "border-color": "#d6e9c6"
                     });
-                    console.log('设置面板样式', darkmode.isActivated())
+                    {#console.log('设置面板样式', darkmode.isActivated())#}
                 } else {
                     $(".panel").attr('class', 'panel panel-info')
                     $(".list-group-item[id]").css({

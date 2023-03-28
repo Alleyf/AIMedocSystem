@@ -8,12 +8,6 @@ from django.views.static import serve
 
 from medocsys.views import user, account, doc, chart, medocrobot, send
 
-# from rest_framework.routers import SimpleRouter
-
-# router = SimpleRouter()
-# router.register('search/txt', search.DocTxtSearchViewSet, basename='searchtxt_api')
-# router.register('search/imgtxt', search.DocImgTxtSearchViewSet, basename='searchimgtxt_api')
-# router.register('checkcode', account.checkimgcode, basename='checkcode_api')
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
@@ -52,7 +46,7 @@ urlpatterns = [
     # 查看文献具体信息
     path("doc/details/", doc.doc_details),
     # 基于ajax异步请求没有反馈分
-    # path("doc/search/", doc.doc_search),
+    path("doc/search/", doc.doc_search),
     # 基于form同步请求有反馈分
     path("doc/query/", doc.doc_query),
     # 点赞接口
@@ -67,6 +61,8 @@ urlpatterns = [
     path("doc/img/", doc.doc_img),
     # 获取文献关键信息
     path("doc/keyinfo/", doc.doc_keyinfo),
+    # 实现相关检索
+    path("doc/union/", doc.doc_union),
     # 推送用户文献库所有文献
     url("sendocs/", send.send_all_usr_file),
     # 推送正在阅览的文献
@@ -84,5 +80,3 @@ urlpatterns = [
     path("chart/graph/<str:value>/", chart.medicine_search_one),
     path("chart/graph/", chart.index),
 ]
-
-# urlpatterns += router.urls

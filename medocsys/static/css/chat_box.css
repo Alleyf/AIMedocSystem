@@ -188,9 +188,9 @@ http://www.bootstrapmb.com**/
 .pvr_chat_wrapper .chat-messages.theme_1 .message .message-content {
     color: #594939;
     padding: 10px 20px;
-    background-color: #fcf6ee;
+    background-color: #d6e9ca;
     border-radius: 20px 20px 20px 0px;
-    max-width: 80%;
+    max-width: 100%;
     font-size: 13px;
     display: inline-block;
     text-align: left;
@@ -205,7 +205,7 @@ http://www.bootstrapmb.com**/
 .pvr_chat_wrapper .chat-messages.theme_2 .message .message-content {
     color: #FFFFFF;
     padding: 10px 20px;
-    background-color: #da8d67;
+    background-color: #da9233;
     border-radius: 20px 20px 20px 0px;
     max-width: 100%;
     font-size: 13px;
@@ -222,9 +222,9 @@ http://www.bootstrapmb.com**/
 .pvr_chat_wrapper .chat-messages.theme_3 .message .message-content {
     color: #FFFFFF;
     padding: 10px 20px;
-    background-color: #616161;
+    background-color: #acb4e8;
     border-radius: 20px 20px 20px 0px;
-    max-width: 80%;
+    max-width: 100%;
     font-size: 13px;
     display: inline-block;
     text-align: left;
@@ -241,7 +241,7 @@ http://www.bootstrapmb.com**/
     padding: 10px 20px;
     background-color: #929090;
     border-radius: 20px 20px 20px 0px;
-    max-width: 80%;
+    max-width: 100%;
     font-size: 13px;
     display: inline-block;
     text-align: left;

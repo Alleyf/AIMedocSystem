@@ -9,48 +9,32 @@ def query_elastics(key: str, start=0, size=1000):
     try:
         rel_num_ls = query_elastics_min_fragment(key=key)
         # print(len(rel_num_ls))
-        # es = Elasticsearch()  # 默认连接本地elasticsearch
-        # es = Elasticsearch([{"host": "127.0.0.1", "port": 9200}])  # 默认连接本地elasticsearch
-        es = Elasticsearch([{"host": "43.139.217.160", "port": 9200}])  # 连接云端elasticsearch
-        # 获取关键词相关词
-        # union_api = "https://recom.cnki.net/api/recommendations/words/union"
-        # union_key = requests.get(url=union_api, params={'w': key, 'top': 10})
-        # union_key = json.loads(union_key.text)['wordres']
-        # key = key + ',' + ','.join(union_key)
-        # print(key)
+        es = Elasticsearch([{"host": "127.0.0.1", "port": 9200}])  # 默认连接本地elasticsearch
+        # es = Elasticsearch([{"host": "43.139.217.160", "port": 9200}])  # 连接云端elasticsearch
         res = es.search(
-            # index=['medocsys'],
             index=['doctxt', 'docimgtxt'],
             query={
                 "match": {
                     "text": {
                         "query": key,
-                        # "analyzer": "ik_smart"  # 指定搜索时的分词模式
+                        "analyzer": "ik_analyzer"  # 指定搜索时的分词模式
                     },
                 },
-
             },
             track_total_hits=True,
             from_=start,
             size=size,
             highlight=
             {
-                # "type": "fvh",
                 "fragment_size": 100,
                 "number_of_fragments": 1000,
                 "fields": {
-                    # "name": {
-                    #     "pre_tags":
-                    #         "<strong>",
-                    #     "post_tags":
-                    #         "</strong>"
-                    # },
                     "text": {
                         "pre_tags":
                             "<strong>",
                         "post_tags":
                             "</strong>",
-                        # "type": "fvh",
+                        "type": "fvh",
                     }
                 }
             })
@@ -89,8 +73,8 @@ def query_elastics_min_fragment(key: str, start=0, size=1000):
     all_num = 0
     rel_score_ls = []
     try:
-        # es = Elasticsearch([{"host": "127.0.0.1", "port": 9200}])  # 默认连接本地elasticsearch
-        es = Elasticsearch([{"host": "43.139.217.160", "port": 9200}])  # 连接云端elasticsearch
+        es = Elasticsearch([{"host": "127.0.0.1", "port": 9200}])  # 默认连接本地elasticsearch
+        # es = Elasticsearch([{"host": "43.139.217.160", "port": 9200}])  # 连接云端elasticsearch
         res = es.search(
             # index=['medocsys'],
             index=['doctxt', 'docimgtxt'],
@@ -98,7 +82,7 @@ def query_elastics_min_fragment(key: str, start=0, size=1000):
                 "match": {
                     "text": {
                         "query": key,
-                        # "analyzer": "ik_smart"  # 指定搜索时的分词模式
+                        "analyzer": "ik_analyzer"  # 指定搜索时的分词模式
                     },
                 },
 
@@ -118,16 +102,16 @@ def query_elastics_min_fragment(key: str, start=0, size=1000):
                 }
             })
         res = res.get('hits')['hits']
-        print("总共含有关键词的页数", len(res))
+        # print("总共含有关键词的页数", len(res))
         for item in res:
             fragments = item["highlight"]["text"]
             all_num += len(fragments)
         for item in res:
-            print(all_num, len(item["highlight"]["text"]), item["highlight"]["text"])
+            # print(all_num, len(item["highlight"]["text"]), item["highlight"]["text"])
             rel_score = round((len(item["highlight"]["text"]) / all_num) * 60, 2)
             rel_score_ls.append(rel_score)
             # print(rel_score)
-        return rel_score_ls
+        # return rel_score_ls
     except Exception as e:
         print(e)
     finally:
@@ -136,9 +120,8 @@ def query_elastics_min_fragment(key: str, start=0, size=1000):
 
 def query_elastics_fulltext(key):
     try:
-        # es = Elasticsearch([{"host": "127.0.0.1", "port": 9200}])  # 默认连接本地elasticsearch
-        es = Elasticsearch([{"host": "43.139.217.160", "port": 9200}])  # 连接云端elasticsearch
-        print(es)
+        es = Elasticsearch([{"host": "127.0.0.1", "port": 9200}])  # 默认连接本地elasticsearch
+        # es = Elasticsearch([{"host": "43.139.217.160", "port": 9200}])  # 连接云端elasticsearch
         res = es.search(
             index=['doctxt', 'docimgtxt'],
             query={

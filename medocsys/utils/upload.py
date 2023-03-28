@@ -25,7 +25,7 @@ def upload_mul(file_list, url="./media/docs/"):
     start_time = time.perf_counter()
     for f in file_list:
         des = url + f.name.replace(" ", "_")
-        print(des)
+        # print(des)
         destination = open(des, 'wb')
         for chunk in f.chunks():
             destination.write(chunk)
@@ -98,7 +98,7 @@ def extract_img_widget(file, url, filedic, filelist, imgindex, tempcurrentpage, 
             imgurl = "./media/docimgs/%s-%s-%s.png" % (name, tempcurrentpage, imgindex + 1)  # 实际
             # imgurl = "../../media/docimgs/%s-%s-%s.png" % (name, tempcurrentpage, imgindex + 1)  # 测试
             if pix.n < 4:  # this is GRAY or RGB
-                print(imgurl)
+                # print(imgurl)
                 pix._writeIMG(imgurl, 1)
                 # if same_page_flag:
                 # img_txt += paddle_ocr(imgurl=imgurl) + "|"
@@ -136,7 +136,7 @@ def extract_img_widget(file, url, filedic, filelist, imgindex, tempcurrentpage, 
 # 提取整个文件夹的PDF：mul=True
 # 提取单个PDF：mul=False
 def extract_img_info(url, mul):
-    start = time.perf_counter()
+    # start = time.perf_counter()
     filedic = {'filename': '', 'filepage': 0, 'filepageimgnumber': 0, 'content': ""}
     filelist = []
     imgindex = 0
@@ -149,8 +149,8 @@ def extract_img_info(url, mul):
     else:
         f = open(url, mode='r')
         extract_img_widget(f, url, filedic, filelist, imgindex, tempcurrentpage, tempname, mul)
-    end = time.perf_counter()
-    print("耗时：" + str(end - start) + "秒")
+    # end = time.perf_counter()
+    # print("耗时：" + str(end - start) + "秒")
     return filelist
 
 
@@ -158,6 +158,6 @@ if __name__ == '__main__':
     # txt_info = extract_txt_info("../../media/docs/谷歌深度强化学习布局布线.pdf")
     # print(len(txt_info['text_list']), txt_info['text_list'][6])
     img_txt = extract_img_info("../../media/docs/icitee2022-75.pdf", mul=False)
-    print(img_txt)
+    # print(img_txt)
     # print(extract_img_info("../static/doc/", mul=True))
     # print(extract_img("../static/doc/", mul=True))
