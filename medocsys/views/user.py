@@ -59,7 +59,7 @@ def user_info(request, nid):
         avatar_name = request.FILES.get('avatar')
         if avatar_name:
             request.session['info']['avatar'] = avatar_name.name
-            print(form.cleaned_data, request.session['info']['avatar'])
+            # print(form.cleaned_data, request.session['info']['avatar'])
             request.session.set_expiry(60 * 60 * 24 * 7)
         # print(request.session.info.avatar, request.FILES.get('avatar').name)
         # request.session['info']['avatar'] = request.FILES.get('avatar').name

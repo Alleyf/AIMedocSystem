@@ -268,7 +268,13 @@
                 success: function (res) {
                     if (res.status === 200) {
                         {#console.log(res.keyinfo)#}
+                        {#let qas = res.qas#}
+                        {#console.log(qas)#}
                         $('.chat-messages').append('<div class="message"><div class="message-content">' + res.keyinfo + '</div></div>');
+                        {#for (let i = 0; i < qas.length; i++) {#}
+                        {#   $('.chat-messages').append('<div class="message"><div class="message-content">' + qas[i].question + '</div></div>');#}
+                        {#   $('.chat-messages').append('<div class="message"><div class="message-content">' + qas[i].answer + '</div></div>');#}
+                        //}
                     } else {
                         $('.chat-messages').append('<div class="message"><div class="message-content">' + res.error + '</div></div>');
                         {#console.log(res.error)#}

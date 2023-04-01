@@ -1,16 +1,18 @@
 {% load cache %}
 {% load static %}
+{#{% load compress %}#}
 {% cache None 'head_graph' %}
     <!DOCTYPE html>
-    <html style="height: 100%;width:100%">
+    <html style="height: 100%;width:100%" lang="en">
     <head>
         <meta charset="UTF-8">
+        <title>医学知识图谱</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" href="{% static '/images/logo.png' %}" type="image/x-icon"/>
         <link rel="shortcut icon" href="{% static '/images/logo.png' %}" type="image/x-icon"/>
         <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.3.0/css/all.min.css" rel="stylesheet">
+        {#        {% compress css %}#}
         <link rel="stylesheet" href="{% static 'plugins/bootstrap-5.2.3/css/bootstrap.min.css' %}">
-        <title>医学知识图谱</title>
         <style>
             /* Let's get this party started */
             ::-webkit-scrollbar {
@@ -52,6 +54,7 @@
                 z-index: -10;
             }
         </style>
+        {#        {% endcompress %}#}
     </head>
 {% endcache %}
 <body>
@@ -96,10 +99,13 @@
 
 </div>
 {% cache None 'plugin' %}
+    {#    {% compress js %}#}
     <script type="text/javascript" src="{% static 'js/echarts.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
+    {#    {% endcompress %}#}
     <script src="https://cdn.bootcdn.net/ajax/libs/Darkmode.js/1.5.7/darkmode-js.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particlesjs/2.2.2/particles.min.js"></script>
+    {#    {% compress js %}#}
     <script type="text/javascript">
         window.onload
             = function () {
@@ -160,7 +166,9 @@
             toggleFullScreen()
         }
     </script>
+    {#    {% endcompress %}#}
 {% endcache %}
+{#{% compress js %}#}
 <script type="text/javascript">
     var neo4j_data = [{{ neo4j_data|safe }}]
     var data1 = neo4j_data[0]['data']
@@ -304,7 +312,9 @@
 
 
 </script>
+{#{% endcompress %}#}
 {% cache None 'themejs' %}
+    {#    {% compress js %}#}
     <script type="text/javascript">
 
         $(function () {
@@ -336,6 +346,7 @@
         }
 
     </script>
+    {#    {% endcompress %}#}
 {% endcache %}
 </body>
 </html>

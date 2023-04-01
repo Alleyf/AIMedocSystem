@@ -1,4 +1,5 @@
 {% extends 'login.html' %}
+{#{% load compress %}#}
 {% block mytitle %}
     <title>用户注册</title>
     <link href="https://cdn.bootcdn.net/ajax/libs/dropzone/5.9.3/dropzone.min.css" rel="stylesheet">
@@ -51,6 +52,7 @@
 {% endblock %}
 {% block myscript %}
     <script src="https://cdn.bootcdn.net/ajax/libs/dropzone/5.9.3/dropzone.js"></script>
+    {#    {% compress js %}#}
     <script type="text/javascript">
         {#$("#id_avatar").hide();#}
 
@@ -111,5 +113,6 @@
             })
         }
     </script>
+    {#    {% endcompress %}#}
 {% endblock %}
 

@@ -1,9 +1,7 @@
-from haystack.utils import Highlighter
-
-from rest_framework import serializers
 from drf_haystack.serializers import HaystackSerializer, HighlighterMixin
+from haystack.utils import Highlighter
+from rest_framework import serializers
 
-from .models import DocTxt
 from .search_indexes import *
 
 
@@ -38,72 +36,91 @@ class DocImgTxtSerializer(serializers.ModelSerializer):
 
 
 # 写法一:普通序列化,使用内置的高亮
-class DocTxtIndexSerializer(HaystackSerializer):
-    """
-    SKU索引结果数据序列化器
-    """
-
-    # 变量名称必须为 object 否则无法返回
-    # 变量名称必须为 object 否则无法返回,
-    # 返回除搜索字段以外的字段,由上面DocTxtSerializer自定义返回字段
-    object = DocTxtSerializer(read_only=True)  # 只读,不可以进行反序列化
-
-    class Meta:
-        index_classes = [DocTxtIndex]  # 索引类的名称,可以有多个
-        # index_classes = [DocTxtIndex]  # 索引类的名称,可以有多个
-
-        # text 由索引类进行返回, object 由序列化类进行返回,第一个参数必须是text
-        # 返回字段,不写默认全部返回
-        # text字段必须有,不然无法实现搜索
-        # 控制的是建立的索引字段
-        fields = ['text', object]
-        # fields = ['text']
-        # 忽略字段
-        # ignore_fields = ['title']
-        # 排除字段，除了该字段,其他的都返回,
-        # exclude = ['title']
-
-
-class DocImgTxtIndexSerializer(HaystackSerializer):
-    """
-    SKU索引结果数据序列化器
-    """
-
-    # 变量名称必须为 object 否则无法返回
-    # 变量名称必须为 object 否则无法返回,
-    # 返回除搜索字段以外的字段,由上面DocTxtSerializer自定义返回字段
-    object = DocImgTxtSerializer(read_only=True)  # 只读,不可以进行反序列化
-
-    class Meta:
-        index_classes = [DocImgTxtIndex]  # 索引类的名称,可以有多个
-        # text 由索引类进行返回, object 由序列化类进行返回,第一个参数必须是text
-        # 返回字段,不写默认全部返回
-        # text字段必须有,不然无法实现搜索
-        # 控制的是建立的索引字段
-        fields = ['text', object]
-        # fields = ['text']
-        # 忽略字段
-        # ignore_fields = ['title']
-        # 排除字段，除了该字段,其他的都返回,
-        # exclude = ['title']
-#
-# # 写法二:自定义高亮,比内置的要慢一点
-# class DocTxtIndexSerializer(HighlighterMixin, HaystackSerializer):
+# class DocTxtIndexSerializer(HaystackSerializer):
 #     """
 #     SKU索引结果数据序列化器
 #     """
+#
+#     # 变量名称必须为 object 否则无法返回
 #     # 变量名称必须为 object 否则无法返回,
-#     # 返回除搜索字段以外的字段,由上面ArticleSerializer自定义返回字段
+#     # 返回除搜索字段以外的字段,由上面DocTxtSerializer自定义返回字段
 #     object = DocTxtSerializer(read_only=True)  # 只读,不可以进行反序列化
-#     # 高亮显示字段配置
-#     # highlighter_class = Highlighter
-#     # 前端自定义css名称
-#     highlighter_css_class = "my-highlighter-class"
-#     # html
-#     highlighter_html_tag = "em"
-#     # 最宽
-#     highlighter_max_length = 200
+#     score = serializers.SerializerMethodField()
 #
 #     class Meta:
 #         index_classes = [DocTxtIndex]  # 索引类的名称,可以有多个
-#         fields = ['text', object]
+#         # index_classes = [DocTxtIndex]  # 索引类的名称,可以有多个
+#
+#         # text 由索引类进行返回, object 由序列化类进行返回,第一个参数必须是text
+#         # 返回字段,不写默认全部返回
+#         # text字段必须有,不然无法实现搜索
+#         # 控制的是建立的索引字段
+#         fields = ['text', object, 'score']
+#
+#         # fields = ['text']
+#         # 忽略字段
+#         # ignore_fields = ['title']
+#         # 排除字段，除了该字段,其他的都返回,
+#         # exclude = ['title']
+#
+#     def get_score(self, obj):
+#         return obj.score
+
+
+class DocImgTxtIndexSerializer(HighlighterMixin, HaystackSerializer):
+    """
+    SKU索引结果数据序列化器
+    """
+    # 返回除搜索字段以外的字段,由上面DocTxtSerializer自定义返回字段
+    object = DocImgTxtSerializer(read_only=True)  # 只读,不可以进行反序列化
+    highlighter_css_class = "my-highlighter-class"
+    # html
+    highlighter_html_tag = "strong"
+    # 最宽
+    highlighter_max_length = 100
+    highlighting_algorithm = "fvh"
+    num_highlighted_results = 100,
+    highlighted_result_size = 100,
+    score = serializers.SerializerMethodField()
+
+    class Meta:
+        index_classes = [DocImgTxtIndex]
+        fields = ['text', object, 'score']
+        # fields = ['text']
+        # 忽略字段
+        # ignore_fields = ['title']
+        # 排除字段，除了该字段,其他的都返回,
+        # exclude = ['title']
+
+    def get_score(self, obj):
+        return obj.score
+
+
+#
+# 写法二:自定义高亮,比内置的要慢一点
+class DocTxtIndexSerializer(HighlighterMixin, HaystackSerializer):
+    """
+    SKU索引结果数据序列化器
+    """
+    # 变量名称必须为 object 否则无法返回,
+    # 返回除搜索字段以外的字段,由上面ArticleSerializer自定义返回字段
+    object = DocTxtSerializer(read_only=True)  # 只读,不可以进行反序列化
+    # 高亮显示字段配置
+    # highlighter_class = Highlighter
+    # 前端自定义css名称
+    highlighter_css_class = "my-highlighter-class"
+    # html
+    highlighter_html_tag = "strong"
+    # 最宽
+    highlighter_max_length = 100
+    highlighting_algorithm = "fvh"
+    num_highlighted_results = 100,
+    highlighted_result_size = 100,
+    score = serializers.SerializerMethodField()
+
+    class Meta:
+        index_classes = [DocTxtIndex]  # 索引类的名称,可以有多个
+        fields = ['text', object, 'score']
+
+    def get_score(self, obj):
+        return obj.score

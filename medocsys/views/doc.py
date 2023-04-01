@@ -11,17 +11,17 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.gzip import gzip_page
-
 from medocsys import models
 from medocsys.utils import pagination, upload
 from medocsys.utils.form import MeDocsModelForm, DocTxtModelForm, DocImgTxtModelForm
 from medocsys.utils.upload import extract_img_info, extract_txt_info
+from ..utils.cluegpt import get_qas
 from ..utils.del_img import del_img
 from ..utils.doc_get_category import get_category
 from ..utils.get_doc_title import get_doc_title
 from ..utils.get_language_type import is_contains_chinese
 from ..utils.learn_doc import get_keyinfo
-from ..utils.query import query_elastics, query_leastic_firstpage
+from ..utils.query import query_elastics
 from ..utils.zhiwang import get_zhiwang_data
 
 
@@ -616,11 +616,11 @@ def doc_external(request):
     keywords = request.GET.get("keywords")
     start = int(request.GET.get("start"))
     end = int(request.GET.get("end"))
-    data = ""
-    while not data:
-        data = get_zhiwang_data(keywords, start, end)
+    # data = ""
+    # while not data:
+    status, data = get_zhiwang_data(keywords, start, end)
     res = {
-        'status': 200,
+        'status': status,
         'data': data
     }
     return JsonResponse(res)
@@ -651,20 +651,25 @@ def doc_img(request):
     return JsonResponse(context)
 
 
+@gzip_page
 def doc_keyinfo(request):
     try:
         doc_name = request.GET.get('doc_name', "")
-        start = time.perf_counter()
         content = models.DocTxt.objects.filter(doc_name=doc_name, page_id=1).first().txt_content
         # content = query_leastic_firstpage(doc_name=doc_name)[2]
         if content != "":
             part_content = content[:1000] if len(content) > 1000 else content
             # print("耗时为：", time.perf_counter() - start)
             keyinfo = get_keyinfo(part_content)
+            # print(len(part_content))
+            # qas = get_qas(doc_txt=part_content)
+            # qas = qas[:5] if len(qas) > 5 else qas
+            # print(qas)
             # print("关键信息为：", keyinfo)
             context = {
                 'status': 200,
-                'keyinfo': keyinfo
+                'keyinfo': keyinfo,
+                # 'qas': qas
             }
         else:
             context = {
@@ -699,3 +704,7 @@ def doc_union(request):
     random.shuffle(res['wordres'])
     res['wordres'] = res['wordres'][:10]
     return JsonResponse(res)
+
+
+def doc_get_qa(request):
+    get_qas(doc_txt="""""")

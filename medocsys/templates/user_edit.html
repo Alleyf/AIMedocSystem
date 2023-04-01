@@ -1,4 +1,5 @@
-{% extends 'layout.html' %} # 继承父模块的标识
+{% extends 'layout.html' %}
+{% load compress %} # 继承父模块的标识
 {% block mytitle %}
     <title>用户信息</title>
 {% endblock %}
@@ -62,47 +63,47 @@
             {% endblock %}
         </div>
     </div>
-    {#        </div>#}
-    {#    </div>#}
 {% endblock %}
 {% block myscript %}
-    <script type="text/javascript">
-        $(function () {
-            add_avatar_value();
-        })
+    {% compress js %}
+        <script type="text/javascript">
+            $(function () {
+                add_avatar_value();
+            })
 
-        function add_avatar_value() {
-            $('input[id=id_avatar]').change(function () {
-                if ($(this).val() !== '') {
-                    console.log($(this).val())
-                    showImg($(this)[0]);
-                    $("#avatar_value").text($(this).val())
-                } else {
+            function add_avatar_value() {
+                $('input[id=id_avatar]').change(function () {
+                    if ($(this).val() !== '') {
+                        console.log($(this).val())
+                        showImg($(this)[0]);
+                        $("#avatar_value").text($(this).val())
+                    } else {
 
+                    }
+                });
+            }
+
+            function showImg(obj) {
+                var objUrl = getObjectURL(obj.files[0]);
+                if (objUrl) {
+                    {#$(div > i).remove()#}
+                    $("#avatar_wrapper").css('border', 'medium')
+                    {#$(obj).after('<img class="rounded-circle" src="' + objUrl + '" alt="" style="width:50px;height:50px"> &nbsp;&nbsp;');#}
+                    $("#avatar_container").html('<img class="rounded-circle" src="' + objUrl + '" alt="" style="width:88px;height:88px;margin: auto">')
                 }
-            });
-        }
-
-        function showImg(obj) {
-            var objUrl = getObjectURL(obj.files[0]);
-            if (objUrl) {
-                {#$(div > i).remove()#}
-                $("#avatar_wrapper").css('border', 'medium')
-                {#$(obj).after('<img class="rounded-circle" src="' + objUrl + '" alt="" style="width:50px;height:50px"> &nbsp;&nbsp;');#}
-                $("#avatar_container").html('<img class="rounded-circle" src="' + objUrl + '" alt="" style="width:88px;height:88px;margin: auto">')
             }
-        }
 
-        function getObjectURL(file) {
-            var url = null;
-            if (window.createObjectURL !== undefined) {
-                url = window.createObjectURL(file);
-            } else if (window.URL !== undefined) {
-                url = window.URL.createObjectURL(file);
-            } else if (window.webkitURL !== undefined) {
-                url = window.webkitURL.createObjectURL(file);
+            function getObjectURL(file) {
+                var url = null;
+                if (window.createObjectURL !== undefined) {
+                    url = window.createObjectURL(file);
+                } else if (window.URL !== undefined) {
+                    url = window.URL.createObjectURL(file);
+                } else if (window.webkitURL !== undefined) {
+                    url = window.webkitURL.createObjectURL(file);
+                }
+                return url;
             }
-            return url;
-        }
-    </script>
+        </script>
+    {% endcompress %}
 {% endblock %}

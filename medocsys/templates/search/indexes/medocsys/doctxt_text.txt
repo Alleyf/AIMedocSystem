@@ -1,1 +1,1 @@
-{{  object.txt_content }}
+{{  object.txt_content|striptags }}

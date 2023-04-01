@@ -1,5 +1,6 @@
 {% load cache %}
 {% load static %}
+{% load compress %}
 {#{% cache None 'head_chart_list' %}#}
 <!DOCTYPE html>
 <html lang="en">
@@ -11,60 +12,62 @@
     <link rel="shortcut icon" href="{% static '/images/logo.png' %}" type="image/x-icon"/>
     {#    <link rel="apple-touch-icon" sizes="120x120" href="{% static '/images/logo.png' %}"/>#}
     {#    <link rel="apple-touch-icon" sizes="152x152" href="{% static '/images/logo.png' %}"/>#}
-    <link rel="stylesheet" href="{% static 'icon/iconfont.css' %}">
+    {#    <link rel="stylesheet" href="{% static 'icon/iconfont.css' %}">#}
     <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.3.0/css/all.min.css" rel="stylesheet">
     {#    <link rel="stylesheet" href="{% static 'plugins/fontawesome-free-6.2.1-web/css/fontawesome.min.css' %}">#}
-    <link rel="stylesheet" href="{% static 'plugins/bootstrap-5.2.3/css/bootstrap.min.css' %}">
-    <style>
-        /* Let's get this party started */
-        ::-webkit-scrollbar {
-            width: 7px;
-        }
+    {% compress css %}
+        <link rel="stylesheet" href="{% static 'plugins/bootstrap-5.2.3/css/bootstrap.min.css' %}">
+        <style>
+            /* Let's get this party started */
+            ::-webkit-scrollbar {
+                width: 7px;
+            }
 
-        /* Track */
-        ::-webkit-scrollbar-track {
-            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-            -webkit-border-radius: 10px;
-            border-radius: 10px;
-        }
+            /* Track */
+            ::-webkit-scrollbar-track {
+                -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+                -webkit-border-radius: 10px;
+                border-radius: 10px;
+            }
 
-        /* Handle */
-        ::-webkit-scrollbar-thumb {
-            -webkit-border-radius: 10px;
-            border-radius: 10px;
-            background: rgb(205, 206, 224);
-            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
-        }
+            /* Handle */
+            ::-webkit-scrollbar-thumb {
+                -webkit-border-radius: 10px;
+                border-radius: 10px;
+                background: rgb(205, 206, 224);
+                -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+            }
 
-        ::-webkit-scrollbar-thumb:window-inactive {
-            background: rgb(255, 255, 255);
-        }
+            ::-webkit-scrollbar-thumb:window-inactive {
+                background: rgb(255, 255, 255);
+            }
 
-        li > div {
-            overflow: hidden; /*内容超出后隐藏*/
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            text-align: center !important;
-        }
+            li > div {
+                overflow: hidden; /*内容超出后隐藏*/
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                text-align: center !important;
+            }
 
-        dl > dd {
-            text-align: center !important;
-        }
+            dl > dd {
+                text-align: center !important;
+            }
 
-        .use-data > li > p {
-            font-size: 30px !important;
-            color: yellow !important;
-        }
+            .use-data > li > p {
+                font-size: 30px !important;
+                color: yellow !important;
+            }
 
-        .btn_view:hover {
-            color: #8050c9;
-        }
+            .btn_view:hover {
+                color: #8050c9;
+            }
 
-        canvas {
-            width: 100%;
-        }
+            canvas {
+                width: 100%;
+            }
 
-    </style>
+        </style>
+    {% endcompress %}
 </head>
 <body>
 {#{% endcache %}#}
@@ -208,102 +211,103 @@
     </div>
 </div>
 {#{% cache None 'plugin_chart_list' %}#}
-<script src="{% static 'js/echarts.min.js' %}"></script>
-<script src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
-{#<script src="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.3.0/js/fontawsome.min.js"></script>#}
-<script src="{% static 'plugins/bootstrap-5.2.3/js/bootstrap.bundle.min.js' %}"></script>
+{% compress js %}
+    <script src="{% static 'js/echarts.min.js' %}"></script>
+    <script src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
+    {#<script src="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.3.0/js/fontawsome.min.js"></script>#}
+    <script src="{% static 'plugins/bootstrap-5.2.3/js/bootstrap.bundle.min.js' %}"></script>
 
-<script type="text/javascript">
-    //根据不同的分辨率调用不同的css和js
-    {#document.write("<link href='{% static 'css/visualization_1280.css' %}' rel='stylesheet' type='text/css'>");#}
+    <script type="text/javascript">
+        //根据不同的分辨率调用不同的css和js
+        {#document.write("<link href='{% static 'css/visualization_1280.css' %}' rel='stylesheet' type='text/css'>");#}
 
-    {#document.writeln("<script type=\"text/javascript\" src=\"{% static 'js/visualization_1280.js' %}\"><\/script>");#}
+        {#document.writeln("<script type=\"text/javascript\" src=\"{% static 'js/visualization_1280.js' %}\"><\/script>");#}
 
-    if (window.screen.width >= 1600) {
-        document.write("<link href='{% static 'css/visualization_1920.css' %}' rel='stylesheet' type='text/css'>");
-        document.writeln("<script type=\"text/javascript\" src=\"{% static 'js/visualization_1920.js' %}\"><\/script>");
-    } else if (window.screen.width < 1600 && window.screen.width >= 1280) {
-        document.write("<link href='{% static 'css/visualization_1280.css' %}' rel='stylesheet' type='text/css'>");
-        document.writeln("<script type=\"text/javascript\" src=\"{% static 'js/visualization_1280.js' %}\"><\/script>");
-    } else {
-        document.write("<link href='{% static 'css/visualization_1024.css' %}' rel='stylesheet' type='text/css'>");
-        document.writeln("<script type=\"text/javascript\" src=\"{% static 'js/visualization_1024.js' %}\"><\/script>");
-
-    }
-</script>
-
-<script type="text/javascript">
-    let VIEW_ID;
-    $(function () {
-        bindbtnview();
-        listenKey();
-        setInterval('autoScroll(".maquee")', 2000);
-    })
-
-    <!--大屏-->
-    function listenKey() {
-        document.addEventListener("keydown", function (e) {
-            if (e.keyCode === 13) {
-                toggleFullScreen();
-            }
-        }, false);
-    }
-
-    function toggleFullScreen() {
-        if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen();
+        if (window.screen.width >= 1600) {
+            document.write("<link href='{% static 'css/visualization_1920.css' %}' rel='stylesheet' type='text/css'>");
+            document.writeln("<script type=\"text/javascript\" src=\"{% static 'js/visualization_1920.js' %}\"><\/script>");
+        } else if (window.screen.width < 1600 && window.screen.width >= 1280) {
+            document.write("<link href='{% static 'css/visualization_1280.css' %}' rel='stylesheet' type='text/css'>");
+            document.writeln("<script type=\"text/javascript\" src=\"{% static 'js/visualization_1280.js' %}\"><\/script>");
         } else {
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
+            document.write("<link href='{% static 'css/visualization_1024.css' %}' rel='stylesheet' type='text/css'>");
+            document.writeln("<script type=\"text/javascript\" src=\"{% static 'js/visualization_1024.js' %}\"><\/script>");
+
+        }
+    </script>
+
+    <script type="text/javascript">
+        let VIEW_ID;
+        $(function () {
+            bindbtnview();
+            listenKey();
+            setInterval('autoScroll(".maquee")', 2000);
+        })
+
+        function listenKey() {
+            document.addEventListener("keydown", function (e) {
+                if (e.keyCode === 13) {
+                    toggleFullScreen();
+                }
+            }, false);
+        }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
             }
         }
-    }
 
-    //实现全屏
-    function fullScreen() {
-        toggleFullScreen()
-    }
+        //实现全屏
+        function fullScreen() {
+            toggleFullScreen()
+        }
 
-    function bindbtnview() {
-        $(".btn_view").click(function () {
-            VIEW_ID = $(this).attr('uid')
-            console.log(VIEW_ID)
-            $.ajax({
-                url: "/doc/view/",
-                type: 'post',
-                data: {
-                    uid: VIEW_ID
-                },
-                dataType: 'json',
-                success: function (res) {
-                    if (res.status) {
-                        localStorage.setItem('docname', res.docname)
-                        localStorage.setItem('key', "")
-                        localStorage.setItem('pageid', "1")
-                        window.open('/doc/view/', '_blank')
-                        {#window.location.href = '/doc/view/';#}
-                        console.log(res.docname)
-                    } else {
-                        console.log(res)
+        function bindbtnview() {
+            $(".btn_view").click(function () {
+                VIEW_ID = $(this).attr('uid')
+                console.log(VIEW_ID)
+                $.ajax({
+                    url: "/doc/view/",
+                    type: 'post',
+                    data: {
+                        uid: VIEW_ID
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.status) {
+                            localStorage.setItem('docname', res.docname)
+                            localStorage.setItem('key', "")
+                            localStorage.setItem('pageid', "1")
+                            window.open('/doc/view/', '_blank')
+                            {#window.location.href = '/doc/view/';#}
+                            console.log(res.docname)
+                        } else {
+                            console.log(res)
+                        }
+
                     }
-
-                }
+                })
             })
-        })
-    }
+        }
 
 
-    function autoScroll(obj) {
-        $(obj).find("ul").animate({
-            marginTop: "-39px"
-        }, 500, function () {
-            $(this).css({
-                marginTop: "0px"
-            }).find("li:first").appendTo(this);
-        })
-    }
+        function autoScroll(obj) {
+            $(obj).find("ul").animate({
+                marginTop: "-39px"
+            }, 500, function () {
+                $(this).css({
+                    marginTop: "0px"
+                }).find("li:first").appendTo(this);
+            })
+        }
 
-</script>
+    </script>
+{% endcompress %}
 </body>
 {#{% endcache %}#}
 

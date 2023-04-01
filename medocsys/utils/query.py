@@ -1,4 +1,6 @@
 import os
+# from datetime import datetime
+import time
 
 from elasticsearch import Elasticsearch
 
@@ -11,6 +13,7 @@ def query_elastics(key: str, start=0, size=1000):
         # print(len(rel_num_ls))
         es = Elasticsearch([{"host": "127.0.0.1", "port": 9200}])  # 默认连接本地elasticsearch
         # es = Elasticsearch([{"host": "43.139.217.160", "port": 9200}])  # 连接云端elasticsearch
+        start_time = time.perf_counter()  # 记录开始时间
         res = es.search(
             index=['doctxt', 'docimgtxt'],
             query={
@@ -38,6 +41,11 @@ def query_elastics(key: str, start=0, size=1000):
                     }
                 }
             })
+        end_time = time.perf_counter()  # 记录开始时间
+
+        # 计算时间差并打印结果
+        time_cost = end_time - start_time
+        print("检索耗时", time_cost)
         # print(res)
         # results = []
         old_all_scores = 0
@@ -184,7 +192,9 @@ def query_leastic_firstpage(doc_name):
 
 if __name__ == '__main__':
     # print(os.system('python ../../manage.py rebuild_index --noinput'))
-    print(query_leastic_firstpage(doc_name="三维标测系统和单环状标测导管指示_省略_线性消融电学隔离肺静脉方法学评价_董建增"))
+    _, doc_name, fulltxt = query_elastics_fulltext(key="心脏病")
+    print(doc_name, fulltxt)
+    # print(query_leastic_firstpage(doc_name="三维标测系统和单环状标测导管指示_省略_线性消融电学隔离肺静脉方法学评价_董建增"))
 #     # query_elastics("细胞培养", start=0, size=100)
 #     # print(query_elastics_fulltext(key="fast"))
 #     a = [{'id': 2}, {'id': 6}, {'id': 6}, {'id': 1}, ]

@@ -1,10 +1,12 @@
 {% extends 'layout.html' %}
 {#{% load cache %}#}
 {% load static %}
+{#{% load compress %}#}
 {% block mytitle %}
     <title>智检慧医</title>
 {% endblock %}
 {% block mystyle %}
+    {#    {% compress css %}#}
     <link rel="stylesheet" href="{% static 'css/query.css' %}">
     <style>
         tbody > td > div {
@@ -13,6 +15,7 @@
             text-overflow: ellipsis !important;
         }
     </style>
+    {#    {% endcompress %}#}
 {% endblock %}
 
 {% block info %}
@@ -170,7 +173,7 @@
         {#            <a href="#top" id="back" class="set btn btn-info btn-sm back">#}
         {#                <i class="fa-solid fa-caret-up"></i>#}
         {#            </a>#}
-        <div id="tb_container"></div>
+        <div id="tb_container" class="card text-center"></div>
         <div class="text-center" style="margin:0 auto">
             <ul class="list-unstyled" style="margin-top: 30px;line-height: 30px;">
                 <li>
@@ -191,6 +194,7 @@
 {% endblock %}
 
 {% block myscript %}
+    {#    {% compress js %}#}
     <script type="text/javascript">
         let SEARCHWAY = "本地";
         let START = 0;
@@ -260,15 +264,16 @@
             $("#zhiwang").click(function () {
                 $("#restip").children().remove();
                 $("#tb").hide();
-                $("#pagination").hide()
                 if (SEARCHWAY === "本地") {
                     $("#zhiwang").text(SEARCHWAY)
                     SEARCHWAY = "知网";
                     $("#cur_way").text(SEARCHWAY)
+                    $("#pagination").hide()
                 } else {
                     $("#zhiwang").text(SEARCHWAY)
                     SEARCHWAY = "本地";
                     $("#cur_way").text(SEARCHWAY)
+                    {#$("#pagination").show()#}
                 }
             });
 
@@ -298,7 +303,7 @@
                 {#console.log($("#tb").length)#}
                 if ($("#tb").length != 0) {
                     $("#global-loader").show()
-                    $("#pagination").remove()
+                    {#$("#pagination").remove()#}
                 }
                 if (SEARCHWAY === "知网") {
                     $("span").detach();
@@ -313,6 +318,7 @@
                         },
                         dataType: 'json',
                         success: function (res) {
+                            $("#tb_container").empty()
                             if (res.status === 200) {
                                 $(".loader").remove();
                                 divcf = $("<div>");
@@ -364,7 +370,10 @@
                                 {#if (!$("#relsearch").text()) {#}
 
                             } else {
-                                $("#tb_container").text("抱歉由于您的网络问题，导致检索超时，请重试谢谢！")
+                                let tb_con = $("#tb_container")
+                                tb_con.text("抱歉由于您的网络问题，导致检索超时，请重试谢谢！")
+                                {#$("#tb_container").append("<strong class=\"text-danger\">抱歉由于您的网络问题，导致检索超时，请重试谢谢！</strong>")#}
+                                tb_con.attr('class', 'text-danger text-center')
                             }
                             $("#global-loader").hide()
                             rel_search();
@@ -376,6 +385,12 @@
                     ikw = $("#keyword")
                     ikw.removeClass("is-invalid")
                     ikw.addClass("is-valid")
+                    if ($("#restip")) {
+                        $("#pagination").hide();
+                        console.log("隐藏分页")
+                    } else {
+                        $("#pagination").show()
+                    }
                     {#console.log("输入不为空")#}
                     {#console.log("修改后的起始页码", $("#start").val())#}
                     return true
@@ -523,4 +538,5 @@
         }
 
     </script>
+    {#    {% endcompress %}#}
 {% endblock %}

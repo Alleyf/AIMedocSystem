@@ -25,3 +25,5 @@ gunicorn==19.9.0
 opencv-python~=4.6.0.66
 openai~=0.26.5
 pypushdeer~=0.0.3
+cohere~=4.0.4
+clueai~=0.0.2.2.4

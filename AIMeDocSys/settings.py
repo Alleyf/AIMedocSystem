@@ -18,8 +18,30 @@ DEBUG = True
 # 错误视图设置
 # 部署环境静态路径配置
 # 部署时使用collastic_static指令迁移静态文件
+# STATIC_ROOT = os.path.join(BASE_DIR, 'collectedstatic')
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')  # 这里可以根据实际情况来定义，比如可以将static名修改
 STATIC_URL = '/static/'
+STATICFILES = os.path.join(BASE_DIR, 'static')
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # other
+    'compressor.finders.CompressorFinder',
+)
+
+# 压缩器配置
+COMPRESS_ENABLED = True
+COMPRESS_OFFLINE = True
+COMPRESS_CSS_FILTERS = [
+    # creates absolute urls from relative ones
+    'compressor.filters.css_default.CssAbsoluteFilter',
+    # css minimizer
+    'compressor.filters.cssmin.CSSMinFilter'
+]
+COMPRESS_JS_FILTERS = [
+    'compressor.filters.jsmin.JSMinFilter'
+]
 
 # ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ["*"]
@@ -45,7 +67,10 @@ INSTALLED_APPS = [
     'haystack',
     # 注册rf
     'rest_framework',
+    'drf_haystack',
     "medocsys.apps.MedocsysConfig",
+    'compressor',
+    # 'jsonrpc',
     # 'rest_framework_swagger',  # swagger自动生成接口文档
 
 ]
@@ -88,7 +113,7 @@ ROOT_URLCONF = 'AIMeDocSys.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -100,6 +125,13 @@ TEMPLATES = [
         },
     },
 ]
+
+TEMPLATE_LOADERS = (
+    ('django.template.loaders.cached.Loader', (
+        'django.template.loaders.filesystem.Loader',
+        'django.template.loaders.app_directories.Loader',
+    )),
+)
 
 WSGI_APPLICATION = 'AIMeDocSys.wsgi.application'
 
@@ -155,7 +187,8 @@ TIME_ZONE = 'Asia/Shanghai'
 
 USE_TZ = False
 
-USE_I18N = True
+# USE_I18N = True
+USE_I18N = False
 
 USE_L10N = True
 
@@ -198,5 +231,5 @@ HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 # 在settings.py末尾加入,保证部署环境下静态文件正常加载
 # SECURE_CONTENT_TYPE_NOSNIFF = False
 
-# mimetypes.add_type('text/css', '.css')
-# mimetypes.add_type('application/javascript', '.js')
+mimetypes.add_type('text/css', '.css')
+mimetypes.add_type('application/javascript', '.js')

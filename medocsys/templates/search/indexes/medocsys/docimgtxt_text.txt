@@ -1,1 +1,1 @@
-{{  object.img_content }}
+{{  object.img_content|striptags }}

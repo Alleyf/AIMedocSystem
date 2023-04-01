@@ -1,4 +1,5 @@
 {% load static %}
+{% load compress %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,11 +18,13 @@
     <link href="/static/plugins/bootstrap-5.2.3/css/bootstrap.min.css" rel="stylesheet" type="text/css"
           media="all">
     {#    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.3.0/css/all.min.css" rel="stylesheet">#}
-    <link rel="stylesheet" href="/static/css/login.css" type="text/css">
-    {#    <style>#}
-    {#        @import url("/static/css/login.css");#}
-    {#    </style>#}
-
+    {#    <link rel="stylesheet" href="/static/css/login.css" type="text/css">#}
+    {% compress css %}
+        <link rel="stylesheet" href="{% static '/css/login.css' %}" type="text/css">
+        {#    <style>#}
+        {#        @import url("/static/css/login.css");#}
+        {#    </style>#}
+    {% endcompress %}
     {% block mystyle %}
     {% endblock %}
 </head>
@@ -72,10 +75,12 @@
     </div>
     <canvas class="background"></canvas>
 {% endblock %}
-
-<script type="text/javascript" src="/static/js/jquery-3.6.1.min.js"></script>
+{% compress js %}
+    {#    <script type="text/javascript" src="/static/js/jquery-3.6.1.min.js"></script>#}
+    <script type="text/javascript" src="{% static '/js/jquery-3.6.1.min.js' %}"></script>
+{% endcompress %}
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/particlesjs/2.2.2/particles.min.js"></script>
-{% block myscript %}
+{% compress js %}
     <script type="text/javascript">
         var code; //声明一个变量用于存储生成的验证码
         changeImg();
@@ -129,17 +134,19 @@
 
 
     </script>
-{% endblock %}
-<script type="text/javascript">
-    window.onload = function () {
-        Particles.init
-        ({
-            selector:
-                '.background'
-        });
-    };
+    <script type="text/javascript">
+        window.onload = function () {
+            Particles.init
+            ({
+                selector:
+                    '.background'
+            });
+        };
 
-</script>
+    </script>
+{% endcompress %}
+{% block myscript %}
+{% endblock %}
 
 </body>
 </html>

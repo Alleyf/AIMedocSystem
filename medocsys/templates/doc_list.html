@@ -1,10 +1,12 @@
 {% extends 'layout.html' %}
 {% load static %}
+{#{% load compress %}#}
 {% block mytitle %}
     <title>个人文献管理</title>
 {% endblock %}
 {% block mystyle %}
     <link href="https://cdn.bootcdn.net/ajax/libs/dropzone/5.9.3/dropzone.min.css" rel="stylesheet">
+    {#    {% compress css %}#}
     <style>
 
         .upload {
@@ -28,6 +30,7 @@
 
 
     </style>
+    {#    {% endcompress %}#}
 {% endblock %}
 
 {% block info %}
@@ -235,6 +238,7 @@
 
 {% block myscript %}
     <script src="https://cdn.bootcdn.net/ajax/libs/dropzone/5.9.3/dropzone.js"></script>
+    {#    {% compress js %}#}
     <script type="text/javascript">
         Dropzone.autoDiscover = false;
         var DELETE_ID;
@@ -668,4 +672,5 @@
             })
         }
     </script>
+    {#    {% endcompress %}#}
 {% endblock %}

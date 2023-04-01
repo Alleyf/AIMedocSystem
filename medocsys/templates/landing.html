@@ -1,4 +1,5 @@
 ﻿{% load static %}
+{% load compress %}
 <!doctype html>
 <html lang="en" dir="ltr">
 <head>
@@ -14,46 +15,53 @@
     <title>智检慧医</title>
     <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.3.0/css/all.min.css" rel="stylesheet">
     <!-- BOOTSTRAP CSS -->
-    <link id="style" href="{% static 'plugins/bootstrap-5.2.3/css/bootstrap.min.css' %}" rel="stylesheet"/>
-    <!-- STYLE CSS -->
-    <link rel="stylesheet" href="{% static 'css/layout.css' %}">
-    <!--- FONT-ICONS CSS -->
-    {#    <link href="{% static '/css/icons.css' %}" rel="stylesheet"/>#}
-    <style>
-        /* Let's get this party started */
-        ::-webkit-scrollbar {
-            width: 5px;
-        }
+    {% compress css %}
+        <link id="style" href="{% static 'plugins/bootstrap-5.2.3/css/bootstrap.min.css' %}" rel="stylesheet"/>
+        <!-- STYLE CSS -->
+        <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+        <!--- FONT-ICONS CSS -->
+        {#    <link href="{% static '/css/icons.css' %}" rel="stylesheet"/>#}
+        <style>
+            /* Let's get this party started */
+            ::-webkit-scrollbar {
+                width: 5px;
+            }
 
-        /* Track */
-        ::-webkit-scrollbar-track {
-            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-            -webkit-border-radius: 10px;
-            border-radius: 10px;
-        }
+            /* Track */
+            ::-webkit-scrollbar-track {
+                -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+                -webkit-border-radius: 10px;
+                border-radius: 10px;
+            }
 
-        /* Handle */
-        ::-webkit-scrollbar-thumb {
-            -webkit-border-radius: 10px;
-            border-radius: 10px;
-            background: #d4eca4;
-            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
-        }
+            /* Handle */
+            ::-webkit-scrollbar-thumb {
+                -webkit-border-radius: 10px;
+                border-radius: 10px;
+                background: #d4eca4;
+                -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+            }
 
-        ::-webkit-scrollbar-thumb:window-inactive {
-            background: rgb(255, 255, 255);
-        }
+            ::-webkit-scrollbar-thumb:window-inactive {
+                background: rgb(255, 255, 255);
+            }
 
-        {#.slick-track > .slide {#}
-        {#    min-height: 473px !important;#}
-        {#    margin: auto !important;#}
+            {#.slick-track > .slide {#}
+            {#    min-height: 473px !important;#}
+            {#    margin: auto !important;#}
 
-        .slide > div {
-            min-height: 473px;
-            margin: auto !important;
-        }
+            .slide > div {
+                min-height: 473px;
+                margin: auto !important;
+            }
 
-    </style>
+            .nav-container {
+                background: transparent;
+                backdrop-filter: blur(5px);
+            }
+
+        </style>
+    {% endcompress %}
 </head>
 
 <body class="ltr app horizontal landing-page">
@@ -69,7 +77,7 @@
 <div class="page">
     <div class="page-main">
         <!-- app-Header -->
-        <div class="hor-header header">
+        <div class="hor-header header nav-container">
             <div class="container main-container">
                 <div class="d-flex">
                     <a aria-label="Hide Sidebar" class="" data-bs-toggle="sidebar"
@@ -116,7 +124,7 @@
 
                 <!--APP-SIDEBAR-->
                 <div class="app-sidebar__overlay" data-bs-toggle="sidebar"></div>
-                <div class="app-sidebar bg-transparent horizontal-main">
+                <div class="app-sidebar bg-transparent horizontal-main nav-container">
                     <div class="container">
                         <div class="main-sidemenu navbar px-0">
                             <a class="navbar-brand ps-0 d-none d-lg-block"
@@ -303,7 +311,7 @@
                                                                                       d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
 																			</svg></span>
                                                                 <div class="ms-3">
-                                                                    <p>文献图片在线展示提供更多信息.</p>
+                                                                    <p>文献一键推送和文献图片在线预览.</p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -448,7 +456,7 @@
                                                                                       d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
 																			</svg></span>
                                                                 <div class="ms-3">
-                                                                    <p>文献图片在线展示提供更多信息.</p>
+                                                                    <p>文献一键推送和文献图片在线预览.</p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -593,7 +601,7 @@
                                                                                       d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
 																			</svg></span>
                                                                 <div class="ms-3">
-                                                                    <p>文献图片在线展示提供更多信息.</p>
+                                                                    <p>文献一键推送和文献图片在线预览.</p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -738,7 +746,7 @@
                                                                                       d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
 																			</svg></span>
                                                                 <div class="ms-3">
-                                                                    <p>文献图片在线展示提供更多信息.</p>
+                                                                    <p>文献一键推送和文献图片在线预览.</p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -882,7 +890,7 @@
                                                                                       d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
 																			</svg></span>
                                                                 <div class="ms-3">
-                                                                    <p>文献图片在线展示提供更多信息.</p>
+                                                                    <p>文献一键推送和文献图片在线预览.</p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1026,7 +1034,7 @@
                                                                                       d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
 																			</svg></span>
                                                                 <div class="ms-3">
-                                                                    <p>文献图片在线展示提供更多信息.</p>
+                                                                    <p>文献一键推送和文献图片在线预览.</p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1170,7 +1178,7 @@
                                                                                       d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
 																			</svg></span>
                                                                 <div class="ms-3">
-                                                                    <p>文献图片在线展示提供更多信息.</p>
+                                                                    <p>文献一键推送和文献图片在线预览.</p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1314,7 +1322,7 @@
                                                                                       d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
 																			</svg></span>
                                                                 <div class="ms-3">
-                                                                    <p>文献图片在线展示提供更多信息.</p>
+                                                                    <p>文献一键推送和文献图片在线预览.</p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1374,6 +1382,150 @@
                                                     <img class="img-fluid float-md-end" height="473"
                                                             {#                                                         src="{% static 'images/illusion/doc.webp' %}" alt="">#}
                                                          src="{% static 'images/illusion/doc.png' %}" alt="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slide">
+                                            <div class="row align-items-center">
+                                                <div class="col-md-7 col-12 px-0">
+                                                    <h4 class="fs-25">创新点</h4>
+                                                    <p class="text-muted mb-4">八大创新点，赋能现代化文献检索和管理.</p>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>对搜索关键词进行语义分析实现相关检索.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>使用多模型融合识别提高文献图片识别准确率.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>支持多种文献数据库检索,扩大检索范围.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>基于生成型预训练变换模型实现文献自动分类.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>文献一键推送和文献图片在线预览.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>添加人工智能问答助手协助解答各种问题.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>采用数据可视化直观展示系统文献数据及状态.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-12">
+                                                            <div class="d-flex">
+																		<span><svg xmlns="http://www.w3.org/2000/svg"
+                                                                                   width="24" height="24"
+                                                                                   viewBox="0 0 24 24">
+																				<path fill="#8fbd56"
+                                                                                      d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z"
+                                                                                      opacity=".99"/>
+																				<path fill="#8fbd56" opacity=".2"
+                                                                                      d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"/>
+																			</svg></span>
+                                                                <div class="ms-3">
+                                                                    <p>加入医学知识图谱,支持图谱搜索并可视化展示.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <a href="#" class="btn btn-pill btn-primary btn-w-md py-2 me-2">Start
+                                                        Now<i class="fa-brands fa-activity ms-2"></i></a>
+                                                </div>
+                                                <div class="col-md-5 col-sm-12">
+                                                    <img class="img-fluid float-md-end" style="height: 300px"
+                                                         src="{% static 'images/illusion/sendmsg.png' %}" alt="">
                                                 </div>
                                             </div>
                                         </div>
@@ -1632,7 +1784,7 @@
                                         </svg>
                                     </div>
                                     <h4 class="mx-1">
-                                        ElasticSearch
+                                        ElasticSearch搜索引擎
                                     </h4>
                                     <p class="text-muted mb-3 mx-1">
                                         AIMeDocSys主要是利用了ElasticSearch分布式搜索引擎对用户上传的文献的文字文本和图片文本分词并建立倒排索引，从而实现了在搜索过程中达到高性能、速度快、低延迟的要求.
@@ -1655,7 +1807,7 @@
                                         光学字符识别技术(OCR)
                                     </h4>
                                     <p class="text-muted mb-3 mx-1">
-                                        AIMeDocSys基于百度飞桨的预训练模型，通过自制医学文献图片数据集和开源公开数据集对模型进行微调，进一步提升PaddleOCR模型检测与识别模型的精度，经过200张以上医学文献图片准确率的测试达到93.93%以上.
+                                        AIMeDocSys基于百度飞桨的预训练模型，通过自制医学文献图片数据集和开源公开数据集对模型进行微调，进一步提升PaddleOCR模型检测与识别模型的精度，经过290张以上医学文献图片准确率的测试达到94.93%以上.
                                     </p>
                                     <a class="mx-1" href="https://github.com/PaddlePaddle/PaddleOCR">Read More <i
                                             class="fa fa-chevron-right"></i></a>
@@ -2054,13 +2206,15 @@
 
 <!-- BACK-TO-TOP -->
 <a href="#top" id="back-to-top"><i class="fa fa-long-arrow-up"></i></a>
-<script src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
-<script src="{% static 'plugins/bootstrap-5.2.3/js/bootstrap.bundle.min.js' %}"></script>
-<script src="{% static 'plugins/bootstrap-5.2.3/js/popper.min.js' %}"></script>
-<!-- Owl carousel JS -->
-<script src="{% static 'js/slider.js' %}"></script>
-<script src="{% static 'js/owl.carousel.js' %}"></script>
-<!-- landing JS -->
-<script src="{% static 'js/landing.js' %}"></script>
+{% compress js %}
+    <script src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap-5.2.3/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap-5.2.3/js/popper.min.js' %}"></script>
+    <!-- Owl carousel JS -->
+    <script src="{% static 'js/slider.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.js' %}"></script>
+    <!-- landing JS -->
+    <script src="{% static 'js/landing.js' %}"></script>
+{% endcompress %}
 </body>
 </html>
