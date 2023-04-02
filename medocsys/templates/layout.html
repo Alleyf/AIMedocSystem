@@ -90,6 +90,30 @@
         <img src="{% static 'images/loader.svg' %}" class="loader-img" alt="Loader">
     </div>
     <!-- /GLOBAL-LOADER -->
+    {#文献星球#}
+    <div class="dropdown modal fade" id="RandocModal" tabindex="-1"
+         aria-labelledby="RandocModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xs">
+            <div class="modal-content text-center">
+                <div class="modal-header text-primary">
+                    <h1 class="modal-title fs-5" id="RandocModalLabel">文献星球</h1>
+                    <button type="button" class="btn-close btn-outline-info"
+                            data-bs-dismiss="modal"
+                            aria-label="Close">X
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-group text-center" id="doccard"
+                         style="flex-direction: column;justify-content: center;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                    <button type="button" onclick="get_randoc()" class="btn btn-primary btn_next">下一个</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- PAGE -->
     <div class="page">
@@ -125,6 +149,15 @@
                             <div class="navbar navbar-collapse responsive-navbar p-0">
                                 <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
                                     <div class="d-flex order-lg-2">
+
+                                        <div class="dropdown  d-flex">
+                                            <button class="nav-link icon nav-link-bg" id="btn_randoc"
+                                                    data-bs-toggle="modal" onclick="get_randoc()"
+                                                    data-bs-target="#RandocModal">
+                                                <i class="fa-solid fa-earth-americas"></i>
+                                            </button>
+                                        </div>
+
                                         <div class="dropdown  d-flex">
                                             <a class="nav-link icon theme-layout nav-link-bg layout-setting">
                                                 <span class="dark-layout">
@@ -381,68 +414,98 @@
     <script src="{% static '/js/waypoints.min.js' %}"></script>
 {% endcompress %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/particlesjs/2.2.2/particles.min.js"></script>
-{% compress js %}
-    <script type="text/javascript">
-        window.onload
-            = function () {
-            Particles.init
-            ({
-                selector:
-                    '.background'
-            });
-        };
-    </script>
-    <script type="text/javascript">
+{#{% compress js %}#}
+<script type="text/javascript">
+    window.onload
+        = function () {
+        Particles.init
+        ({
+            selector:
+                '.background'
+        });
+    };
+</script>
+<script type="text/javascript">
+    var CLK_RANDOC_NUM = 0
+    $(function () {
+        thememode();
+    })
 
-        $(function () {
-            thememode();
-        })
-
-        function thememode() {
-            const options = {
-                bottom: 'unset', // default: '32px'
-                right: 'unset', // default: '32px'
-                left: '15px', // default: 'unset'
-                time: '0.5s', // default: '0.3s'
-                mixColor: '#fff', // default: '#fff'
-                backgroundColor: '#fff', // default: '#fff'
-                buttonColorDark: '#100f2c', // default: '#100f2c'
-                buttonColorLight: '#fff', // default: '#fff'
-                saveInCookies: true, // default: true,
-                label: '🌓', // default: ''
-                autoMatchOsTheme: true// default: true
-            }
-
-            function addDarkmodeWidget() {
-                let darkmode = new Darkmode(options);
-                darkmode.showWidget();
-                $(".darkmode-toggle").on('click', function () {
-                    if (darkmode.isActivated()) {
-                        $(".panel").attr('class', 'panel panel-success')
-                        $(".list-group-item[id]").css({
-                            "color": "#3c763d",
-                            "background-color": "#a5d29a",
-                            "border-color": "#d6e9c6"
-                        });
-                        {#console.log('设置面板样式', darkmode.isActivated())#}
-                    } else {
-                        $(".panel").attr('class', 'panel panel-info')
-                        $(".list-group-item[id]").css({
-                            "color": "#3c763d",
-                            "background-color": "#dff0d8",
-                            "border-color": "#d6e9c6"
-                        });
-                        {#console.log('恢复面板样式', darkmode.isActivated())#}
-                    }
+    function get_randoc() {
+        $.ajax({
+            url: "/doc/random/",
+            type: 'get',
+            dataType: 'json',
+            data: {'cid': CLK_RANDOC_NUM},
+            success: function (res) {
+                {#console.log(res);#}
+                let doccard = $("#doccard")
+                doccard.children().remove()
+                let a = $("<a>").attr({
+                    'href': "/media/docs/" + res.doc_cover_name + ".pdf",
+                    'class': "card",
+                    'style': "display:flex;align-items: center;"
                 })
-
+                let cover = $("<img>").attr({
+                    'src': res.doc_cover_url,
+                    'alt': "图片不存在",
+                    'width': '256px',
+                    'height': '256px'
+                })
+                let doc_name = $("<div style='display: block;'>").text(res.doc_cover_name)
+                a.append(cover)
+                doccard.append(a)
+                doccard.append(doc_name)
+                CLK_RANDOC_NUM += 1
             }
+        })
+    }
 
-            window.addEventListener('load', addDarkmodeWidget);
+    function thememode() {
+        const options = {
+            bottom: 'unset', // default: '32px'
+            right: 'unset', // default: '32px'
+            left: '15px', // default: 'unset'
+            time: '0.5s', // default: '0.3s'
+            mixColor: '#fff', // default: '#fff'
+            backgroundColor: '#fff', // default: '#fff'
+            buttonColorDark: '#100f2c', // default: '#100f2c'
+            buttonColorLight: '#fff', // default: '#fff'
+            saveInCookies: true, // default: true,
+            label: '🌓', // default: ''
+            autoMatchOsTheme: true// default: true
         }
 
-    </script>
-{% endcompress %}
+        function addDarkmodeWidget() {
+            let darkmode = new Darkmode(options);
+            darkmode.showWidget();
+            $(".darkmode-toggle").on('click', function () {
+                if (darkmode.isActivated()) {
+                    $(".panel").attr('class', 'panel panel-success')
+                    $(".list-group-item[id]").css({
+                        "color": "#3c763d",
+                        "background-color": "#a5d29a",
+                        "border-color": "#d6e9c6"
+                    });
+                    {#console.log('设置面板样式', darkmode.isActivated())#}
+                } else {
+                    $(".panel").attr('class', 'panel panel-info')
+                    $(".list-group-item[id]").css({
+                        "color": "#3c763d",
+                        "background-color": "#dff0d8",
+                        "border-color": "#d6e9c6"
+                    });
+                    {#console.log('恢复面板样式', darkmode.isActivated())#}
+                }
+            })
+
+        }
+
+        window.addEventListener('load', addDarkmodeWidget);
+    }
+
+</script>
+{#{% endcompress %}#}
 {% block myscript %}
 {% endblock %}
 </body>

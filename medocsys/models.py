@@ -27,6 +27,7 @@ class MeDocs(models.Model):
         (2, "英文")
     )
     name = models.CharField(verbose_name="文献名称", max_length=128, db_index=True)
+    cover = models.CharField(default='default.jpg', max_length=128, verbose_name="封面")
     # 相关性总分为60
     relscore = models.FloatField(verbose_name="相关性得分", default=0)
     # 点击率总分为30

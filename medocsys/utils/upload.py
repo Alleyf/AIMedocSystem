@@ -4,6 +4,7 @@ import time
 from os import path
 import fitz
 
+from medocsys.utils.get_cover import get_doc_cover
 from medocsys.utils.ocr import integrated_ocr
 
 """单文件上传(默认上传到static/doc/目录)"""
@@ -81,6 +82,8 @@ def extract_img_widget(file, url, filedic, filelist, imgindex, tempcurrentpage, 
     name = re.findall(st, url)[0]
     # print(name)
     pdf_document = fitz.open(real_url)
+    # 上传文献封面
+    get_doc_cover(pdf_document, name)
     for current_page in range(len(pdf_document)):
         img_txt = ""
         for image in pdf_document.get_page_images(current_page):

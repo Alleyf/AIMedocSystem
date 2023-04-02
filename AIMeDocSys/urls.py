@@ -37,6 +37,8 @@ urlpatterns = [
     # *********************文档接口*********************
     # 文档列表
     path("doc/list/", doc.doc_list),
+    # 随机一文
+    path("doc/random/", doc.doc_get_random),
     # 添加文档(ajax异步上传)
     path("doc/add/", doc.doc_add),
     # 删除文献

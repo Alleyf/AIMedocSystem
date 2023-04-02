@@ -87,6 +87,7 @@ def doc_add(request):
         form.instance.date = time.strftime("%Y-%m-%d", time.localtime())
         # 单独设置表单数据：将当前登录的用户作为该条信息的作者
         form.instance.user_id = request.session['info'].get("id")
+        form.instance.cover = form.instance.name + ".png"
         # 设置文档语言
         # print("当前名字：" + form.instance.name)
         # tika获取文献标题
@@ -710,5 +711,18 @@ def doc_union(request):
     return JsonResponse(res)
 
 
-def doc_get_qa(request):
-    get_qas(doc_txt="""""")
+@csrf_exempt
+def doc_get_random(request):
+    baseurl = "/media/covers/"
+    doc_queryset = models.MeDocs.objects.all().order_by('-allscore')
+    doc_num = len(doc_queryset)
+    current_id = request.GET.get('cid')
+    print(type(current_id), current_id, int(current_id) % doc_num)
+    current_doc_obj = doc_queryset[int(current_id) % doc_num]
+    doc_cover_url = baseurl + current_doc_obj.cover
+    print(request.method, doc_cover_url)
+    context = {
+        'doc_cover_url': doc_cover_url,
+        'doc_cover_name': current_doc_obj.name
+    }
+    return JsonResponse(context)
