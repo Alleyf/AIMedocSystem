@@ -66,7 +66,7 @@ def register(request):
         return render(request, "register.html", {'form': form})
     # print(type(request.POST), request.POST)
     form = RegisterModelForm(data=request.POST, files=request.FILES)
-    print(request.POST, request.FILES)
+    # print(request.POST, request.FILES)
     if form.is_valid():
         # 验证码校验,取出并出栈验证码，防止后面校验多出数据库中没有的验证码
         usr_input_code = form.cleaned_data.pop('code')
@@ -102,7 +102,7 @@ def checkcode_email(request):
         code = generate_random_str(randomlength=4)
         request.session['checkcode'] = code
         request.session.set_expiry(60)
-        title = "医道有易-注册验证码"
+        title = "智检慧医-注册验证码"
         contents = "您正在请求<strong>注册新账户</strong>的操作验证码, 您的验证码是:\n" + "<strong>" + code + "</strong>" + "\n请不要向其他人提供此验证码, 这可能使您的账户遭受攻击这是系统自动发送的邮件，请不要回复此邮件如果该验证码不是您本人请求的, 请忽略此邮件."
         email_src = "467807892@qq.com"
         status_code = send_mail(title, contents, email_src, [email_des])

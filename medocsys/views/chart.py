@@ -419,7 +419,7 @@ def medicine_search_one(value="百日咳"):
 
 
 @csrf_exempt
-@cache_page(60 * 30)
+# @cache_page(60 * 30)
 def index(request):
     cache_data = cache.get('neo4j_default_data')
     # print(type(cache_data))
@@ -433,7 +433,7 @@ def index(request):
             # print(node_name)
             # 查询结果
             search_neo4j_data = medicine_search_one(value=node_name)
-            cache.set('neo4j_' + node_name, search_neo4j_data, 60 * 60 * 24)
+            cache.set('neo4j_' + node_name, search_neo4j_data, 60 * 60 * 24 * 7)
             cache_search_data = cache.get('neo4j_' + node_name)
             # print(json.loads(search_neo4j_data)['error'])
 
@@ -461,7 +461,7 @@ def index(request):
     if not cache_data:
         # if cache_data:
         neo4j_data = medicine_search_one()
-        cache.set('neo4j_default_data', neo4j_data, 60 * 60 * 24)
+        cache.set('neo4j_default_data', neo4j_data, 60 * 60 * 24 * 7)
         cache_data = cache.get('neo4j_data')
         # print(cache_data, type(cache_data))
     return render(request, 'medicine_graph.html', {'neo4j_data': cache_data, 'ctx': json.loads(cache_data)['error']})

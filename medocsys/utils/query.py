@@ -8,6 +8,7 @@ from elasticsearch import Elasticsearch
 # 函数方法
 def query_elastics(key: str, start=0, size=1000):
     results = []
+    time_cost = None
     try:
         rel_num_ls = query_elastics_min_fragment(key=key)
         # print(len(rel_num_ls))
@@ -44,8 +45,8 @@ def query_elastics(key: str, start=0, size=1000):
         end_time = time.perf_counter()  # 记录开始时间
 
         # 计算时间差并打印结果
-        time_cost = end_time - start_time
-        print("检索耗时", time_cost)
+        time_cost = round(end_time - start_time, 3)
+        # print("检索耗时", time_cost)
         # print(res)
         # results = []
         old_all_scores = 0
@@ -70,11 +71,11 @@ def query_elastics(key: str, start=0, size=1000):
             # item['rel_score'] = round((item['rel_score'] / old_all_scores) * 60, 2)
             # item['rel_score'] = round((len(item["fragments"]) / all_num) * 60, 2)
             results[i]['rel_score'] = item
-        return results
+        # return results
     except Exception as e:
         print(e)
     finally:
-        return results
+        return time_cost, results
 
 
 def query_elastics_min_fragment(key: str, start=0, size=1000):

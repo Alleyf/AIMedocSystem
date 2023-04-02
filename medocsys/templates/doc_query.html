@@ -105,7 +105,11 @@
             {% for pninfo in page_info %}
                 {% if pninfo.num == 1 %}
                     <div class="container-fluid card table-responsive" id="tb" style="display: block">
-                    <div class="table-responsive"><i class="fa fa-list"></i>文献列表</div>
+                    <div class="table-responsive" style="display: flex;align-items: center"><i class="fa fa-list"></i>文献列表
+                        <div class="small" style="color: grey;margin-left: 20px">检索到{{ doc_num }}篇文献含有关键词<span
+                                class="text-danger">{{ search_data }}</span>共耗时{{ cost_time }}s
+                        </div>
+                    </div>
                     <table class="wrappercontent table table-hover table-condensed ">
                     <thead class="text-center table-default">
                     <tr>
@@ -385,11 +389,11 @@
                     ikw = $("#keyword")
                     ikw.removeClass("is-invalid")
                     ikw.addClass("is-valid")
-                    if ($("#restip")) {
-                        $("#pagination").hide();
-                        console.log("隐藏分页")
+                    if ($("#restip").text() === "") {
+                        $("#pagination").show();
+                        {#console.log("显示分页")#}
                     } else {
-                        $("#pagination").show()
+                        $("#pagination").hide();
                     }
                     {#console.log("输入不为空")#}
                     {#console.log("修改后的起始页码", $("#start").val())#}

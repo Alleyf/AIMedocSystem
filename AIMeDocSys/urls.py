@@ -5,12 +5,16 @@ from django.conf.urls import url  ## 新增
 from django.contrib import admin
 from django.urls import path, re_path, include
 from django.views.static import serve
+from rest_framework.routers import SimpleRouter
 
-from medocsys.views import user, account, doc, chart, medocrobot, send
+from medocsys.views import user, account, doc, chart, medocrobot, send, search
+
+router = SimpleRouter()
+router.register('search', search.DocTxtSearchViewSet, basename='search_api')
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls')),
+    # path('api-auth/', include('rest_framework.urls')),
     re_path(r"^static/(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT}, name='static'),  # 新增的路径
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}, name='media'),
     # *********************用户*********************
@@ -76,3 +80,5 @@ urlpatterns = [
     path("chart/graph/<str:value>/", chart.medicine_search_one),
     path("chart/graph/", chart.index),
 ]
+
+urlpatterns += router.urls

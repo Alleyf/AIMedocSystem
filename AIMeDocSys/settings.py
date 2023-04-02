@@ -70,7 +70,8 @@ INSTALLED_APPS = [
     'drf_haystack',
     "medocsys.apps.MedocsysConfig",
     'compressor',
-    # 'jsonrpc',
+    'corsheaders',  # 跨域
+    # 'jsonrpc',  # RPC服务
     # 'rest_framework_swagger',  # swagger自动生成接口文档
 
 ]
@@ -187,8 +188,8 @@ TIME_ZONE = 'Asia/Shanghai'
 
 USE_TZ = False
 
-# USE_I18N = True
-USE_I18N = False
+USE_I18N = True
+# USE_I18N = False
 
 USE_L10N = True
 

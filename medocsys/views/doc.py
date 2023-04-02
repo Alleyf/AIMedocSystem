@@ -313,7 +313,7 @@ def doc_details(request):
         title = models.MeDocs.objects.filter(id=uid).first().name
         # url = "./media/docs/" + title + '.pdf'
         # page_info = spdfmkeyword(url=url, keyword=keyword)
-        page_info = query_elastics(key=keyword, start=0, size=1000)
+        _, page_info = query_elastics(key=keyword, start=0, size=1000)
         # page_info = query_elastics_min_fragment(key=keyword, start=0, size=1000)
         new_page_info = []
         for item in page_info:
@@ -458,8 +458,8 @@ def doc_query(request):
     request.session['info']['keyword'] = keyword
     request.session.set_expiry(60 * 60 * 24 * 7)
     # print(request.session['info']['keyword'])
-    page_info = query_elastics(key=keyword, start=0, size=1000)
-    # print(page_info)
+    cost_time, page_info = query_elastics(key=keyword, start=0, size=1000)
+    # print(len(page_info))
     if len(page_info) == 0:
         context = {
             'search_data': keyword,
@@ -505,6 +505,8 @@ def doc_query(request):
         models.MeDocs.objects.filter(id=uid).update(allscore=allscore)
         page_info[i]['allscore'] = models.MeDocs.objects.filter(id=uid).first().allscore
     # 对文档结果按照总分进行排序
+    page_info_len = len(page_info)
+    # print("剔除重复后的：", len(page_info), len(page_info) - len(repeate_ls))
     page_info = sorted(page_info, key=lambda x: x['allscore'], reverse=True)
     # for i, item in enumerate(page_info):
     #     item['num'] = i + 1
@@ -525,7 +527,9 @@ def doc_query(request):
         'page_info': page_info,
         'code': 200,
         'start': start,
-        'final_page': page_status
+        'final_page': page_status,
+        'cost_time': cost_time,
+        'doc_num': page_info_len
     }
     return render(request, "doc_query.html", context)
     # return redirect('/admin/list/')
