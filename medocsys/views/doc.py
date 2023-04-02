@@ -64,7 +64,7 @@ def doc_list(request):
 @csrf_exempt
 def doc_add(request):
     """添加文档"""
-    start = time.perf_counter()
+    # start = time.perf_counter()
     upload_info = []
     pop_doc = []
     fail_num = 0
@@ -168,15 +168,15 @@ def doc_add(request):
                         'err': doc_img_txt_form.errors
                     }
                     return JsonResponse(context)
-    end = time.perf_counter()
-    cost_time = end - start
+    # end = time.perf_counter()
+    # cost_time = end - start
     context = {
         'status': 200,
         'info': upload_info,
-        'cost_time': {
-            'upload': "{}秒".format(upload_res[1]),
-            'all': "{}秒".format(cost_time),
-        },
+        # 'cost_time': {
+        # 'upload': "{}秒".format(upload_res[1]),
+        # 'all': "{}秒".format(cost_time),
+        # },
         'upload_num': {
             'fail': fail_num,
             'success': success_num,

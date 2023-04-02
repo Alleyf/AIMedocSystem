@@ -307,7 +307,6 @@
                 {#console.log($("#tb").length)#}
                 if ($("#tb").length != 0) {
                     $("#global-loader").show()
-                    {#$("#pagination").remove()#}
                 }
                 if (SEARCHWAY === "知网") {
                     $("span").detach();
@@ -383,7 +382,6 @@
                             rel_search();
                         }
                     })
-                    {#console.log("换页失败")#}
                     return false
                 } else {
                     ikw = $("#keyword")
@@ -395,8 +393,6 @@
                     } else {
                         $("#pagination").hide();
                     }
-                    {#console.log("输入不为空")#}
-                    {#console.log("修改后的起始页码", $("#start").val())#}
                     return true
                 }
 
@@ -406,7 +402,7 @@
                 $("#keyword").addClass("is-invalid")
                 $("#fedback").text("请输入检索关键词!")
                 $(".loader").css('display', "flex")
-                console.log("输入为空")
+                {#console.log("输入为空")#}
                 $("#pagination").hide()
                 return false
             }

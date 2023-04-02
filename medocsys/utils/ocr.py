@@ -173,9 +173,9 @@ def integrated_ocr(img_path: str):
 
     # merge_txt = list_merge("paddle", paddle_txt)
     merge_txt = list_merge(tencent_txt, local_txt, paddle_txt)
-    print("飞浆API结果：", paddle_txt)
-    print("腾讯API结果：", tencent_txt)
-    print("本地API结果：", local_txt)
+    # print("飞浆API结果：", paddle_txt)
+    # print("腾讯API结果：", tencent_txt)
+    # print("本地API结果：", local_txt)
     # print("合并后的结果：", merge_txt)
 
     return merge_txt

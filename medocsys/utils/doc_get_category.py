@@ -37,7 +37,7 @@ def get_context(prompt: str) -> str:
 def get_category(title: str):
     # 你的问题
     try:
-        question = "请判断文本'" + title + "'是医学中[内科，外科，儿科，妇产科，骨科，影像科，其他]中的哪个领域，用这是医学中的...领域来回答"
+        question = "请判断标题为'" + title + "'的文献是医学中[内科，外科，儿科，妇产科，骨科，影像科，其他]中的哪个领域，用'这是医学中的...领域来回答'"
         prompt = question
         # print(prompt)
         # 调用 ChatGPT 接口
@@ -57,11 +57,11 @@ def get_category(title: str):
 
 
 if __name__ == '__main__':
-    title = "2016IJC-导管组织接触对于模型的影响PentarRay_FAM.pdf"
+    title = "Annoyance to different noise sources is associated with atrial fibrillation"
     start = time.time()
     # response = get_context(prompt=title)
     response = get_category(title)
     end = time.time()
     # print("标题是：" + title)
-    print(response, len(response))
+    print(response)
     # print("耗时", end - start)

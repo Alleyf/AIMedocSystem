@@ -179,7 +179,7 @@
                 <tbody class="text-center">
                 {% for pninfo in page_queryset %}
                     <tr uid="{{ pninfo.id }}">
-                        <th scope="row">{{ pninfo.id }}</th>
+                        <th scope="row">{{ forloop.counter }}</th>
                         <td>{{ pninfo.name }}</td>
                         <td>{{ pninfo.clkscore }}</td>
                         <td>{{ pninfo.fedbakscore }}</td>

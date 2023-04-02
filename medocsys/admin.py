@@ -47,23 +47,24 @@ class UserAdmin(admin.ModelAdmin):
         # print(len(obj.password), obj, obj.password)
         if len(obj.password) != 32:
             obj.password = md5(obj.password)
-        print(len(obj.password), obj, obj.password)
+        # print(len(obj.password), obj, obj.password)
         super(UserAdmin, self).save_model(request, obj, form, change)
 
 
 @admin.register(MeDocs)
 class MedocsAdmin(admin.ModelAdmin):
     empty_value_display = '-empty-'
-    fields = (("clkscore", "fedbakscore"), "user", "language", "date", "category")
+    fields = ("name", ("clkscore", "fedbakscore"), "user", "language", "date", "category")
     list_per_page = 10
     list_max_show_all = 10
     search_fields = ("name",)
     date_hierarchy = 'date'
 
     def save_model(self, request, obj, form, change):
-        name = request.FILES.get("docfile").name.replace(" ", "_")
-        # print(self, name, obj.docfile.name)
-        obj.name = name[:-4]
+        if request.FILES.get("docfile"):
+            name = request.FILES.get("docfile").name.replace(" ", "_")
+            # print(self, name, obj.docfile.name)
+            obj.name = name[:-4]
         # print(obj.name)
         super(MedocsAdmin, self).save_model(request, obj, form, change)
 
