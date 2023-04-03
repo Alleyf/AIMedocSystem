@@ -16,6 +16,7 @@
     <link rel="apple-touch-icon" sizes="120x120" href="{% static '/images/logo.png' %}"/>
     <link rel="apple-touch-icon" sizes="152x152" href="{% static '/images/logo.png' %}"/>
     <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.3.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcdn.net/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     {% compress css %}
         <link rel="stylesheet" href="{% static 'css/layout.css' %}">
         <link rel="stylesheet" href="{% static 'plugins/bootstrap-5.2.3/css/bootstrap.min.css' %}">
@@ -107,13 +108,85 @@
                          style="flex-direction: column;justify-content: center;"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
                     <button type="button" onclick="get_randoc()" class="btn btn-primary btn_next">下一个</button>
                 </div>
             </div>
         </div>
     </div>
-
+    {#排行榜#}
+    <div class="modal fade" id="rankmodal" style="display: none;"
+         aria-modal="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered text-center" role="document">
+            <div class="modal-content modal-content-demo">
+                <div class="modal-header">
+                    <h6 class="modal-title">排行榜</h6>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"><span
+                            aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row row-sm">
+                        <div class="col-lg-12">
+                            <div class="card custom-card">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <div id="user-datatable_wrapper"
+                                             class="dataTables_wrapper dt-bootstrap5 no-footer">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <table id="user-datatable"
+                                                           class="table table-bordered dataTable no-footer" role="grid"
+                                                           aria-describedby="user-datatable_info">
+                                                        <thead>
+                                                        <tr role="row">
+                                                            <th class="wd-2 sorting sorting_asc" tabindex="0"
+                                                                aria-controls="user-datatable" rowspan="1" colspan="1"
+                                                                aria-sort="ascending" aria-label="
+																头像
+															: activate to sort column descending"
+                                                                style="width: 40.4297px;">
+                                                                头像
+                                                            </th>
+                                                            <th class="sorting" tabindex="0"
+                                                                aria-controls="user-datatable" rowspan="1" colspan="1"
+                                                                aria-label="用户名: activate to sort column ascending"
+                                                                style="width: 182.609px;">用户名
+                                                            </th>
+                                                            <th class="sorting" tabindex="0"
+                                                                aria-controls="user-datatable" rowspan="1" colspan="1"
+                                                                aria-label="阅读量: activate to sort column ascending"
+                                                                style="width: 155.938px;">阅读量
+                                                            </th>
+                                                            <th class="sorting" tabindex="0"
+                                                                aria-controls="user-datatable" rowspan="1" colspan="1"
+                                                                aria-label="文献贡献数: activate to sort column ascending"
+                                                                style="width: 75.8359px;">文献贡献数
+                                                            </th>
+                                                            <th class="sorting" tabindex="0"
+                                                                aria-controls="user-datatable" rowspan="1" colspan="1"
+                                                                aria-label="注册时间: activate to sort column ascending"
+                                                                style="width: 79.7969px;">注册时间
+                                                            </th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody id="ranktbody">
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-bs-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- PAGE -->
     <div class="page">
@@ -135,7 +208,7 @@
                                  alt="logo">
                         </a>
                         <!-- LOGO -->
-                        <div class="text-center"
+                        <div class="text-center animate__animated animate__fadeIn"
                              style="margin: auto 10px;display: flex;color: #0a84ff;font-size: 30px">
                             智检慧医
                         </div>
@@ -149,6 +222,16 @@
                             <div class="navbar navbar-collapse responsive-navbar p-0">
                                 <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
                                     <div class="d-flex order-lg-2">
+
+                                        {#                                        排行榜#}
+
+                                        <div class="dropdown  d-flex">
+                                            <button class="nav-link icon nav-link-bg" id="btn_rank"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#rankmodal">
+                                                <i class="fa-solid fa-ranking-star"></i>
+                                            </button>
+                                        </div>
 
                                         <div class="dropdown  d-flex">
                                             <button class="nav-link icon nav-link-bg" id="btn_randoc"
@@ -407,105 +490,184 @@
     <script src="{% static '/js/custom.js' %}"></script>
     <script src="{% static '/js/sidebar.js' %}"></script>
     <script src="{% static '/js/sidemenu.js' %}"></script>
-    {#<script src="{% static '/js/pscroll.js' %}"></script>#}
     <script src="{% static '/js/perfect-scrollbar.js' %}"></script>
     <script src="{% static '/js/counters-1.js' %}"></script>
     <script src="{% static '/js/counterup.min.js' %}"></script>
     <script src="{% static '/js/waypoints.min.js' %}"></script>
 {% endcompress %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/particlesjs/2.2.2/particles.min.js"></script>
-{#{% compress js %}#}
-<script type="text/javascript">
-    window.onload
-        = function () {
-        Particles.init
-        ({
-            selector:
-                '.background'
-        });
-    };
-</script>
-<script type="text/javascript">
-    var CLK_RANDOC_NUM = 0
-    $(function () {
-        thememode();
-    })
-
-    function get_randoc() {
-        $.ajax({
-            url: "/doc/random/",
-            type: 'get',
-            dataType: 'json',
-            data: {'cid': CLK_RANDOC_NUM},
-            success: function (res) {
-                {#console.log(res);#}
-                let doccard = $("#doccard")
-                doccard.children().remove()
-                let a = $("<a>").attr({
-                    'href': "/media/docs/" + res.doc_cover_name + ".pdf",
-                    'class': "card",
-                    'style': "display:flex;align-items: center;"
-                })
-                let cover = $("<img>").attr({
-                    'src': res.doc_cover_url,
-                    'alt': "图片不存在",
-                    'width': '256px',
-                    'height': '256px'
-                })
-                let doc_name = $("<div style='display: block;'>").text(res.doc_cover_name)
-                a.append(cover)
-                doccard.append(a)
-                doccard.append(doc_name)
-                CLK_RANDOC_NUM += 1
-            }
+{% compress js %}
+    <script type="text/javascript">
+        window.onload
+            = function () {
+            Particles.init
+            ({
+                selector:
+                    '.background'
+            });
+        };
+    </script>
+    <script type="text/javascript">
+        var CLK_RANDOC_NUM = 0
+        $(function () {
+            thememode();
+            get_rank();
         })
-    }
 
-    function thememode() {
-        const options = {
-            bottom: 'unset', // default: '32px'
-            right: 'unset', // default: '32px'
-            left: '15px', // default: 'unset'
-            time: '0.5s', // default: '0.3s'
-            mixColor: '#fff', // default: '#fff'
-            backgroundColor: '#fff', // default: '#fff'
-            buttonColorDark: '#100f2c', // default: '#100f2c'
-            buttonColorLight: '#fff', // default: '#fff'
-            saveInCookies: true, // default: true,
-            label: '🌓', // default: ''
-            autoMatchOsTheme: true// default: true
-        }
-
-        function addDarkmodeWidget() {
-            let darkmode = new Darkmode(options);
-            darkmode.showWidget();
-            $(".darkmode-toggle").on('click', function () {
-                if (darkmode.isActivated()) {
-                    $(".panel").attr('class', 'panel panel-success')
-                    $(".list-group-item[id]").css({
-                        "color": "#3c763d",
-                        "background-color": "#a5d29a",
-                        "border-color": "#d6e9c6"
-                    });
-                    {#console.log('设置面板样式', darkmode.isActivated())#}
-                } else {
-                    $(".panel").attr('class', 'panel panel-info')
-                    $(".list-group-item[id]").css({
-                        "color": "#3c763d",
-                        "background-color": "#dff0d8",
-                        "border-color": "#d6e9c6"
-                    });
-                    {#console.log('恢复面板样式', darkmode.isActivated())#}
+        function get_rank() {
+            $.ajax({
+                url: "/rank/",
+                type: 'get',
+                dataType: 'json',
+                {#data: {'cid': CLK_RANDOC_NUM},#}
+                success: function (res) {
+                    {#console.log(res);#}
+                    let ranktbody = $("#ranktbody")
+                    let rankinfo = res.rankinfo
+                    ranktbody.children().remove()
+                    for (let i = 0; i < rankinfo.length; i++) {
+                        if (i % 2 === 0) {
+                            class_status = 'even'
+                        } else {
+                            class_status = 'odd'
+                        }
+                        let tr = $("<tr>").attr({
+                            'class': class_status,
+                        })
+                        let td1 = $("<td>").attr({
+                            'class': "text-center sorting_1"
+                        })
+                        let td1_div = $("<div class='avatar avatar-md rounded-circle'>")
+                        let avatar_img = $("<img alt='avatar' class='rounded-circle'>").attr('src', rankinfo[i].avatar)
+                        td1_div.append(avatar_img);
+                        td1.append(td1_div)
+                        let td2 = $("<td>")
+                        let usrname = $("<p class='tx-14 font-weight-semibold text-dark mb-1'>")
+                        usrname.text(rankinfo[i].name)
+                        {#console.log(usrname.text())#}
+                        td2.append(usrname)
+                        let td3 = $("<td>")
+                        let read_num_span = $("<span class='badge bg-gradient text-muted tx-13'>").text(rankinfo[i].read_num)
+                        td3.append(read_num_span)
+                        let td4 = $("<td>")
+                        let upload_span = $("<span class='badge bg-light text-muted tx-13'>").text(rankinfo[i].upload_num)
+                        td4.append(upload_span)
+                        let td5 = $("<td>")
+                        let date_span = $("<span class='text-muted tx-13'>").text(rankinfo[i].register_date)
+                        td5.append(date_span)
+                        tr.append(td1)
+                        tr.append(td2)
+                        tr.append(td3)
+                        tr.append(td4)
+                        tr.append(td5)
+                        ranktbody.append(tr)
+                    }
                 }
             })
 
         }
 
-        window.addEventListener('load', addDarkmodeWidget);
-    }
+        function get_randoc() {
+            $.ajax({
+                url: "/doc/random/",
+                type: 'get',
+                dataType: 'json',
+                data: {'cid': CLK_RANDOC_NUM},
+                success: function (res) {
+                    {#console.log(res);#}
+                    let doccard = $("#doccard")
+                    doccard.children().remove()
+                    let a = $("<a>").attr({
+                        'href': "/media/docs/" + res.doc_cover_name + ".pdf",
+                        'class': "card",
+                        'style': "display:flex;align-items: center;"
+                    })
+                    let cover = $("<img>").attr({
+                        'src': res.doc_cover_url,
+                        'alt': "图片不存在",
+                        'width': '256px',
+                        'height': '256px',
+                        'class': "animate__animated animate__flipInX"
+                    })
+                    let doc_name = $("<div style='justify-content: center;display: flex;'>").text(res.doc_cover_name)
+                    a.append(cover)
+                    doccard.append(a)
+                    doccard.append(doc_name)
+                    CLK_RANDOC_NUM += 1
+                }
+            })
+        }
 
-</script>
-{#{% endcompress %}#}
+        function thememode() {
+            const options = {
+                bottom: 'unset', // default: '32px'
+                right: 'unset', // default: '32px'
+                left: '15px', // default: 'unset'
+                time: '0.5s', // default: '0.3s'
+                mixColor: '#fff', // default: '#fff'
+                backgroundColor: '#fff', // default: '#fff'
+                buttonColorDark: '#100f2c', // default: '#100f2c'
+                buttonColorLight: '#fff', // default: '#fff'
+                saveInCookies: true, // default: true,
+                label: '🌓', // default: ''
+                autoMatchOsTheme: true// default: true
+            }
+
+            function addDarkmodeWidget() {
+                let darkmode = new Darkmode(options);
+                darkmode.showWidget();
+                $(".darkmode-toggle").on('click', function () {
+                    if (darkmode.isActivated()) {
+                        $(".panel").attr('class', 'panel panel-success')
+                        $(".list-group-item[id]").css({
+                            "color": "#3c763d",
+                            "background-color": "#a5d29a",
+                            "border-color": "#d6e9c6"
+                        });
+                        {#console.log('设置面板样式', darkmode.isActivated())#}
+                    } else {
+                        $(".panel").attr('class', 'panel panel-info')
+                        $(".list-group-item[id]").css({
+                            "color": "#3c763d",
+                            "background-color": "#dff0d8",
+                            "border-color": "#d6e9c6"
+                        });
+                        {#console.log('恢复面板样式', darkmode.isActivated())#}
+                    }
+                })
+
+            }
+
+            window.addEventListener('load', addDarkmodeWidget);
+        }
+
+        function getFormatDate() {
+            var date = new Date();
+            var month = date.getMonth() + 1;
+            var strDate = date.getDate();
+            var hours = date.getHours();
+            var minutes = date.getMinutes();
+            var seconds = date.getSeconds();
+            if (month >= 1 && month <= 9) {
+                month = "0" + month;
+            }
+            if (strDate >= 0 && strDate <= 9) {
+                strDate = "0" + strDate;
+            }
+            if (hours >= 0 && hours <= 9) {
+                hours = "0" + hours;
+            }
+            if (minutes >= 0 && minutes <= 9) {
+                minutes = "0" + minutes;
+            }
+            if (seconds >= 0 && seconds <= 9) {
+                seconds = "0" + seconds;
+            }
+            return date.getFullYear() + "-" + month + "-" + strDate
+                + " " + date.getHours() + ":" + minutes + ":" + seconds;
+        }
+    </script>
+{% endcompress %}
 {% block myscript %}
 {% endblock %}
 </body>

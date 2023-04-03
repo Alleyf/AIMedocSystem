@@ -28,6 +28,8 @@ urlpatterns = [
     path("register/", account.register),
     # 注销
     path("logout/", account.logout),
+    # 获取排行榜
+    path("rank/", account.get_rank),
     # 图片验证码
     path("checkimgcode/", account.checkimgcode),
     # 邮箱验证码

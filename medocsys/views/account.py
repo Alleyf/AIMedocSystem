@@ -1,3 +1,4 @@
+import os
 import re
 from io import BytesIO
 
@@ -8,6 +9,7 @@ from django.views.decorators.cache import cache_page
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.gzip import gzip_page
 
+from medocsys import models
 from medocsys.models import User
 from medocsys.utils.code import check_code
 from medocsys.utils.form import LoginForm, RegisterModelForm
@@ -139,3 +141,30 @@ def checkimgcode(request):
 # @cache_page(60 * 60 * 24 * 7)
 def index(request):
     return render(request, "landing.html")
+
+
+@csrf_exempt
+def get_rank(request):
+    queryset = models.User.objects.all().order_by('-read_num')
+    users = []
+    for item in queryset:
+        upload_num = 0
+        querysetdoc = models.MeDocs.objects.all()
+        for doc in querysetdoc:
+            if doc.user_id == item.pk:
+                upload_num += 1
+        user = {
+            'avatar': "/media/" + item.avatar.name,
+            'name': item.username,
+            'read_num': item.read_num,
+            'upload_num': upload_num,
+            'register_date': item.register_date
+        }
+        users.append(user)
+    context = {
+        'status': 200,
+        'rankinfo': users,
+        'all_user': len(queryset)
+    }
+    # print(context)
+    return JsonResponse(context)

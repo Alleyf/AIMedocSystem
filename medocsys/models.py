@@ -8,6 +8,8 @@ class User(models.Model):
     username = models.CharField(verbose_name="用户名", max_length=32)
     password = models.CharField(verbose_name="密码", max_length=64)
     email = models.CharField(verbose_name="邮箱", max_length=64)
+    read_num = models.IntegerField(verbose_name="阅读量", default=1)
+    register_date = models.DateField(verbose_name="注册日期", default=time.strftime("%Y-%m-%d", time.localtime()))
     # upload_to="avatars/"  这是存储到本地的avatars/文件下面,如果没有文件夹就自动创建文件夹
     avatar = models.FileField(upload_to="./avatars",
                               default='/default.jpg',

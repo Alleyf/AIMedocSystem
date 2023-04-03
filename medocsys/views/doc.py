@@ -294,6 +294,10 @@ def doc_view(request):
         uid = request.POST.get('uid')
         rowobj = models.MeDocs.objects.filter(id=uid).first()
         docname = rowobj.name
+        usrid = request.session["info"]['id']
+        usrobj = models.User.objects.filter(id=usrid).first()
+        new_read_num = usrobj.read_num + 1
+        models.User.objects.filter(id=usrid).update(read_num=new_read_num)
         # print(docname)
         res = {
             'status': True,
@@ -717,10 +721,10 @@ def doc_get_random(request):
     doc_queryset = models.MeDocs.objects.all().order_by('-allscore')
     doc_num = len(doc_queryset)
     current_id = request.GET.get('cid')
-    print(type(current_id), current_id, int(current_id) % doc_num)
+    # print(type(current_id), current_id, int(current_id) % doc_num)
     current_doc_obj = doc_queryset[int(current_id) % doc_num]
     doc_cover_url = baseurl + current_doc_obj.cover
-    print(request.method, doc_cover_url)
+    # print(request.method, doc_cover_url)
     context = {
         'doc_cover_url': doc_cover_url,
         'doc_cover_name': current_doc_obj.name
