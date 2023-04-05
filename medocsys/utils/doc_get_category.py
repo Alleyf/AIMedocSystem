@@ -28,9 +28,11 @@ def get_context(prompt: str) -> str:
             stop_sequences=["--"]
         )
         context = response.generations[0].text
-        return context
     except Exception as e:
         print(e)
+        context = "其他"
+    finally:
+        return context
 
 
 # 提问代码

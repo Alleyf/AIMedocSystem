@@ -65,126 +65,134 @@ def doc_list(request):
 def doc_add(request):
     """添加文档"""
     # start = time.perf_counter()
-    upload_info = []
-    pop_doc = []
-    fail_num = 0
-    success_num = 0
-    file_list = request.FILES.getlist("docfile")
-    # print("可以上传的文档包括：" + str(file_list))
-    if len(file_list) == 0:
-        context = {
-            'status': 402,
-            'err': "上传文档为空"
-        }
-        return JsonResponse(context)
-    upload_res = upload.upload_mul(file_list=file_list)
-    for item in file_list:
-        form = MeDocsModelForm(data=request.POST, files=None)
-        # 设置文件名
-        item.name = item.name.replace(" ", "_")
-        # print(item, item.name)
-        form.instance.name = item.name[:-4]
-        form.instance.date = time.strftime("%Y-%m-%d", time.localtime())
-        # 单独设置表单数据：将当前登录的用户作为该条信息的作者
-        form.instance.user_id = request.session['info'].get("id")
-        form.instance.cover = form.instance.name + ".png"
-        # 设置文档语言
-        # print("当前名字：" + form.instance.name)
-        # tika获取文献标题
-        doc_title = get_doc_title(doc_name=form.instance.name)
-        # 设置文献种类
-        form.instance.category = get_category(title=doc_title)
-        # 设置文献语言
-        if is_contains_chinese(doc_title):
-            # if is_contains_chinese(form.instance.name):
-            form.instance.language = 1
-        else:
-            form.instance.language = 2
-        if models.MeDocs.objects.filter(name=form.instance.name).exists():
-            upload_info.append(form.instance.name + ':文档已存在,上传失败')
-            pop_doc.append(file_list.index(item))
-            fail_num += 1
-            continue
-        upload_info.append(form.instance.name + ',上传成功')
-        success_num += 1
-        if form.is_valid():
-            print(form.cleaned_data)
-            form.save()
-        if not form.is_valid():
+    try:
+        upload_info = []
+        pop_doc = []
+        fail_num = 0
+        success_num = 0
+        file_list = request.FILES.getlist("docfile")
+        # print("可以上传的文档包括：" + str(file_list))
+        if len(file_list) == 0:
             context = {
-                'status': 403,
-                'err': form.errors
+                'status': 402,
+                'err': "上传文档为空"
             }
             return JsonResponse(context)
-        # print(path)
-        # for item in file_list:
-        item.name = item.name[:-4].replace(" ", "_")
-        txt_exist = models.DocTxt.objects.filter(doc_name=item.name).exists()
-        img_txt_exist = models.DocImgTxt.objects.filter(doc_name=item.name).exists()
-        # print(item.name, txt_exist, img_txt_exist)
-        if txt_exist:
-            upload_info.append(item.name + ':文本数据已存在,上传失败')
-            pop_doc.append(file_list.index(item))
-            fail_num += 1
-            continue
-        if img_txt_exist:
-            upload_info.append(item.name + ':图片数据已存在,上传失败')
-            pop_doc.append(file_list.index(item))
-            fail_num += 1
-            continue
-        path = "./media/docs/" + item.name + ".pdf"
-        txt_ls = extract_txt_info(url=path)
-        img_txt_ls = extract_img_info(url=path, mul=False)
-        # print(txt_ls, img_txt_ls, len(txt_ls))
-        for index in range(len(txt_ls)):
-            doc_txt_form = DocTxtModelForm(request.POST)
-            page_id = index + 1
-            doc_txt_form.instance.doc_name = item.name
-            doc_txt_form.instance.page_id = page_id
-            doc_txt_form.instance.txt_content = txt_ls[index].replace("\n", "")
-            # print("成功写入文本内容")
-            if doc_txt_form.is_valid():
-                doc_txt_form.save()
+        upload_res = upload.upload_mul(file_list=file_list)
+        for item in file_list:
+            form = MeDocsModelForm(data=request.POST, files=None)
+            # 设置文件名
+            item.name = item.name.replace(" ", "_")
+            # print(item, item.name)
+            form.instance.name = item.name[:-4]
+            form.instance.date = time.strftime("%Y-%m-%d", time.localtime())
+            # 单独设置表单数据：将当前登录的用户作为该条信息的作者
+            form.instance.user_id = request.session['info'].get("id")
+            form.instance.cover = form.instance.name + ".png"
+            # 设置文档语言
+            # print("当前名字：" + form.instance.name)
+            # tika获取文献标题
+            doc_title = get_doc_title(doc_name=form.instance.name)
+            # 设置文献种类
+            form.instance.category = get_category(title=doc_title)
+            # 设置文献语言
+            if is_contains_chinese(doc_title):
+                # if is_contains_chinese(form.instance.name):
+                form.instance.language = 1
             else:
-                # print(doc_txt_form.errors)
+                form.instance.language = 2
+            if models.MeDocs.objects.filter(name=form.instance.name).exists():
+                upload_info.append(form.instance.name + ':文档已存在,上传失败')
+                pop_doc.append(file_list.index(item))
+                fail_num += 1
+                continue
+            upload_info.append(form.instance.name + ',上传成功')
+            success_num += 1
+            if form.is_valid():
+                print(form.cleaned_data)
+                form.save()
+            if not form.is_valid():
                 context = {
                     'status': 403,
-                    'err': doc_txt_form.errors
+                    'err': form.errors
                 }
                 return JsonResponse(context)
-        if img_txt_ls:
-            for txt_dict in img_txt_ls:
-                doc_img_txt_form = DocImgTxtModelForm(request.POST)
-                doc_img_txt_form.instance.doc_name = item.name
-                doc_img_txt_form.instance.page_id = txt_dict['filepage']
-                doc_img_txt_form.instance.img_content = txt_dict['content'].replace("\n", "")
-                doc_img_txt_form.instance.page_img_num = txt_dict['filepageimgnumber']
-                # print("成功添加图片内容")
-                if doc_img_txt_form.is_valid():
-                    doc_img_txt_form.save()
+            # print(path)
+            # for item in file_list:
+            item.name = item.name[:-4].replace(" ", "_")
+            txt_exist = models.DocTxt.objects.filter(doc_name=item.name).exists()
+            img_txt_exist = models.DocImgTxt.objects.filter(doc_name=item.name).exists()
+            # print(item.name, txt_exist, img_txt_exist)
+            if txt_exist:
+                upload_info.append(item.name + ':文本数据已存在,上传失败')
+                pop_doc.append(file_list.index(item))
+                fail_num += 1
+                continue
+            if img_txt_exist:
+                upload_info.append(item.name + ':图片数据已存在,上传失败')
+                pop_doc.append(file_list.index(item))
+                fail_num += 1
+                continue
+            path = "./media/docs/" + item.name + ".pdf"
+            txt_ls = extract_txt_info(url=path)
+            img_txt_ls = extract_img_info(url=path, mul=False)
+            # print(txt_ls, img_txt_ls, len(txt_ls))
+            for index in range(len(txt_ls)):
+                doc_txt_form = DocTxtModelForm(request.POST)
+                page_id = index + 1
+                doc_txt_form.instance.doc_name = item.name
+                doc_txt_form.instance.page_id = page_id
+                doc_txt_form.instance.txt_content = txt_ls[index].replace("\n", "")
+                # print("成功写入文本内容")
+                if doc_txt_form.is_valid():
+                    doc_txt_form.save()
                 else:
-                    # print(doc_img_txt_form.errors)
+                    # print(doc_txt_form.errors)
                     context = {
                         'status': 403,
-                        'err': doc_img_txt_form.errors
+                        'err': doc_txt_form.errors
                     }
                     return JsonResponse(context)
-    # end = time.perf_counter()
-    # cost_time = end - start
-    context = {
-        'status': 200,
-        'info': upload_info,
-        # 'cost_time': {
-        # 'upload': "{}秒".format(upload_res[1]),
-        # 'all': "{}秒".format(cost_time),
-        # },
-        'upload_num': {
-            'fail': fail_num,
-            'success': success_num,
-            'all': fail_num + success_num
+            if img_txt_ls:
+                for txt_dict in img_txt_ls:
+                    doc_img_txt_form = DocImgTxtModelForm(request.POST)
+                    doc_img_txt_form.instance.doc_name = item.name
+                    doc_img_txt_form.instance.page_id = txt_dict['filepage']
+                    doc_img_txt_form.instance.img_content = txt_dict['content'].replace("\n", "")
+                    doc_img_txt_form.instance.page_img_num = txt_dict['filepageimgnumber']
+                    # print("成功添加图片内容")
+                    if doc_img_txt_form.is_valid():
+                        doc_img_txt_form.save()
+                    else:
+                        # print(doc_img_txt_form.errors)
+                        context = {
+                            'status': 403,
+                            'err': doc_img_txt_form.errors
+                        }
+                        return JsonResponse(context)
+        # end = time.perf_counter()
+        # cost_time = end - start
+        context = {
+            'status': 200,
+            'info': upload_info,
+            # 'cost_time': {
+            # 'upload': "{}秒".format(upload_res[1]),
+            # 'all': "{}秒".format(cost_time),
+            # },
+            'upload_num': {
+                'fail': fail_num,
+                'success': success_num,
+                'all': fail_num + success_num
+            }
         }
-    }
-    return JsonResponse(context)
+    except Exception as e:
+        print(e)
+        context = {
+            'status': 500,
+            'err': "内部服务出错"
+        }
+    finally:
+        return JsonResponse(context)
 
 
 @gzip_page

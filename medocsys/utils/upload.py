@@ -4,7 +4,9 @@ import time
 from os import path
 import fitz
 
+from medocsys.utils.img_deblur import deblur
 from medocsys.utils.get_cover import get_doc_cover
+from medocsys.utils.img_blur_detect import judge_deblur
 from medocsys.utils.ocr import integrated_ocr
 
 """单文件上传(默认上传到static/doc/目录)"""
@@ -128,6 +130,12 @@ def extract_img_widget(file, url, filedic, filelist, imgindex, tempcurrentpage, 
                 else:
                     filedic = {'filename': name, 'filepage': tempcurrentpage, 'filepageimgnumber': 1}
             pix = None
+            # 对模糊图像进行去模糊
+            # print("待检测的图像名为", imgurl[16:])
+            if judge_deblur(img_name=imgurl[16:], input_path=r"./media/"):  # 实际
+                deblur(img_name=imgurl[16:])
+            # if judge_deblur(img_name=imgurl[20:]):  # 测试
+            #     deblur(img_name=imgurl[20:])
             img_txt += integrated_ocr(img_path=imgurl) + "|"
         if img_txt not in ["", "|", " "]:
             filedic['content'] = img_txt
@@ -160,7 +168,7 @@ def extract_img_info(url, mul):
 if __name__ == '__main__':
     # txt_info = extract_txt_info("../../media/docs/谷歌深度强化学习布局布线.pdf")
     # print(len(txt_info['text_list']), txt_info['text_list'][6])
-    img_txt = extract_img_info("../../media/docs/icitee2022-75.pdf", mul=False)
+    img_txt = extract_img_info("../../media/docs/ENSITE_NAVX和双LAS_省略_左心房线性消融治疗阵发性心房颤动_陈明龙.pdf", mul=False)
     # print(img_txt)
     # print(extract_img_info("../static/doc/", mul=True))
     # print(extract_img("../static/doc/", mul=True))
