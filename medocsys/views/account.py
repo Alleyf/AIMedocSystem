@@ -20,6 +20,8 @@ from medocsys.utils.get_random_strs import generate_random_str
 def login(request):
     """登录"""
     if request.method == "GET":
+        request.session.clear()
+        request.session.flush()
         form = LoginForm()
         return render(request, "login.html", {'form': form})
     form = LoginForm(data=request.POST)

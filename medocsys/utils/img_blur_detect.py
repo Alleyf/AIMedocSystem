@@ -25,9 +25,6 @@ def judge_deblur(img_name, input_path=r"../../media/"):
     :return: 是否需要去模糊（True：去模糊；Flase：不去模糊）
     """
     # 设置参数
-    ap = argparse.ArgumentParser()
-    ap.add_argument("-t", "--threshold", type=float, default=100.0, help="设置模糊阈值")
-    args = vars(ap.parse_args())
     fm = 120
     for file in Path(input_path).rglob("*" + img_name):
         # img_file = open(img_url, 'r', encoding='utf-8')  # 打开图像
@@ -46,7 +43,7 @@ def judge_deblur(img_name, input_path=r"../../media/"):
         # frame = ImageToMatrix(file)
         # score = Brenner(frame)
         print(fm)
-    return True if fm < args["threshold"] else False
+    return True if fm < 100 else False
 
 
 if __name__ == '__main__':

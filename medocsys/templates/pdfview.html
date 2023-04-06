@@ -10,6 +10,31 @@
     <link rel="apple-touch-icon" sizes="120x120" href="{% static '/images/logo.png' %}"/>
     <link rel="apple-touch-icon" sizes="152x152" href="{% static '/images/logo.png' %}"/>
     <style>
+
+        ::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+            -webkit-border-radius: 10px;
+            border-radius: 10px;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            -webkit-border-radius: 10px;
+            border-radius: 10px;
+            background: rgb(205, 206, 224);
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+        }
+
+        ::-webkit-scrollbar-thumb:window-inactive {
+            background: rgb(255, 255, 255);
+        }
+
         body {
             margin: 0;
             padding: 0;

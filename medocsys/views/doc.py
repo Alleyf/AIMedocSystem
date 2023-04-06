@@ -65,6 +65,10 @@ def doc_list(request):
 def doc_add(request):
     """添加文档"""
     # start = time.perf_counter()
+    context = {
+        'status': 500,
+        'err': "内部服务出错"
+    }
     try:
         upload_info = []
         pop_doc = []
@@ -83,7 +87,7 @@ def doc_add(request):
             form = MeDocsModelForm(data=request.POST, files=None)
             # 设置文件名
             item.name = item.name.replace(" ", "_")
-            # print(item, item.name)
+            # print(item)
             form.instance.name = item.name[:-4]
             form.instance.date = time.strftime("%Y-%m-%d", time.localtime())
             # 单独设置表单数据：将当前登录的用户作为该条信息的作者
@@ -93,6 +97,8 @@ def doc_add(request):
             # print("当前名字：" + form.instance.name)
             # tika获取文献标题
             doc_title = get_doc_title(doc_name=form.instance.name)
+            # item.name = doc_title
+            # print(item.name, doc_title)
             # 设置文献种类
             form.instance.category = get_category(title=doc_title)
             # 设置文献语言
@@ -109,7 +115,7 @@ def doc_add(request):
             upload_info.append(form.instance.name + ',上传成功')
             success_num += 1
             if form.is_valid():
-                print(form.cleaned_data)
+                # print(form.cleaned_data)
                 form.save()
             if not form.is_valid():
                 context = {
@@ -120,6 +126,7 @@ def doc_add(request):
             # print(path)
             # for item in file_list:
             item.name = item.name[:-4].replace(" ", "_")
+            # item.name = doc_title
             txt_exist = models.DocTxt.objects.filter(doc_name=item.name).exists()
             img_txt_exist = models.DocImgTxt.objects.filter(doc_name=item.name).exists()
             # print(item.name, txt_exist, img_txt_exist)
@@ -141,6 +148,7 @@ def doc_add(request):
                 doc_txt_form = DocTxtModelForm(request.POST)
                 page_id = index + 1
                 doc_txt_form.instance.doc_name = item.name
+                # print("文本库", doc_title, doc_txt_form, item.name)
                 doc_txt_form.instance.page_id = page_id
                 doc_txt_form.instance.txt_content = txt_ls[index].replace("\n", "")
                 # print("成功写入文本内容")
@@ -157,6 +165,7 @@ def doc_add(request):
                 for txt_dict in img_txt_ls:
                     doc_img_txt_form = DocImgTxtModelForm(request.POST)
                     doc_img_txt_form.instance.doc_name = item.name
+                    # print("图片文本库", doc_title, doc_img_txt_form)
                     doc_img_txt_form.instance.page_id = txt_dict['filepage']
                     doc_img_txt_form.instance.img_content = txt_dict['content'].replace("\n", "")
                     doc_img_txt_form.instance.page_img_num = txt_dict['filepageimgnumber']
@@ -187,10 +196,6 @@ def doc_add(request):
         }
     except Exception as e:
         print(e)
-        context = {
-            'status': 500,
-            'err': "内部服务出错"
-        }
     finally:
         return JsonResponse(context)
 
@@ -505,6 +510,7 @@ def doc_query(request):
             n += 1
         # print("更新前的名字：" + page_info[i]['name'])
         # print("求和后的分数", rel_score)
+        # print(page_info[i])
         page_info[i]['id'] = models.MeDocs.objects.filter(name=page_info[i]['name']).first().id
         page_info[i]['name'] = get_doc_title(page_info[i]['name'])
         # print('更新后的名字：' + page_info[i]['name'])

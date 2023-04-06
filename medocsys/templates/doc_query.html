@@ -228,8 +228,8 @@
                         let card = $("#imgcard");
                         card.children().remove();
                         if (res.status === 200) {
-                            let img_residue = res.names.length;
-                            let num = 0;
+                            {#let img_residue = res.names.length;#}
+                            {#let num = 0;#}
                             first:for (let i = 0; i < res.names.length; i++) {
                                 {#console.log(res.names.length, res.paths[i])#}
                                 let row = $("<div>")
@@ -255,7 +255,7 @@
                         } else {
                             html = "<h5 class='text-danger' style='width:50%;margin: 0 auto'>抱歉，该文献中未发现图片！</h5>"
                             card.append(html)
-                            console.log(res)
+                            {#console.log(res)#}
                         }
                     }
                 })
@@ -411,7 +411,7 @@
         function changepage() {
             let now_start = $("#start").val()
             $("#prev").click(function () {
-                console.log("{{ final_page }}", now_start)
+                {#console.log("{{ final_page }}", now_start)#}
                 if (now_start >= 10) {
                     new_start = parseInt(now_start) - 10;
                     $("#start").val(new_start);
@@ -419,7 +419,7 @@
                 $("#search").click();
             });
             $("#next").click(function () {
-                console.log("{{ final_page }}", now_start)
+                {#console.log("{{ final_page }}", now_start)#}
                 if ('{{ final_page }}' === "False") {
                     new_start = parseInt(now_start) + 10;
                     $("#start").val(new_start);
@@ -435,7 +435,7 @@
             if (!keyword) {
                 keyword = "心血管"
             }
-            console.log(keyword)
+            {#console.log(keyword)#}
             $.ajax({
                 {#url: 'https://recom.cnki.net/api/recommendations/words/union',#}
                 url: '/doc/union/',
