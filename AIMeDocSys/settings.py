@@ -11,7 +11,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-ttar_%7b)pane)#$-1ov(9!z!vt16h7*-*!&n!*hg8uw=wy4$f'
-
+# 配置全局环境变量
+os.environ.setdefault('es_host', "43.139.217.160")
+os.environ.setdefault('redis_host', "47.120.0.133")
+os.environ.setdefault('neo4j_host', "47.120.0.133")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 # DEBUG = False
@@ -70,7 +73,7 @@ INSTALLED_APPS = [
     'drf_haystack',
     "medocsys.apps.MedocsysConfig",
     'compressor',
-    'corsheaders',  # 跨域
+    # 'corsheaders',  # 跨域
     # 'jsonrpc',  # RPC服务
     # 'rest_framework_swagger',  # swagger自动生成接口文档
 
