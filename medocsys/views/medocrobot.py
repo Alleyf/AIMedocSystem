@@ -12,7 +12,8 @@ openai.api_base = "https://openai.yugin.top/v1"
 def chat(request):
     # 设置API密钥
     try:
-        question = request.POST.get("question") + "并且检查你的回答是否存在语法错误，将不通顺的语法错误纠正后的内容发给我。"
+        question = "你现在的身份是智能医学助理，" + request.POST.get(
+            "question") + "并且检查你的回答是否存在语法错误，将不通顺的语法错误纠正后的内容发给我。回答结果中不用告诉我有无语法错误。"
         print(question)
         openai.api_key = "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"
         # 设置问题和上下文
