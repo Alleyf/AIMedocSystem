@@ -70,7 +70,7 @@ INSTALLED_APPS = [
     'drf_haystack',
     "medocsys.apps.MedocsysConfig",
     'compressor',
-    'corsheaders',  # 跨域
+#     'corsheaders',  # 跨域
     # 'jsonrpc',  # RPC服务
     # 'rest_framework_swagger',  # swagger自动生成接口文档
 
