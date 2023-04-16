@@ -1,5 +1,5 @@
 # 建立 python3.7 环境
-FROM python:3.10
+FROM python:3.9
 
 # 镜像作者
 MAINTAINER Alleyf
@@ -9,12 +9,15 @@ ENV PYTHONUNBUFFERED 1
 
 # 添加这两行
 RUN apt-get update
+#RUN apt-get install python3-dev default-libmysqlclient-dev -y
 RUN apt-get install python3-dev default-libmysqlclient-dev -y
+#RUN apt-get install ffmpeg libsm6 libxext6  -y
+RUN apt-get install libgl1-mesa-glx -y
 
 # 设置pip源为国内源
 COPY pip.conf /root/.pip/pip.conf
 
-# 在容器内创建mysite文件夹
+# 在容器内创建aimedocsys文件夹
 RUN mkdir /aimedocsys
 
 # 设置容器内工作目录
@@ -23,7 +26,7 @@ WORKDIR /aimedocsys
 # 更新 pip
 RUN pip install pip -U
 
-# 将 requirements.txt 复制到容器的 code 目录
+# 将 requirements.txt 复制到容器的 aimedocsys 目录
 ADD requirements.txt /aimedocsys/
 
 # pip安装依赖

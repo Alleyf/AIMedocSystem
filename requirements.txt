@@ -2,7 +2,6 @@ Django~=3.2.16
 django-haystack~=3.1.1
 django_simpleui==2023.3.1
 django-compressor~=4.3.1
-django-cors-headers~=3.14.0
 drf_haystack==1.8.11
 elasticsearch==7.17.0
 jieba==0.42.1

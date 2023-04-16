@@ -1,4 +1,5 @@
 from haystack.backends.elasticsearch7_backend import Elasticsearch7SearchBackend, Elasticsearch7SearchEngine
+import haystack.backends.elasticsearch7_backend as hik
 
 """
 分析器主要有两种情况会被使用：
@@ -17,6 +18,9 @@ DEFAULT_FIELD_MAPPING = {
     "term_vector": "with_positions_offsets",
     # "index_options": "offsets"
 }
+
+# 导入源es后端文件，设置变量DEFAULT_FIELD_MAPPING很关键
+hik.DEFAULT_FIELD_MAPPING = DEFAULT_FIELD_MAPPING
 
 
 class Elasticsearc7IkSearchBackend(Elasticsearch7SearchBackend):
