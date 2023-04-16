@@ -305,11 +305,11 @@
                 ikw.addClass("is-valid")
                 $("#fedback").text("")
                 {#console.log($("#tb").length)#}
-                if ($("#tb").length != 0) {
+                if ($("#tb").length !== 0) {
                     $("#global-loader").show()
                 }
                 if (SEARCHWAY === "知网") {
-                    $("span").detach();
+                    $("#relsearch").children().detach();
                     $("#tb").detach();
                     $.ajax({
                         url: '/doc/external/',

@@ -102,6 +102,7 @@ MIDDLEWARE = [
     # 谁在前面先执行谁
     'django.middleware.gzip.GZipMiddleware',
     "medocsys.middleware.auth.LoginAuth",
+    # "medocsys.middleware.callgraph.PycallgraphMiddleware",
     # 'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 # 缓存配置

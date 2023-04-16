@@ -1,6 +1,5 @@
 import re
 from time import sleep
-from typing import Tuple, List, Dict, Any
 
 from lxml import etree
 from selenium import webdriver
@@ -8,6 +7,10 @@ from selenium import webdriver
 from selenium.webdriver import ChromeOptions
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
+
+
+# from selenium.webdriver.common.by import By
+# from seleniumwire import webdriver
 
 
 def get_zhiwang_data(keywords: str, start: int = 0, end: int = 10) -> tuple:
@@ -24,29 +27,41 @@ def get_zhiwang_data(keywords: str, start: int = 0, end: int = 10) -> tuple:
         option.add_experimental_option('excludeSwitches', ['enable-automation'])
 
         # 启动服务
-        s = Service("chromedriver.exe")
+        s = Service("chromedriver_new.exe")
         driver = webdriver.Chrome(service=s, chrome_options=chrome_options, options=option)
+        # api_url = 'https://openai.yugin.top/v1'
+        #
+        # driver.get(api_url)
+        #
+        # # a = driver.find_element_by_xpath('/html/body/pre').text  # 获取代理
+        # a = driver.find_element(By.XPATH, '/html/body/pre').text  # 获取代理
+        #
+        # option.add_argument('--proxy-server=http://%s' % a)  # 添加代理
+        #
+        # driver.delete_all_cookies()  # 清楚cookies
 
         # 知网内容的爬取
+        # driver.get("https://www.cnki.net/")
         driver.get("https://www.cnki.net/")
-
+        print(driver)
         search_input = driver.find_element(by="id", value="txt_SearchText")
+        # search_input = driver.find_element(by="id", value="txt_search")
 
         # keywords = "心脏"
-
+        print(search_input.id, keywords)
         search_input.send_keys(keywords)
-
+        print(search_input.text)
         button = driver.find_element(by="class name", value="search-btn")
-
+        print(button.id)
         button.click()
-
         # 如果网速慢搜索不到就延长时间
-        sleep(0.5)
+        sleep(2)
         zhiwang_data = []
         status = 200
         # 数据解析
         page_text = driver.page_source
         tree = etree.HTML(page_text)
+        print("源数据：", page_text)
         final_name = ""
         st = 'recid=&(.*?)&DbName='  # 正则表达式
         all_li = tree.xpath("//a[@class='fz14']")
@@ -73,4 +88,4 @@ def get_zhiwang_data(keywords: str, start: int = 0, end: int = 10) -> tuple:
 
 
 if __name__ == "__main__":
-    print(get_zhiwang_data(keywords="数据，血管，高血压，心脏病，百草枯，PID", start=0, end=20))
+    print(get_zhiwang_data(keywords="静脉曲张", start=0, end=20))

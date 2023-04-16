@@ -1,4 +1,4 @@
-import json
+# import json
 import os
 import random
 import re
@@ -6,16 +6,16 @@ import time
 
 import jieba
 import requests
-from django.core import serializers
+# from django.core import serializers
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.gzip import gzip_page
+
 from medocsys import models
 from medocsys.utils import pagination, upload
 from medocsys.utils.form import MeDocsModelForm, DocTxtModelForm, DocImgTxtModelForm
 from medocsys.utils.upload import extract_img_info, extract_txt_info
-from ..utils.cluegpt import get_qas
 from ..utils.del_img import del_img
 from ..utils.doc_get_category import get_category
 from ..utils.get_doc_title import get_doc_title
@@ -181,6 +181,7 @@ def doc_add(request):
                         return JsonResponse(context)
         # end = time.perf_counter()
         # cost_time = end - start
+        os.system('python ./manage.py update_index')
         context = {
             'status': 200,
             'info': upload_info,
@@ -642,6 +643,7 @@ def doc_external(request):
     # data = ""
     # while not data:
     status, data = get_zhiwang_data(keywords, start, end)
+    print(data)
     res = {
         'status': status,
         'data': data
@@ -744,3 +746,8 @@ def doc_get_random(request):
         'doc_cover_name': current_doc_obj.name
     }
     return JsonResponse(context)
+
+# if __name__ == '__main__':
+#     with PyCallGraph(output=GraphvizOutput()):
+#         调用你要分析的函数
+# doc_list()

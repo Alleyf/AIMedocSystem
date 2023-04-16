@@ -12,7 +12,7 @@ def send_all_usr_file(request):
         doc_name = item.name
         doc_category = item.category
         # print(doc_category, doc_name)
-        markdown += "<font color='info'>" + doc_category + ":</font>" + "[" + doc_name + "](" + "http://amedoc.fcsy.fit/media/docs/" + doc_name + ".pdf)\n"
+        markdown += "<font color='info'>" + doc_category + ":</font>" + "[" + doc_name + "](" + "http://aimedocsys.fcsy.fit/media/docs/" + doc_name + ".pdf)\n"
     # print(markdown)
     # markdown = str(markdown)
     send_markdown(markdown=markdown)
