@@ -36,3 +36,11 @@ This is a project related to query databases docs using elasticsearch and ocr.
 
 
 > Total : 2695 files, 721262 codes, 23566 comments, 74911 blanks, all 819739 lines
+
+# 未来计划
+
+1. 将知识图谱与GPT结合，让GPT随知识图谱联动
+2. 采用Go语言重构项目
+3. 采用Vue+Go前后端分离设计
+4. 实现神经网络检索，支持图片检索
+5. 采用OSS云存储，减小服务器存储压力
