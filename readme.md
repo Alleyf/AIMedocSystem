@@ -1,10 +1,6 @@
-# 效果展示
+# AIMedocSystem
 
-![效果图1](https://amedoc.fcsy.fit/static/images/illusion/3end.webp)
-![效果图2](https://amedoc.fcsy.fit/static/images/illusion/AIassistant.webp)
-![效果图3](https://amedoc.fcsy.fit/static/images/illusion/mobile1.webp)
-![效果图4](https://amedoc.fcsy.fit/static/images/illusion/tablet1.webp)
-![效果图5](https://amedoc.fcsy.fit/static/images/illusion/PCquery.webp)
+This is a project related to query databases docs using elasticsearch and ocr.
 
 # 文件说明
 
@@ -27,11 +23,4 @@
 4. 设置es、redis和neo4j的host和port
 5. 修改query函数中的es的host和port
 
-> [演示网址](https://amedoc.fcsy.fit)
-
-# Details
-
-Date : 2023-05-19 23:10:12
-
-Total : 2695 files, 721262 codes, 23566 comments, 74911 blanks, all 819739 lines
-
+> [演示网址](https://amedoc.fcsy.fit) 
