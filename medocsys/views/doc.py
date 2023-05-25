@@ -25,6 +25,7 @@ from ..utils.query import query_elastics
 from ..utils.zhiwang import get_zhiwang_data
 
 
+# @csrf_exempt
 @gzip_page
 def doc_list(request):
     form = MeDocsModelForm()
@@ -643,7 +644,7 @@ def doc_external(request):
     # data = ""
     # while not data:
     status, data = get_zhiwang_data(keywords, start, end)
-    print(data)
+    # print(data)
     res = {
         'status': status,
         'data': data
@@ -651,10 +652,11 @@ def doc_external(request):
     return JsonResponse(res)
 
 
+@csrf_exempt
 def doc_img(request):
     doc_id = request.POST.get('uid', 98)
     doc_name = models.MeDocs.objects.filter(id=doc_id).first().name
-    # print(doc_id, doc_name)
+    print(doc_id, doc_name)
     names_list = []
     paths_list = []
     context = {
@@ -714,21 +716,24 @@ def doc_keyinfo(request):
 @csrf_exempt
 @gzip_page
 def doc_union(request):
-    keyword = request.GET.get('keyword')
-    keyword = list(jieba.cut(keyword))
-    # print(keyword, type(keyword))
     res = {'wordres': []}
-    url = "https://recom.cnki.net/api/recommendations/words/union"
-    for item in keyword:
-        formdata = {
-            'w': item,
-            'top': 10
-        }
-        result = requests.get(url=url, params=formdata).json()
-        res['wordres'] += result['wordres'] if result else result
-    random.shuffle(res['wordres'])
-    res['wordres'] = res['wordres'][:10]
-    return JsonResponse(res)
+    try:
+        keyword = request.GET.get('keyword')
+        keyword = list(jieba.cut(keyword))
+        # print(keyword, type(keyword))
+        url = "https://recom.cnki.net/api/recommendations/words/union"
+        for item in keyword:
+            formdata = {
+                'w': item,
+                'top': 10
+            }
+            result = requests.get(url=url, params=formdata).json()
+            res['wordres'] += result['wordres'] if result else result
+        random.shuffle(res['wordres'])
+        res['wordres'] = res['wordres'][:10]
+        return JsonResponse(res)
+    except:
+        return JsonResponse(res)
 
 
 @csrf_exempt

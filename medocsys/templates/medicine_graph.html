@@ -10,7 +10,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" href="{% static '/images/logo.png' %}" type="image/x-icon"/>
         <link rel="shortcut icon" href="{% static '/images/logo.png' %}" type="image/x-icon"/>
-        <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.3.0/css/all.min.css" rel="stylesheet">
+        {#        <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.3.0/css/all.min.css" rel="stylesheet">#}
         {#        {% compress css %}#}
         <link rel="stylesheet" href="{% static 'plugins/bootstrap-5.2.3/css/bootstrap.min.css' %}">
         <style>
@@ -54,7 +54,6 @@
                 z-index: -10;
             }
         </style>
-        {#        {% endcompress %}#}
     </head>
 {% endcache %}
 <body>
@@ -63,10 +62,10 @@
     <nav class="navbar bg-body-tertiary" style="position: static!important;">
         <div class="container-fluid">
             <a class="navbar-brand">医学知识图谱</a>
-            <form class="d-flex" role="search" method="post" action="/chart/graph/">
+            <form class="d-flex col-md-5" role="search" method="post" action="/chart/graph/">
                 {% csrf_token %}
                 <input class="form-control me-2" name="disease_node" type="text"
-                       placeholder="Search for disease" style="padding-right: 50px ">
+                       placeholder="Search for disease such as 苯中毒 or 二硫化碳中毒等" style="padding-right: 50px ">
                 <button class="btn btn-outline-success" type="submit" id="liveToastBtn"><i
                         class="fa-solid fa-magnifying-glass"></i></button>
             </form>
@@ -99,13 +98,10 @@
 
 </div>
 {% cache None 'plugin' %}
-    {#    {% compress js %}#}
     <script type="text/javascript" src="{% static 'js/echarts.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
-    {#    {% endcompress %}#}
     <script src="https://cdn.bootcdn.net/ajax/libs/Darkmode.js/1.5.7/darkmode-js.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particlesjs/2.2.2/particles.min.js"></script>
-    {#    {% compress js %}#}
     <script type="text/javascript">
         window.onload
             = function () {
@@ -118,36 +114,14 @@
     </script>
     <script type="text/javascript">
         $(function () {
-            {#listen_window_size();#}
             closetoast();
         })
 
         function closetoast() {
             $("#liveToast").click(function () {
                 $("#liveToast").attr('class', 'toast fade hide')
-                console.log('关闭提示')
+                {#console.log('关闭提示')#}
             })
-        }
-
-        function listen_window_size() {
-            function set_chart_panel() {
-                let h = '710px'
-                console.log(h)
-                $(window).resize(
-                    function () {
-                        $("canvas").attr("style", "height:" + h);
-                        $("canvas").closest('div').attr("style", "height:" + h);
-                        console.log($("#chart-panel").attr("style", "height:" + h));
-                    }
-                )
-            }
-
-            window.onload = function () {
-                set_chart_panel();
-            }
-            window.onresize = function () {
-                set_chart_panel();
-            }
         }
 
 
@@ -166,15 +140,11 @@
             toggleFullScreen()
         }
     </script>
-    {#    {% endcompress %}#}
 {% endcache %}
-{#{% compress js %}#}
 <script type="text/javascript">
-    var neo4j_data = [{{ neo4j_data|safe }}]
-    var data1 = neo4j_data[0]['data']
-    var links1 = neo4j_data[0]['links']
-    {#console.log(typeof (data1))#}
-    {#console.log(typeof (links1))#}
+    const neo4j_data = [{{ neo4j_data|safe }}];
+    let data1 = neo4j_data[0]['data'];
+    let links1 = neo4j_data[0]['links'];
     let mapd = new Map();
     for (let item of data1) {
         if (!mapd.has(item.id)) {
@@ -191,31 +161,42 @@
     let objl = [...mapl.values()];
     links1 = objl;
     data1 = objd;
-    {#console.log(data1, typeof (data1))#}
-    {#console.log(links1, typeof (links1))#}
-    var dom = document.getElementById("chart-panel");
-    var myChart1 = echarts.init(dom);
-    var categories1 = [{name: "Disease"}, {name: "Check"}, {name: "Department"}, {name: "Drug"}, {name: "Food"}, {name: "Producer"}, {name: "Symptom"}];
-    var option;
-    {#let namels = {#}
-    {#    "Disease": "疾病",#}
-    {#    "Check": "检查",#}
-    {#    "Department": "种类",#}
-    {#    "Drug": "宜用药",#}
-    {#    "Food": "建议食物",#}
-    {#    "Producer": "病因",#}
-    {#    "Symptom": "症状"#}
-    //}
-    option = {
+    const dom = document.getElementById("chart-panel");
+    const myChart1 = echarts.init(dom, null, {
+        renderer: 'svg'
+    });
+    {#var categories1 = [{name: "Disease"}, {name: "Check"}, {name: "Department"}, {name: "Drug"}, {name: "Food"}, {name: "Producer"}, {name: "Symptom"}];#}
+    const categories1 = [{name: "疾病"}, {name: "检查"}, {name: "种类"}, {name: "病因"}, {name: "症状"}, {name: "宜用药"}, {name: "建议食物"},];
+    let namels = {
+        "Disease": "疾病",
+        "Check": "检查",
+        "Department": "种类",
+        "Drug": "宜用药",
+        "Food": "建议食物",
+        "Producer": "病因",
+        "Symptom": "症状"
+    }
+    let option = {
         // 图的标题
         title: {
             {#text: '医学知识图谱'#}
         },
         // 提示框的配置
         tooltip: {
+            show: true, //默认值为true
+            showContent: true, //是否显示提示框浮层
+            trigger: "item", //触发类型，默认数据项触发
+            triggerOn: "mousemove", //提示触发条件，mousemove鼠标移至触发，还有click点击触发
+            alwaysShowContent: false, //默认离开提示框区域隐藏，true为一直显示
+            showDelay: 0, //浮层显示的延迟，单位为 ms，默认没有延迟，也不建议设置。在 triggerOn 为 'mousemove' 时有效。
+            hideDelay: 200, //浮层隐藏的延迟，单位为 ms，在 alwaysShowContent 为 true 的时候无效。
+            enterable: false, //鼠标是否可进入提示框浮层中，默认为false，如需详情内交互，如添加链接，按钮，可设置为 true。
+            position: "right", //提示框浮层的位置，默认不设置时位置会跟随鼠标的位置。只在 trigger 为'item'的时候有效。
+            confine: false, //是否将 tooltip 框限制在图表的区域内。外层的 dom 被设置为 'overflow: hidden'，或者移动端窄屏，导致 tooltip 超出外界被截断时，此配置比较有用。
+            transitionDuration: 0.4, //提示框浮层的移动动画过渡时间，单位是 s，设置为 0 的时候会紧跟着鼠标移动。
             formatter: function (x) {
-                return x.data.des;
-            }
+                return x.data.name;
+            },
         },
         // 工具箱
         toolbox: {
@@ -240,7 +221,8 @@
             y: 'center',     //可设定图例在上、下、居中
             itemGap: 50,//图例图标与文字间的间距
             data: categories1.map(function (a) {
-                {#console.log(namels[a.name])#}
+                console.log(a.name)
+                console.log(data1)
                 return a.name;
             }),
             textStyle: {
@@ -254,41 +236,49 @@
             //图例纵向显示
             orient: 'vertical',
             //图例位置
-            {#right: 0,#}
-            {#top: 30,#}
-            {#bottom: 30,#}
+            right: 0,
+            top: 30,
+            bottom: 30,
 
         }],
         series: [{
             type: 'graph', // 类型:关系图
+            name: "疾病关系图",
             layout: 'force', //图的布局，类型为力导图
             symbolSize: 50, // 调整节点的大小
             roam: true, // 是否开启鼠标缩放和平移漫游。默认不开启。如果只想要开启缩放或者平移,可以设置成 'scale' 或者 'move'。设置成 true 为都开启
-
+            animationDuration: 2000, // 设置动画时长为 1 秒
             edgeSymbol: ['circle', 'arrow'],
             edgeSymbolSize: [4, 10],
             force: {
-                repulsion: 1000,
+                repulsion: 2500,
                 edgeLength: [10, 60],
-                {#edgeLength: 10,#}
-                {#gravity: 0.01,#}
-                {#layoutAnimation: false  //初始化时转动动画#}
+                gravity: 0.5,
+                layoutAnimation: true  //初始化时转动动画
             },
             draggable: true,
+            focusNodeAdjacency: true, // 是否在鼠标移到节点上的时候突出显示节点以及节点的边和邻接节点。
             lineStyle: {
                 normal: {
                     width: 2,
-                    color: '#5b65f1',
-                }
+                    color: 'rgb(184,210,224)',
+                },
+                curveness: 0.3, // 线条的曲线程度，从0到1 ---  不加弧度，两节点互相指向时，线上的字会重叠
+                emphasis: {
+                    //高亮状态
+                    width: 8,
+                },
             },
             edgeLabel: {
                 normal: {
                     show: true,
                     formatter: function (x) {
+                        {#console.log(x.data.name)#}
                         return x.data.name;
                     },
                     textStyle: {
-                        fontSize: 10
+                        color: 'rgb(164,168,224)',
+                        fontSize: 12,
                     }
                 }
             },
@@ -296,25 +286,24 @@
                 position: 'center',
                 normal: {
                     show: true,
-                    textStyle: {}
-                }
+                    textStyle: {},
+                    width: 90,
+                    overflow: "truncate",
+                    ellipsis: "...",
+                },
             },
             // 数据
             data: data1,
             links: links1,
             categories: categories1,
-            color: ['#c23531', '#2f4554', '#61a0a8', '#d48265', '#91c7ae', '#749f83', '#ca8622', '#bda29a', '#6e7074', '#546570', '#c4ccd3'],
+            color: ['#c23531', '#5b65f1', '#8050c9', '#fd9200', '#91c7ae', '#749f83', '#ca8622', '#bda29a', '#6e7074', '#546570', '#c4ccd3'],
         }]
     };
-    {#console.log(option)#}
-    {#if (option && typeof option === 'object') {#}
     myChart1.setOption(option);
 
 
 </script>
-{#{% endcompress %}#}
 {% cache None 'themejs' %}
-    {#    {% compress js %}#}
     <script type="text/javascript">
 
         $(function () {
@@ -346,7 +335,6 @@
         }
 
     </script>
-    {#    {% endcompress %}#}
 {% endcache %}
 </body>
 </html>

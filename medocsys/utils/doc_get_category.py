@@ -4,7 +4,7 @@ import re
 import cohere
 
 # 在环境变量中设置OpenAI API密钥
-import requests
+# import requests
 
 openai.api_key = "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"
 cohere_api_key = "AmyM4HOivElEHEo7Pd3AbYIBwtFUBMqjOPKhtxNy"

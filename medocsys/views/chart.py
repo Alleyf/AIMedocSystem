@@ -337,6 +337,17 @@ def medicine_search_all_category():
     return neo4j_data
 
 
+categories = {
+    "Disease": "疾病",
+    "Check": "检查",
+    "Department": "种类",
+    "Drug": "宜用药",
+    "Food": "建议食物",
+    "Producer": "病因",
+    "Symptom": "症状"
+}
+
+
 def medicine_search_one(value="百日咳"):
     graph = Graph('http://47.120.0.133:7474/', auth=("neo4j", "password"))
     # 定义data数组存储节点信息
@@ -355,7 +366,8 @@ def medicine_search_one(value="百日咳"):
             # 'id': str(n),  # 防止重复节点
             'name': value,
             'symbolSize': 50,
-            'category': 'Disease'
+            # 'category': 'Disease'
+            'category': '疾病'
         }
         data.append(dict)
         # 查询与该节点有关的节点，无向，步长为1，并返回这些节点
@@ -375,7 +387,8 @@ def medicine_search_one(value="百日咳"):
                     'id': name,  # 防止重复节点
                     'name': name,
                     'symbolSize': 50,
-                    'category': rel
+                    # 'category': rel
+                    'category': categories[rel]
                 }
                 # 将单个节点信息存储进data数组中
                 data.append(dict)
@@ -421,49 +434,55 @@ def medicine_search_one(value="百日咳"):
 @csrf_exempt
 # @cache_page(60 * 30)
 def index(request):
-    cache_data = cache.get('neo4j_default_data')
-    # print(type(cache_data))
-    if request.method == 'POST':
-        # 接收前端传过来的查询值
-        node_name = request.POST.get('disease_node')
-        cache_search_data = cache.get('neo4j_' + node_name)
-        # print(node_name, cache_search_data)
-        # print(cache_data, type(cache_data))
-        if not cache_search_data:
-            # print(node_name)
-            # 查询结果
-            search_neo4j_data = medicine_search_one(value=node_name)
-            cache.set('neo4j_' + node_name, search_neo4j_data, 60 * 60 * 24 * 7)
+    try:
+        cache_data = cache.get('neo4j_default_dat')
+        # cache_data = None
+        # print(type(cache_data))
+        if request.method == 'POST':
+            # 接收前端传过来的查询值
+            node_name = request.POST.get('disease_node')
             cache_search_data = cache.get('neo4j_' + node_name)
-            # print(json.loads(search_neo4j_data)['error'])
-
-            # 未查询到该节点
-            if json.loads(cache_search_data)['status'] == 404:
+            # print(node_name, cache_search_data)
+            # print(cache_data, type(cache_data))
+            if not cache_search_data:
+                # print(node_name)
+                # 查询结果
+                search_neo4j_data = medicine_search_one(value=node_name)
+                cache.set('neo4j_' + node_name, search_neo4j_data, 60 * 60 * 24 * 7)
+                cache_search_data = cache.get('neo4j_' + node_name)
                 # print(json.loads(search_neo4j_data)['error'])
-                # return redirect('/chart/graph/')
-                # ctx = {'title': '数据库中暂未添加该实体'}
-                # neo4j_data = medicine_search_all_category()
-                # neo4j_data = medicine_search_one()
-                return render(request, "medicine_graph.html",
-                              {'neo4j_data': cache_data, 'ctx': json.loads(search_neo4j_data)['error']})
-            # 查询到了该节点
+
+                # 未查询到该节点
+                if json.loads(cache_search_data)['status'] == 404:
+                    # print(json.loads(search_neo4j_data)['error'])
+                    # return redirect('/chart/graph/')
+                    # ctx = {'title': '数据库中暂未添加该实体'}
+                    # neo4j_data = medicine_search_all_category()
+                    # neo4j_data = medicine_search_one()
+                    return render(request, "medicine_graph.html",
+                                  {'neo4j_data': cache_data, 'ctx': json.loads(search_neo4j_data)['error']})
+                # 查询到了该节点
+                else:
+                    # neo4j_data = medicine_search_all_category()
+                    return render(request, 'medicine_graph.html',
+                                  {'neo4j_data': cache_search_data, 'ctx': json.loads(cache_search_data)['error']})
             else:
-                # neo4j_data = medicine_search_all_category()
-                return render(request, 'medicine_graph.html',
-                              {'neo4j_data': cache_search_data, 'ctx': json.loads(cache_search_data)['error']})
-        else:
-            if json.loads(cache_search_data)['status'] == 404:
-                return render(request, 'medicine_graph.html',
-                              {'neo4j_data': cache_data, 'ctx': json.loads(cache_search_data)['error']})
-            else:
-                return render(request, 'medicine_graph.html',
-                              {'neo4j_data': cache_search_data, 'ctx': json.loads(cache_search_data)['error']})
-    if not cache_data:
-        # if cache_data:
-        neo4j_data = medicine_search_one()
-        cache.set('neo4j_default_data', neo4j_data, 60 * 60 * 24 * 7)
-        cache_data = cache.get('neo4j_data')
-        # print(cache_data, type(cache_data))
-    # print(type(cache_data))
-    return render(request, 'medicine_graph.html', {'neo4j_data': cache_data, 'ctx': json.loads(cache_data)['error']})
-    # return render(request, 'medicine_graph.html', {'neo4j_data': neo4j_data, 'ctx': json.loads(neo4j_data)['error']})
+                if json.loads(cache_search_data)['status'] == 404:
+                    return render(request, 'medicine_graph.html',
+                                  {'neo4j_data': cache_data, 'ctx': json.loads(cache_search_data)['error']})
+                else:
+                    return render(request, 'medicine_graph.html',
+                                  {'neo4j_data': cache_search_data, 'ctx': json.loads(cache_search_data)['error']})
+        if not cache_data:
+            # if cache_data:
+            neo4j_data = medicine_search_one()
+            # print(neo4j_data)
+            cache.set('neo4j_default_data', neo4j_data, 60 * 60 * 24 * 7)
+            cache_data = cache.get('neo4j_default_data')
+            # print(cache_data, type(cache_data))
+        # print(type(cache_data))
+        return render(request, 'medicine_graph.html',
+                      {'neo4j_data': cache_data, 'ctx': json.loads(cache_data)['error']})
+        # return render(request, 'medicine_graph.html', {'neo4j_data': neo4j_data, 'ctx': json.loads(neo4j_data)['error']})
+    except:
+        return render(request, 'doc_query.html')
