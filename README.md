@@ -11,13 +11,18 @@ This is a project related to query databases docs using elasticsearch and ocr.
 
 # 效果展示
 
-<img src="https://raw.githubusercontent.com/Alleyf/AIMedocSystem/master/medocsys/static/images/illusion/3end.webp?token=GHSAT0AAAAAACKWYECXGP3CN4UJOR2YOAFSZLK7T5A" alt="效果图2" style="zoom:50%;" />
-![效果图3](https://raw.githubusercontent.com/Alleyf/AIMedocSystem/master/medocsys/static/images/illusion/AIassistant.webp?token=GHSAT0AAAAAACKWYECXALTATNOQBFWK73OQZLK7UZA)
-![效果图4](https://raw.githubusercontent.com/Alleyf/AIMedocSystem/master/medocsys/static/images/illusion/PCquery.webp?token=GHSAT0AAAAAACKWYECXWLIAQHYSCGMOMBVIZLK7VIA)
-![效果图5](https://raw.githubusercontent.com/Alleyf/AIMedocSystem/master/medocsys/static/images/illusion/imagepreview.webp?token=GHSAT0AAAAAACKWYECWW3VQPGZZ2FEOCCQWZLK7WEQ)
-![效果图6](https://raw.githubusercontent.com/Alleyf/AIMedocSystem/master/medocsys/static/images/illusion/mobile1.webp?token=GHSAT0AAAAAACKWYECXGD5OKMQVKOQIVRREZLK7W6A)
-
-![](https://raw.githubusercontent.com/Alleyf/AIMedocSystem/master/medocsys/static/images/illusion/tablet1.webp?token=GHSAT0AAAAAACKWYECXTKKGMW6BDICCDB54ZLK7XJA)
+<div align="center">
+  <img src="https://raw.githubusercontent.com/Alleyf/AIMedocSystem/master/medocsys/static/images/illusion/3end.webp?token=GHSAT0AAAAAACKWYECXGP3CN4UJOR2YOAFSZLK7T5A" alt="效果图2" style="zoom:50%;" />
+  <img src="https://raw.githubusercontent.com/Alleyf/AIMedocSystem/master/medocsys/static/images/illusion/AIassistant.webp?token=GHSAT0AAAAAACKWYECXALTATNOQBFWK73OQZLK7UZA">
+</div>
+<div align="center">
+  <img src="https://raw.githubusercontent.com/Alleyf/AIMedocSystem/master/medocsys/static/images/illusion/PCquery.webp?token=GHSAT0AAAAAACKWYECXWLIAQHYSCGMOMBVIZLK7VIA">
+  <img src="https://raw.githubusercontent.com/Alleyf/AIMedocSystem/master/medocsys/static/images/illusion/imagepreview.webp?token=GHSAT0AAAAAACKWYECWW3VQPGZZ2FEOCCQWZLK7WEQ">
+</div>
+<div align="center">
+  <img src="https://raw.githubusercontent.com/Alleyf/AIMedocSystem/master/medocsys/static/images/illusion/mobile1.webp?token=GHSAT0AAAAAACKWYECXGD5OKMQVKOQIVRREZLK7W6A">
+  <img src="https://raw.githubusercontent.com/Alleyf/AIMedocSystem/master/medocsys/static/images/illusion/tablet1.webp?token=GHSAT0AAAAAACKWYECXTKKGMW6BDICCDB54ZLK7XJA">
+</div>
 
 
 
