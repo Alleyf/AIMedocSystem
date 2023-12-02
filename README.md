@@ -5,6 +5,12 @@
   <img src="https://img.shields.io/badge/License-MIT-blue.svg">
   <img src="https://jaywcjlove.github.io/sb/lang/chinese.svg">
 </div>
+<div align="center">
+<img alt="GitHub followers" src="https://img.shields.io/github/followers/Alleyf">
+<img alt="GitHub watchers" src="https://img.shields.io/github/watchers/Alleyf/AIMedocSystem">
+<img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/Alleyf/AIMedocSystem">
+<img alt="GitHub forks" src="https://img.shields.io/github/forks/Alleyf/AIMedocSystem">
+</div>
 
 # 项目介绍
 
@@ -52,6 +58,7 @@
 - Selenium
 
 技术架构图如下图所示：
+<br>
 ![](http://qnpicmap.fcsluck.top/pics/202312021910539.png)
 
 # 文件说明

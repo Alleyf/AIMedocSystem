@@ -1,0 +1,7 @@
+.github/
+.idea/
+__pycache__/
+/medocsys/utils/NAFNet-REDS-width64.pdparams
+.gitignore
+media/
+/medocsys/utils/series_communication.py
