@@ -2,6 +2,14 @@
 
 This is a project related to query databases docs using elasticsearch and ocr.
 
+<div align="center">
+  <img src="https://img.shields.io/badge/branch-master-brightgreen.svg">
+  <img src="https://img.shields.io/badge/License-MIT-blue.svg">
+  <img src="https://jaywcjlove.github.io/sb/lang/chinese.svg">
+</div>
+
+
+
 # 效果展示
 
 ![效果图1](https://amedoc.fcsy.fit/static/images/illusion/PCquery.webp)
@@ -33,14 +41,13 @@ This is a project related to query databases docs using elasticsearch and ocr.
 5. 修改query函数中的es的host和port
 
 > [演示网址](https://amedoc.fcsy.fit)
-
-
 > Total : 2695 files, 721262 codes, 23566 comments, 74911 blanks, all 819739 lines
 
 # 未来计划
 
-1. 将知识图谱与GPT结合，让GPT随知识图谱联动
-2. 采用Go语言重构项目
-3. 采用Vue+Go前后端分离设计
-4. 实现神经网络检索，支持图片检索
-5. 采用OSS云存储，减小服务器存储压力
+- [ ] 将知识图谱与GPT结合，让GPT随知识图谱联动
+
+- [ ] 采用Go语言重构项目
+- [ ] 采用Vue+Go前后端分离设计
+- [ ] 实现神经网络检索，支持图片检索
+- [ ] 采用分布式存储、OSS云存储等，减小服务器存储压力

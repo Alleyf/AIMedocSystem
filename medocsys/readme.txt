@@ -4,7 +4,7 @@ migrations：迁移文件夹
 static：静态文件夹
 templates：django模板文件夹
 utils：公共函数文件夹
- views：视图函数文件夹
+views：视图函数文件夹
 admin.py：后台管理文件
 apps.py：app配置文件
 elasticsearch_ik_backend.py：ik分词器配置文件

@@ -2,7 +2,6 @@
 import base64
 import json
 import operator
-import time
 
 import requests
 from paddleocr import PaddleOCR
@@ -132,9 +131,9 @@ def local_ocr(img_path):
     :return: 识别文本结果
     """
     ocr = PaddleOCR(
-        det_model_dir='./OCR_Infer/ch_PP-OCRv3_det_slim_infer',
-        rec_model_dir='./OCR_Infer/ch_PP-OCRv3_rec_slim_infer',
-        cls_model_dir='./OCR_Infer/ch_ppocr_mobile_v2.0_cls_slim_infer',
+        det_model_dir='./OCR_Infer/ch_PP-OCRv4_det_infer',
+        rec_model_dir='./OCR_Infer/ch_PP-OCRv4_rec_infer',
+        cls_model_dir='./OCR_Infer/ch_ppocr_mobile_v2.0_cls_infer',
         use_angle_cls=True
     )
     # need to run only once to download and load model into memory
