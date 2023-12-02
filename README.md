@@ -9,22 +9,25 @@ This is a project related to query databases docs using elasticsearch and ocr.
 
 ![team](https://github.com/Alleyf/AIMedocSystem/blob/master/medocsys/static/images/landing/brand.png?raw=true)
 
+
 # 效果展示
 
-<div align="center">
-  <img src="https://raw.githubusercontent.com/Alleyf/AIMedocSystem/master/medocsys/static/images/illusion/3end.webp?token=GHSAT0AAAAAACKWYECXGP3CN4UJOR2YOAFSZLK7T5A" alt="效果图2" style="zoom:50%;" />
-  <img src="https://raw.githubusercontent.com/Alleyf/AIMedocSystem/master/medocsys/static/images/illusion/AIassistant.webp?token=GHSAT0AAAAAACKWYECXALTATNOQBFWK73OQZLK7UZA">
-</div>
-<div align="center">
-  <img src="https://raw.githubusercontent.com/Alleyf/AIMedocSystem/master/medocsys/static/images/illusion/PCquery.webp?token=GHSAT0AAAAAACKWYECXWLIAQHYSCGMOMBVIZLK7VIA">
-  <img src="https://raw.githubusercontent.com/Alleyf/AIMedocSystem/master/medocsys/static/images/illusion/imagepreview.webp?token=GHSAT0AAAAAACKWYECWW3VQPGZZ2FEOCCQWZLK7WEQ">
-</div>
-<div align="center">
-  <img src="https://raw.githubusercontent.com/Alleyf/AIMedocSystem/master/medocsys/static/images/illusion/mobile1.webp?token=GHSAT0AAAAAACKWYECXGD5OKMQVKOQIVRREZLK7W6A">
-  <img src="https://raw.githubusercontent.com/Alleyf/AIMedocSystem/master/medocsys/static/images/illusion/tablet1.webp?token=GHSAT0AAAAAACKWYECXTKKGMW6BDICCDB54ZLK7XJA">
-</div>
 
 
+![](http://qnpicmap.fcsluck.top/pics/202312021847392.webp)
+
+<div align="center">
+  <img src="http://qnpicmap.fcsluck.top/pics/202312021847390.webp" alt="效果图2" style="zoom:50%;" />
+  <img src="http://qnpicmap.fcsluck.top/pics/202312021847391.webp">
+</div>
+<div align="center">
+  <img src="http://qnpicmap.fcsluck.top/pics/202312021847386.webp">
+  <img src="http://qnpicmap.fcsluck.top/pics/202312021847384.webp">
+</div>
+<div align="center">
+  <img src="http://qnpicmap.fcsluck.top/pics/202312021847385.webp">
+  <img src="http://qnpicmap.fcsluck.top/pics/202312021847388.png">
+</div>
 
 # 文件说明
 
