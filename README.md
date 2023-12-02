@@ -5,17 +5,21 @@
   <img src="https://img.shields.io/badge/License-MIT-blue.svg">
   <img src="https://jaywcjlove.github.io/sb/lang/chinese.svg">
 </div>
-
 This is a project related to query databases docs using elasticsearch and ocr.
+
+![team](https://github.com/Alleyf/AIMedocSystem/blob/master/medocsys/static/images/landing/brand.png?raw=true)
 
 # 效果展示
 
-![效果图1](https://amedoc.fcsy.fit/static/images/illusion/PCquery.webp)
-![效果图2](https://amedoc.fcsy.fit/static/images/illusion/3end.webp)
-![效果图3](https://amedoc.fcsy.fit/static/images/illusion/tablet1.webp)
-![效果图4](https://amedoc.fcsy.fit/static/images/illusion/mobile1.webp)
-![效果图5](https://amedoc.fcsy.fit/static/images/illusion/AIassistant.webp)
-![效果图6](https://amedoc.fcsy.fit/static/images/illusion/imagepreview.webp)
+<img src="https://raw.githubusercontent.com/Alleyf/AIMedocSystem/master/medocsys/static/images/illusion/3end.webp?token=GHSAT0AAAAAACKWYECXGP3CN4UJOR2YOAFSZLK7T5A" alt="效果图2" style="zoom:50%;" />
+![效果图3](https://raw.githubusercontent.com/Alleyf/AIMedocSystem/master/medocsys/static/images/illusion/AIassistant.webp?token=GHSAT0AAAAAACKWYECXALTATNOQBFWK73OQZLK7UZA)
+![效果图4](https://raw.githubusercontent.com/Alleyf/AIMedocSystem/master/medocsys/static/images/illusion/PCquery.webp?token=GHSAT0AAAAAACKWYECXWLIAQHYSCGMOMBVIZLK7VIA)
+![效果图5](https://raw.githubusercontent.com/Alleyf/AIMedocSystem/master/medocsys/static/images/illusion/imagepreview.webp?token=GHSAT0AAAAAACKWYECWW3VQPGZZ2FEOCCQWZLK7WEQ)
+![效果图6](https://raw.githubusercontent.com/Alleyf/AIMedocSystem/master/medocsys/static/images/illusion/mobile1.webp?token=GHSAT0AAAAAACKWYECXGD5OKMQVKOQIVRREZLK7W6A)
+
+![](https://raw.githubusercontent.com/Alleyf/AIMedocSystem/master/medocsys/static/images/illusion/tablet1.webp?token=GHSAT0AAAAAACKWYECXTKKGMW6BDICCDB54ZLK7XJA)
+
+
 
 # 文件说明
 
