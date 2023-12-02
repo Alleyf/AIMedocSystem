@@ -21,8 +21,8 @@ def paddle_ocr(img_path):
     :param img_path: 待识别的图片路径
     :return: 图片识别的文本结果
     """
-    password = '8907'
-    url = "http://www.iinside.cn:7001/api_req"
+    password = 'xxx'
+    url = "xxx"
     data = {
         'password': password,
         'reqmode': 'ocr_pp'
@@ -38,46 +38,10 @@ def paddle_ocr(img_path):
         return []
 
 
-""" **********************************腾讯公式识别API***********************************"""
-
-# def tencent_ocr_formula(imgpath, Id="AKIDbCkEezGTbecVJ4kLsKhzRo6KTXYYTJ4k", Key="dAc6Umz674vgMwSsDTdhgZN5hDezENRQ"):
-#     try:
-#         # 实例化一个认证对象，入参需要传入腾讯云账户secretId，secretKey,此处还需注意密钥对的保密
-#         # 密钥可前往https://console.cloud.tencent.com/cam/capi网站进行获取
-#         cred = credential.Credential(Id, Key)
-#         base_str = image_to_base64(imgpath)
-#         # 实例化一个http选项，可选的，没有特殊需求可以跳过
-#         httpProfile = HttpProfile()
-#         httpProfile.endpoint = "ocr.tencentcloudapi.com"
-#
-#         # 实例化一个client选项，可选的，没有特殊需求可以跳过
-#         clientProfile = ClientProfile()
-#         clientProfile.httpProfile = httpProfile
-#         # 实例化要请求产品的client对象,clientProfile是可选的
-#         client = ocr_client.OcrClient(cred, "ap-beijing", clientProfile)
-#
-#         # 实例化一个请求对象,每个接口都会对应一个request对象
-#         req = models.FormulaOCRRequest()
-#         params = {
-#             "ImageBase64": base_str
-#         }
-#         req.from_json_string(json.dumps(params))
-#
-#         # 返回的resp是一个FormulaOCRResponse的实例，与请求对象对应
-#         resp = client.FormulaOCR(req)
-#         result = resp.to_json_string()
-#         res = json.loads(result)
-#         # 返回json格式的字符串回包->Latex公式
-#         return res['FormulaInfos'][0]['DetectedText']
-#
-#     except TencentCloudSDKException as err:
-#         return err
-
-
 """ **********************************腾讯文字识别API***********************************"""
 
 
-def tencent_ocr_geberaltext(imgpath, Id="AKIDbCkEezGTbecVJ4kLsKhzRo6KTXYYTJ4k", Key="dAc6Umz674vgMwSsDTdhgZN5hDezENRQ"):
+def tencent_ocr_geberaltext(imgpath, Id="xxx", Key="xxx"):
     try:
         # 实例化一个认证对象，入参需要传入腾讯云账户secretId，secretKey,此处还需注意密钥对的保密
         # 密钥可前往https://console.cloud.tencent.com/cam/capi网站进行获取

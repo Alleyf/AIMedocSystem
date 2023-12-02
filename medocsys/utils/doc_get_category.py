@@ -6,9 +6,9 @@ import cohere
 # 在环境变量中设置OpenAI API密钥
 # import requests
 
-openai.api_key = "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"
-cohere_api_key = "AmyM4HOivElEHEo7Pd3AbYIBwtFUBMqjOPKhtxNy"
-openai.api_base = "https://openai.yugin.top/v1"
+openai.api_key = "xxx"
+cohere_api_key = "xxx"
+openai.api_base = "xxx"
 
 
 def get_context(prompt: str) -> str:

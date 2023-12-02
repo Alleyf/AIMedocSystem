@@ -51,8 +51,8 @@ EMAIL_HOST = 'smtp.qq.com'  # QQ邮箱的smtp服务器
 EMAIL_PORT = 25  # 端口为465或587
 # EMAIL_USE_SSL = True  # SSL加密方式设置为True
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = '467807892@qq.com'  # 这里是你的邮箱账号
-EMAIL_HOST_PASSWORD = 'jrlrljlzzhgzbhha'  # 注意这里不能用你邮箱账号的密码，而要用申请的设备授权码。
+EMAIL_HOST_USER = 'xxx'  # 这里是你的邮箱账号
+EMAIL_HOST_PASSWORD = 'xxx'  # 注意这里不能用你邮箱账号的密码，而要用申请的设备授权码。
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 INSTALLED_APPS = [

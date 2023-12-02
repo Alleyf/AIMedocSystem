@@ -2,8 +2,8 @@ import clueai
 import cohere
 from cohere import Client
 
-api_key = "7Vg70-KkR6a8lF8lEQutz110111001101"
-cohere_key = 'AmyM4HOivElEHEo7Pd3AbYIBwtFUBMqjOPKhtxNy'
+api_key = "xxx"
+cohere_key = 'xxx'
 
 
 def get_qas(doc_txt):

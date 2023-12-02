@@ -1,5 +1,4 @@
 from drf_haystack.serializers import HaystackSerializer, HighlighterMixin
-from haystack.utils import Highlighter
 from rest_framework import serializers
 
 from .search_indexes import *

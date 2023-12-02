@@ -4,7 +4,7 @@ import json
 import requests
 from pypushdeer import PushDeer
 
-pushdeer = PushDeer(pushkey="PDU14425TPFJBylGz4wLkrvfOsOhWcPD7TMmLeki0")
+pushdeer = PushDeer(pushkey="xxx")
 
 
 def send_text(txt: str):
