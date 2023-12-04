@@ -20,7 +20,9 @@
 # 团队介绍
 
 **智检慧医-开发团队** 旨在利用人工智能技术和图像文字识别技术，打造一款医学文献智能识别检索系统，对于推进医疗行业的数字化转型具有重要意义！
-![team](http://qnpicmap.fcsluck.top/pics/202312021909563.png)
+<div >
+  <img src="http://qnpicmap.fcsluck.top/pics/202312021909563.png">
+</div>
 
 # 效果展示
 
