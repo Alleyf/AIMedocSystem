@@ -24,6 +24,16 @@
 
 # 效果展示
 
+<div align="center">
+<video width="800" height="600" controls>
+  <source src="http://qnpicmap.fcsluck.top/files/%E4%BD%9C%E5%93%81%E4%BB%8B%E7%BB%8D%E8%A7%86%E9%A2%91.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+</div>
+
+---
+
+
 ![](http://qnpicmap.fcsluck.top/pics/202312021847392.webp)
 
 <div align="center">
