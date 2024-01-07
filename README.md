@@ -26,8 +26,8 @@
 
 # 效果展示
 
-
-[点击观看视频](http://qnpicmap.fcsluck.top/files/%E4%BD%9C%E5%93%81%E4%BB%8B%E7%BB%8D%E8%A7%86%E9%A2%91.mp4)
+  <video controls src="http://qnpicmap.fcsluck.top/files/%E4%BD%9C%E5%93%81%E4%BB%8B%E7%BB%8D%E8%A7%86%E9%A2%91.mp4" muted="true"></video>
+  [观看视频演示](http://qnpicmap.fcsluck.top/files/%E4%BD%9C%E5%93%81%E4%BB%8B%E7%BB%8D%E8%A7%86%E9%A2%91.mp4)
 
 
 ---
