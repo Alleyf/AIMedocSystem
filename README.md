@@ -12,6 +12,8 @@
 <img alt="GitHub forks" src="https://img.shields.io/github/forks/Alleyf/AIMedocSystem">
 </div>
 
+![Alt](https://repobeats.axiom.co/api/embed/21a47d664107a88d0952faac7b921bc9a80b9d30.svg "Repobeats analytics image")
+
 # 项目介绍
 
 当前医疗行业需要大量专业性强的医学文献资料，但传统检索方法效率低且消耗人力物力。为此，本团队打造了一款基于ElasticSearch和OCR技术的医学文献智能识别检索系统，建立本地文献库并支持在线检索、阅览、删除和下载文献。采用生成预训练模型进行文献分类，使用Laplacian矩阵卷积法和NAFNet图像去模糊复原模型分类处理模糊图像提高识别准确率和速度。光学字符识别技术能够准确提取图片中的文字内容，并精确到PDF中的页数和摘要命中段落。结合大数据可视化技术、智能问答助手、医学知识图谱、文献推送等特色功能。采用Docker容器化部署至云服务器上，实现了方便快速并且与平台解耦的自动化部署方式，为医护人员提供一站式文献系统管理和快速且精准的医学信息与文献检索服务。系统整体业务流程如下图所示：
